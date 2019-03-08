@@ -217,7 +217,7 @@ def process_file(filename):
         project_details = get_details_from_path(rel_path)
         proj_name = project_details['name']
         proj_id = project_details['id']
-        logger.info('Project Details returns: project: %s ID: %s' % (proj_name, proj_id))
+        logger.debug('Project Details returns: project: %s ID: %s' % (proj_name, proj_id))
 
         # If the project is found, continue processing.
         if proj_id:
@@ -230,7 +230,7 @@ def process_file(filename):
             # If an asset is found, continue processing.
             if asset_id:
                 logger.info('The Asset is found in the system! %s: %s' % (asset_id, asset_name))
-                logger.info('Asset type: %s' % asset_type)
+                logger.debug('Asset type: %s' % asset_type)
 
                 task = get_set_task(asset=find_asset, proj_id=proj_id)
 
@@ -290,9 +290,9 @@ def process_file(filename):
                         get_files = [f for f in glob(find_files_from_template)]
                         if get_files:
                             # Look for an existing version number based on the template
-                            logger.info('GET FILES: %s ' % get_files)
+                            logger.debug('GET FILES: %s ' % get_files)
                             last_file = sorted(get_files)[-1]
-                            logger.info('last_file: %s' % last_file)
+                            logger.debug('last_file: %s' % last_file)
                             get_filename = os.path.basename(last_file)
                             find_version = re.findall(r'_v\d*|_V\d*', get_filename)[0]
                         else:
@@ -305,7 +305,7 @@ def process_file(filename):
                             version += 1
                         else:
                             version = 1
-                        logger.info('VERSION: %s' % version)
+                        logger.debug('VERSION: %s' % version)
 
                         # resolve the working template into an actual file path that can be written out.
                         res_path_work_template = process_template_path(template=work_template_path, asset=find_asset,
@@ -340,7 +340,7 @@ def process_file(filename):
 
                         # Now check to see if the file type needs to generate other file types
                         if ext in generate_types.keys():
-                            logger.info('Generator type detected!')
+                            logger.debug('Generator type detected!')
                             export_type = generate_types[ext]['type']
                             output_type = generate_types[ext]['output']
                             render_area = generate_types[ext]['render']
@@ -350,10 +350,10 @@ def process_file(filename):
                             # ------------------------------------------------------------------------------------
                             # Here I can add different job types as the come up.  For now, it's only Photoshop
                             if export_type == 'Photoshop':
-                                logger.info('export type detected: PHOTOSHOP')
+                                logger.debug('export type detected: PHOTOSHOP')
                                 get_template_name = templates[render_area]
                                 render_publish_area = get_template_name['publish_area']
-                                logger.info('get_template_name: %s' % get_template_name)
+                                logger.debug('get_template_name: %s' % get_template_name)
                                 try:
                                     process_Photoshop_image(template=template, filename=new_file,
                                                             pub_area=render_publish_area,
@@ -365,7 +365,7 @@ def process_file(filename):
                         # Publish the file
                         res_publish_path = process_template_path(template=publish_template_path, asset=find_asset,
                                                                  version=version)
-                        logger.info('Publish Path: %s' % res_publish_path)
+                        logger.debug('Publish Path: %s' % res_publish_path)
                         next_version = version + 1
                         try:
                             logger.info('Attempting to publish...')
@@ -386,16 +386,16 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
     if filename:
         # Find where to save the file from the template
         res_template_path = resolve_template_path(pub_area, template)
-        logger.info('PHOTOSHOP TEMPLATE: %s' % res_template_path)
+        logger.debug('PHOTOSHOP TEMPLATE: %s' % res_template_path)
         resolved_path = process_template_path(template=res_template_path, asset=asset)
-        logger.info('RESOLVED PHOTOSHOP PATH: %s' % resolved_path)
+        logger.debug('RESOLVED PHOTOSHOP PATH: %s' % resolved_path)
         full_path = os.path.join(root, resolved_path).replace('\\', '/')
-        logger.info('FULL SHOTGUN PATH: %s' % full_path)
+        logger.debug('FULL SHOTGUN PATH: %s' % full_path)
 
         # Get the photoshop file basename
         base_filename = os.path.basename(filename)
         root_filename = os.path.splitext(base_filename)[0]
-        logger.info('Render filename: %s' % root_filename)
+        logger.debug('Render filename: %s' % root_filename)
 
         # Create the export path:
         render = '%s.%s' % (root_filename, type)
@@ -424,7 +424,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
     }
 
     new_version = sg.create('Version', version_data)
-    logger.info('new_version RETURNS: %s' % new_version)
+    logger.debug('new_version RETURNS: %s' % new_version)
     version_id = new_version['id']
     sg.upload_thumbnail('Version', version_id, file_path)
     sg.upload('Version', version_id, file_path, field_name='sg_uploaded_movie', display_name=file_name)
@@ -470,7 +470,7 @@ def get_set_task(asset=None, proj_id=None):
             'id'
         ]
         tasks = sg.find('Task', filters, fields)
-        logger.info('TASKS RETURNS: %s' % tasks)
+        logger.debug('TASKS RETURNS: %s' % tasks)
         if tasks:
             logger.info('Searching for remote task...')
             for t in tasks:
@@ -505,7 +505,7 @@ def process_template_path(template=None, asset=None, version=0):
             asset_type = None
         res_path = template.format(Asset=asset_name, task_name=task_name, sg_asset_type=asset_type,
                                    version='%03d' % version)
-        logger.info('RESOLVED PATH: %s' % res_path)
+        logger.debug('RESOLVED PATH: %s' % res_path)
     return res_path
 
 
@@ -522,10 +522,10 @@ def resolve_template_path(template_key, template):
                 d = x.strip('@')
                 g = resolve_template_path(d, template)
                 template_path = read.replace(x, g)
-                logger.info('resolving iteration: %s' % template_path)
+                logger.debug('resolving iteration: %s' % template_path)
                 return template_path
         template_path = read
-        logger.info('resolved path: %s' % template_path)
+        logger.debug('resolved path: %s' % template_path)
         return template_path
 
 
@@ -650,6 +650,7 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
             for action, file in results:
                 full_filename = os.path.join(path_to_watch, file)
                 print full_filename, ACTIONS.get(action, "Unknown")
+                logger.info(full_filename, ACTIONS.get(action, "Unknown"))
                 # This is where my internal processes get triggered.
                 # Needs a logger at the very least, although a window would be nice too.
                 if action == 1:
