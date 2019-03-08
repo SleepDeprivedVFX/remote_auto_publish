@@ -1,0 +1,287 @@
+{
+  "asc_masterclass": {
+    "Assets": {
+      "MasterClasset": [],
+      "Robot": [],
+      "mattepainting.main": []
+    },
+    "ID": 209
+  },
+  "asura": {
+    "Assets": {
+      "125_SAF": [],
+      "Airhorse": [],
+      "Balcony": [],
+      "Creature Realm": [],
+      "CreatureRealm": [],
+      "Evil Spirit Realm": [],
+      "EvilSpiritRealm": [],
+      "FeedingTube": [],
+      "Heaven Creature": [],
+      "Heaven Realm": [],
+      "Hell Realm": [],
+      "HellRealm": [],
+      "Hua": [],
+      "Leech": [],
+      "Paint": [],
+      "Palace Balcony": [],
+      "Planks": [],
+      "Remnant": [],
+      "Remnant Animations": [],
+      "Remnant Helmet": [],
+      "Remnants_Hanging": [],
+      "RuYi": [],
+      "Sanctuary Set": [],
+      "Skydome": [],
+      "TearofLove": [],
+      "Tentacles": [],
+      "Trees": [],
+      "human_scale": [],
+      "proxy_man": [],
+      "proxy_woman": [],
+      "sanctuary_scale": [],
+      "treeAlign": []
+    },
+    "ID": 140
+  },
+  "callofthewild": {
+    "Assets": {
+      "BearFightLandscape": [],
+      "BigValley": [],
+      "BodieTown": [],
+      "Buck": [],
+      "Buck Breaking Thru Grass A": [],
+      "Buck Breaking Thru Grass B": [],
+      "Buck Long Pan": [],
+      "Buck Redesign": [],
+      "Buck Sees Trouble In Bar": [],
+      "Buck3Dprint pose": [],
+      "BuckAndJudge": [],
+      "BuckAndJudgeCU": [],
+      "BuckChasesRabbit": [],
+      "BuckMeetsWolf": [],
+      "BuckMeetsWolfWideshot": [],
+      "BuckNearingEnd": [],
+      "BuckOnCliff": [],
+      "BuckOnShip": [],
+      "BuckPounces": [],
+      "BuckRecovered": [],
+      "BuckSavesThornton": [],
+      "BuckSwimmingWithKids": [],
+      "BuckTakesLead": [],
+      "BuckWolfEmergingFromForest": [],
+      "Buck_Digs_Hole": [],
+      "Buck_Saves_Thornton": [],
+      "DunsmuirHouse": [],
+      "EdgeOfForest": [],
+      "Epilogue": [],
+      "ExteriorHouse": [],
+      "First_Snow-Buck_on_the_Team": [],
+      "FollowingWolf": [],
+      "GettingHarnessed": [],
+      "GettingHarnessedSideview": [],
+      "GettingHarnessed_B": [],
+      "Hiking Sideview": [],
+      "JoiningWolfPack": [],
+      "Learning_Curve_Falling": [],
+      "MeetingSpitz": [],
+      "MelodyRanchTown": [],
+      "MoneyChangingHands": [],
+      "NewOwners": [],
+      "OTSBuckOnShip": [],
+      "OutInTheCold": [],
+      "OverloadedSled": [],
+      "PerraultSaysGoodbye": [],
+      "PerraultSeesBuck": [],
+      "PostCrashReprimand": [],
+      "RehabilitationWithThornton": [],
+      "Running Through Town": [],
+      "RunningInForest_A": [],
+      "RunningInForest_B": [],
+      "RunningInForest_C": [],
+      "RunningInForest_D": [],
+      "RunningInForest_E": [],
+      "Santa Clara": [],
+      "SantaClaraRunningThruFields": [],
+      "SoldAgain": [],
+      "Spits Redesign": [],
+      "Spitz_Steals_Hole": [],
+      "TheCall01": [],
+      "TheCall_B": [],
+      "TheCall_C": [],
+      "TheCall_D": [],
+      "TheCall_E": [],
+      "The_Torment": [],
+      "Thornton Carries Buck": [],
+      "ThortonApproachingCollaspedBuckA": [],
+      "ThortonApproachingCollaspedBuckB": [],
+      "ThortonBuckOverlookingValley": [],
+      "UnmarkedGrave": [],
+      "WolfCamouflaged": [],
+      "WolfPackHome": [],
+      "YukonHarborArrival": [],
+      "blackwolf": [],
+      "convalescing": [],
+      "dog_line_up": [],
+      "frozen river": [],
+      "test delete me": []
+    },
+    "ID": 158
+  },
+  "kinggunter": {
+    "Assets": {
+      "Ad": []
+    },
+    "ID": 199
+  },
+  "kunlun": {
+    "Assets": {
+      "Android": [],
+      "ship": []
+    },
+    "ID": 214
+  },
+  "mastertemplate": {
+    "Assets": {
+      "Alien": [],
+      "AssetShaderTest1": [],
+      "Bastard_Blaster": [],
+      "D2Test": [],
+      "Design_Test": [],
+      "NewAssEtte": [],
+      "PSD_TestAsset": [],
+      "ShaderLoadTest1": [],
+      "Shady_Looking_Bacon": []
+    },
+    "ID": 168
+  },
+  "nicole": {
+    "Assets": {
+      "BalthazarRidingSnowCone_001": [],
+      "Barn_001": [],
+      "Blitzen_001": [],
+      "City_001": [],
+      "Comet_001": [],
+      "Comet_002": [],
+      "Cupid_001": [],
+      "Dancer_001": [],
+      "DeerParkedTownHall_001": [],
+      "Donner_001": [],
+      "Houses_001": [],
+      "IntSantasWorkshop_001": [],
+      "LondonRooftopLanding_001": [],
+      "NorthPoleMap_001": [],
+      "ParadeCoronation": [],
+      "PhoenixMallPandaExpress": [],
+      "PhoenixMall_001": [],
+      "Prancer_001": [],
+      "Prancer_002": [],
+      "ReindeerSheet_001": [],
+      "ReturningToNorthPole": [],
+      "Rudolf_001": [],
+      "Rudolf_002": [],
+      "SantaOfficeGooglelized": [],
+      "SantaOfficeOld": [],
+      "SleighSketch_001": [],
+      "SleighTakingOffFromBarn": [],
+      "Sleigh_001": [],
+      "Sleigh_002": [],
+      "Snowcone_001": [],
+      "TownHall_SantaGallery": [],
+      "TownHall_backview": [],
+      "TownHall_frontview": [],
+      "Vixen_001": [],
+      "mallviewbridge": [],
+      "mallviewsanta": []
+    },
+    "ID": 87
+  },
+  "strangerthings2": {
+    "Assets": {
+      "CycWall": [],
+      "Demagorgon Stage 1": [],
+      "Demagorgon Stage 2": [],
+      "Demagorgon Stage 3": [],
+      "Polaroid": [],
+      "storyboards": []
+    },
+    "ID": 203
+  },
+  "the_yvils": {
+    "Assets": {
+      "MansionInterior": [],
+      "Martini Tree": [],
+      "MeetingUncle": [],
+      "SirTrapsalot": [],
+      "storyboardsAtriumscene": [],
+      "storyboardsEstablishingScene": []
+    },
+    "ID": 183
+  },
+  "thewoods": {
+    "Assets": {
+      "Poster": []
+    },
+    "ID": 215
+  },
+  "utopiacola": {
+    "Assets": {
+      "boards": []
+    },
+    "ID": 205
+  },
+  "venom": {
+    "Assets": {
+      "Spacesuit": [],
+      "venom": []
+    },
+    "ID": 179
+  },
+  "wicked": {
+    "Assets": {},
+    "ID": 157
+  },
+  "wonderwoman2": {
+    "Assets": {
+      "cheetah": [
+        "Emma_base.psd",
+        "Emma_base_thumb.png",
+        "Emma_base_01.jpg",
+        "Emma_base_2.jpg",
+        "Emma_base_2_thumb.png"
+      ]
+    },
+    "ID": 218
+  },
+  "xmen_kurt": {
+    "Assets": {
+      "Chastain": [],
+      "Dark Phoenix": [],
+      "Medusa Man": [],
+      "New Mutant": [],
+      "Skrull": [],
+      "Skrullship": [],
+      "Swarm_Ship": [],
+      "animateobjectsgirl": [],
+      "antigravitygirl": [],
+      "bendydancer": [],
+      "crystalgirl": [],
+      "flowergirl": [],
+      "invisiblegirl": [],
+      "jessica": [],
+      "materialchangingguy": [],
+      "splitsgirl": [],
+      "stickyguy": [],
+      "vibrationguy": [],
+      "waterguy": []
+    },
+    "ID": 170
+  },
+  "xmensoho": {
+    "Assets": {
+      "Design-vfx": [],
+      "shuttle crash": []
+    },
+    "ID": 156
+  }
+}
