@@ -2,6 +2,11 @@ import os
 
 import win32file
 import win32con
+import queue
+import threading
+
+q = queue.Queue()
+
 
 ACTIONS = {
     1: "Created",
@@ -13,7 +18,7 @@ ACTIONS = {
 # Thanks to Claudio Grondi for the correct set of numbers
 FILE_LIST_DIRECTORY = 0x0001
 
-path_to_watch = "C:/Users/adamb/Documents/oldProjects"
+path_to_watch = "C:/Users/events/Dropbox/ASC_REMOTE"
 hDir = win32file.CreateFile(
     path_to_watch,
     FILE_LIST_DIRECTORY,
@@ -23,6 +28,21 @@ hDir = win32file.CreateFile(
     win32con.FILE_FLAG_BACKUP_SEMANTICS,
     None
 )
+
+
+def test_shit():
+    print 'Eat shit'
+
+    while True:
+        turd = q.get()
+        print 'SHIT: %s' % turd
+        q.task_done()
+
+
+t = threading.Thread(target=test_shit, name='testShit')
+t.setDaemon(True)
+t.start()
+
 while 1:
     #
     # ReadDirectoryChangesW takes a previously-created
@@ -51,4 +71,6 @@ while 1:
     for action, file in results:
         full_filename = os.path.join(path_to_watch, file)
         print full_filename, ACTIONS.get(action, "Unknown")
+        if action == 1:
+            q.put(full_filename)
 
