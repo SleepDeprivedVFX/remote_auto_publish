@@ -56,7 +56,7 @@ hDir = win32file.CreateFile(
 
 
 # Create Log file
-log_level = logging.DEBUG
+log_level = logging.INFO
 
 
 def _setFilePathOnLogger(logger, path):
@@ -98,10 +98,10 @@ logger.info('Starting the Remote Auto Publisher...')
 # Global Variables
 # --------------------------------------------------------------------------------------------------------------
 publish_types = {
-    '.psd': 'Photoshop',
-    '.nk': 'Nuke',
-    '.mb': 'Maya',
-    '.ma': 'Maya',
+    '.psd': 'Photoshop Image',
+    '.nk': 'Nuke Script',
+    '.mb': 'Maya Scene',
+    '.ma': 'Maya Scene',
     '.ztl': 'ZBrush',
     '.mud': 'Mudbox'
 }
@@ -114,12 +114,12 @@ publish_types = {
 '''
 generate_types = {
     '.psd': {
-        'type': 'Photoshop',
+        'type': 'Photoshop Image',
         'output': 'png',
         'render': 'Renders'
     },
     '.psb': {
-        'type': 'Photoshop',
+        'type': 'Photoshop Image',
         'output': 'png',
         'render': 'Renders'
     }
@@ -135,19 +135,19 @@ upload_types = [
     '.tga'
 ]
 templates = {
-    'Photoshop': {
+    'Photoshop Image': {
         'work_area': 'asset_work_area_photoshop',
         'work_template': 'photoshop_asset_work',
         'publish_area': 'asset_publish_area_photoshop',
         'publish_template': 'photoshop_asset_publish'
     },
-    'Nuke': {
+    'Nuke Script': {
         'work_area': 'asset_work_area_nuke',
         'work_template': 'nuke_asset_work',
         'publish_area': 'asset_publish_area_nuke',
         'publish_template': 'nuke_asset_publish'
     },
-    'Maya': {
+    'Maya Scene': {
         'work_area': 'asset_work_area_maya',
         'work_template': 'maya_asset_work',
         'publish_area': 'asset_publish_area_maya',
@@ -205,6 +205,7 @@ def process_file(filename):
     if filename:
         logger.info('-' * 120)
         logger.info('NEW FILE PROCESSING...')
+        print 'New File Processing...'
 
         # Get the path details from the filename
         path = os.path.dirname(filename)
@@ -386,12 +387,12 @@ def process_file(filename):
                                                                  version=version)
                         logger.debug('Publish Path: %s' % res_publish_path)
                         next_version = version + 1
-                        try:
-                            logger.info('Attempting to publish...')
-                            publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
-                                               proj_id=proj_id, task_id=task, next_version=next_version)
-                        except Exception, e:
-                            logger.error('Publish failed for the following! %s' % e)
+                        # try:
+                        logger.info('Attempting to publish...')
+                        publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
+                                           proj_id=proj_id, task_id=task, next_version=next_version)
+                        # except Exception, e:
+                        #     logger.error('Publish failed for the following! %s' % e)
 
                     elif ext.lower() in upload_types:
                         logger.info('Uploading for review %s' % file_name)
@@ -399,6 +400,7 @@ def process_file(filename):
         logger.info('Finished processing the file')
         logger.info('=' * 100)
         q.task_done()
+        print 'Finished processing the file'
 
 
 def process_Photoshop_image(template=None, filename=None, task=None, pub_area=None, type=None, proj_id=None, asset=None,
@@ -453,6 +455,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
 
 def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj_id=None, task_id=None, next_version=1):
     if publish_file:
+        # Copy the file to the publish area.  This will be the file published.
         try:
             logger.info('Copying file to the publish area...')
             check_path = os.path.dirname(publish_path)
@@ -461,10 +464,46 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
             shutil.copy2(publish_file, publish_path)
         except Exception, e:
             logger.error('Copy failed for the following: %s' % e)
+
+        # Parse the copied data
         base_name = os.path.basename(publish_file)
         find_version = re.findall(r'_v\d*|_V\d*', base_name)[0]
         digits_only = find_version.lower().strip('_v')
         count_digits = len(digits_only)
+        version = int(digits_only)
+        ext = os.path.splitext(base_name)[1]
+
+        # Get the publish type.
+        get_publish_type = publish_types[ext]
+        filters = [
+            ['code', 'is', get_publish_type]
+        ]
+        fields = ['id']
+
+        find_type = sg.find_one('PublishedFileType', filters, fields)
+
+        # Register the publish
+        data = {
+            'description': 'A remote file was detected in Dropbox and has been published into the pipeline.',
+            'project': {'type': 'Project', 'id': proj_id},
+            'code': base_name,
+            'entity': {'type': 'Asset', 'id': asset_id},
+            'name': task_name,
+            'task': {'type': 'Task', 'id': task_id},
+            'path_cache': publish_path,
+            'version_number': version,
+            'published_file_type': find_type
+        }
+        new_publish = sg.create('PublishedFile', data)
+        logger.debug('NEW PUBLISH: %s' % new_publish)
+        publish_id = new_publish['id']
+        publish_update = {
+            'path': {'local_path': publish_path.replace('/', '\\')}
+        }
+        sg.update('PublishedFile', publish_id, publish_update)
+        logger.info('%s has been published successfully!' % base_name)
+
+        # Create a new version and save up.
         new_version = '_v' + str(next_version).zfill(count_digits)
         version_up = publish_file.replace(find_version, new_version)
         logger.info('Versioning up the file...')
@@ -629,11 +668,17 @@ def get_active_shotgun_projects():
     return projects_list
 
 
+# The following print lines (and all print lines) are temporary output for the command line window that will
+# be running until I get the service working properly.
+print 'Starting the Dropbox listener...'
+
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Run Queue
 # ---------------------------------------------------------------------------------------------------------------------
 def file_queue():
     logger.debug('Queue Running...')
+    print 'Queue running...'
     while True:
         full_filename = q.get()
         logger.debug('Queued file: %s' % full_filename)
@@ -651,6 +696,7 @@ def file_queue():
 
 
 # Start the thread
+print 'Start Threading...'
 t = threading.Thread(target=file_queue, name='FileQueue')
 t.setDaemon(True)
 t.start()
@@ -659,81 +705,82 @@ t.start()
 # ---------------------------------------------------------------------------------------------------------------------
 # Watch Folder
 # ---------------------------------------------------------------------------------------------------------------------
-class remoteAutoPublisher(win32serviceutil.ServiceFramework):
-    _svc_name_ = "RemoteAutoPublisher"
-    _svc_display_name_ = "Remote Auto Publisher"
-
-    def __init__(self, args):
-        win32serviceutil.ServiceFramework.__init__(self, args)
-        self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
-        socket.setdefaulttimeout(60)
-
-    def SvcStop(self):
-        self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
-        win32event.SetEvent(self.hWaitStop)
-
-    def SvcDoRun(self):
-        servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
-                              servicemanager.PYS_SERVICE_STARTED,
-                              (self._svc_name_, ''))
-        self.main()
-
-    def main(self):
-        while 1:
-            results = win32file.ReadDirectoryChangesW(
-                hDir,
-                1024,
-                True,
-                win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-                win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-                win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-                win32con.FILE_NOTIFY_CHANGE_SIZE |
-                win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-                win32con.FILE_NOTIFY_CHANGE_SECURITY,
-                None,
-                None
-            )
-            for action, file in results:
-                full_filename = os.path.join(path_to_watch, file)
-                print full_filename, ACTIONS.get(action, "Unknown")
-                logger.info(full_filename, ACTIONS.get(action, "Unknown"))
-                # This is where my internal processes get triggered.
-                # Needs a logger at the very least, although a window would be nice too.
-                if action == 1:
-                    if os.path.isfile(full_filename):
-                        logger.info('New file detected. %s' % full_filename)
-                        # From here down, I should move this into a Queue.  Then the Queue can handle multiple files.
-                        q.put(full_filename)
-
-
-if __name__ == '__main__':
-    win32serviceutil.HandleCommandLine(remoteAutoPublisher)
+# class remoteAutoPublisher(win32serviceutil.ServiceFramework):
+#     _svc_name_ = "RemoteAutoPublisher"
+#     _svc_display_name_ = "Remote Auto Publisher"
+#
+#     def __init__(self, args):
+#         win32serviceutil.ServiceFramework.__init__(self, args)
+#         self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
+#         socket.setdefaulttimeout(60)
+#
+#     def SvcStop(self):
+#         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
+#         win32event.SetEvent(self.hWaitStop)
+#
+#     def SvcDoRun(self):
+#         servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
+#                               servicemanager.PYS_SERVICE_STARTED,
+#                               (self._svc_name_, ''))
+#         self.main()
+#
+#     def main(self):
+#         while 1:
+#             results = win32file.ReadDirectoryChangesW(
+#                 hDir,
+#                 1024,
+#                 True,
+#                 win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
+#                 win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
+#                 win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
+#                 win32con.FILE_NOTIFY_CHANGE_SIZE |
+#                 win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
+#                 win32con.FILE_NOTIFY_CHANGE_SECURITY,
+#                 None,
+#                 None
+#             )
+#             for action, file in results:
+#                 full_filename = os.path.join(path_to_watch, file)
+#                 print full_filename, ACTIONS.get(action, "Unknown")
+#                 logger.info(full_filename, ACTIONS.get(action, "Unknown"))
+#                 # This is where my internal processes get triggered.
+#                 # Needs a logger at the very least, although a window would be nice too.
+#                 if action == 1:
+#                     if os.path.isfile(full_filename):
+#                         logger.info('New file detected. %s' % full_filename)
+#                         # From here down, I should move this into a Queue.  Then the Queue can handle multiple files.
+#                         q.put(full_filename)
+#
+#
+# if __name__ == '__main__':
+#     win32serviceutil.HandleCommandLine(remoteAutoPublisher)
 
 # -------------------------------------------------------------------------------------------------------------
 # TESTING SETUP
 # -------------------------------------------------------------------------------------------------------------
-# while 1:
-#     results = win32file.ReadDirectoryChangesW(
-#         hDir,
-#         1024,
-#         True,
-#         win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-#         win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-#         win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-#         win32con.FILE_NOTIFY_CHANGE_SIZE |
-#         win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-#         win32con.FILE_NOTIFY_CHANGE_SECURITY,
-#         None,
-#         None
-#     )
-#     for action, file in results:
-#         full_filename = os.path.join(path_to_watch, file)
-#         print full_filename, ACTIONS.get(action, "Unknown")
-#         # This is where my internal processes get triggered.
-#         # Needs a logger at the very least, although a window would be nice too.
-#         if action == 1:
-#             if os.path.isfile(full_filename):
-#                 logger.info('New file detected. %s' % full_filename)
-#                 # From here, add to the queue and let it handle multiple files.
-#                 q.put(full_filename)
+print 'Folder watching has begun.'
+while 1:
+    results = win32file.ReadDirectoryChangesW(
+        hDir,
+        1024,
+        True,
+        win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
+        win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
+        win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
+        win32con.FILE_NOTIFY_CHANGE_SIZE |
+        win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
+        win32con.FILE_NOTIFY_CHANGE_SECURITY,
+        None,
+        None
+    )
+    for action, file in results:
+        full_filename = os.path.join(path_to_watch, file)
+        print full_filename, ACTIONS.get(action, "Unknown")
+        # This is where my internal processes get triggered.
+        # Needs a logger at the very least, although a window would be nice too.
+        if action == 1:
+            if os.path.isfile(full_filename):
+                logger.info('New file detected. %s' % full_filename)
+                # From here, add to the queue and let it handle multiple files.
+                q.put(full_filename)
 
