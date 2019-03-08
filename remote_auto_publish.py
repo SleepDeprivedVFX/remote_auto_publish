@@ -22,6 +22,8 @@ import shutil
 import yaml
 import psd_tools as psd
 import shotgun_api3
+import queue
+import threading
 
 # Build Shotgun Connection
 sg_url = 'https://asc.shotgunstudio.com'
@@ -54,7 +56,8 @@ hDir = win32file.CreateFile(
 
 
 # Create Log file
-log_level = logging.INFO
+log_level = logging.DEBUG
+
 
 def _setFilePathOnLogger(logger, path):
     # Remove any previous handler.
@@ -86,7 +89,6 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
 logDate = str(time.strftime('%m%d%y%H%M%S'))
 logfile = "C:/shotgun/remote_auto_publish/logs/remoteAutoPublish.log"
 logging.basicConfig(level=log_level, filename=logfile)
-log_level = logging.INFO
 logger = logging.getLogger('remoteAutoPublish')
 _setFilePathOnLogger(logger, logfile)
 
@@ -188,6 +190,12 @@ task_name_format = '{Asset}_{task_name}_*{ext}'
 task_name = 'design.remote'
 task_step = 23
 relative_config_path = '/config/core'
+
+
+# -----------------------------------------------------------------------------------------------------------------
+# Processor Queue
+# -----------------------------------------------------------------------------------------------------------------
+q = queue.Queue()
 
 
 # -----------------------------------------------------------------------------------------------------------------
@@ -379,6 +387,8 @@ def process_file(filename):
                         upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id)
         logger.info('Finished processing the file')
         logger.info('=' * 100)
+        q.task_done()
+        return True
 
 
 def process_Photoshop_image(template=None, filename=None, task=None, pub_area=None, type=None, proj_id=None, asset=None,
@@ -610,9 +620,35 @@ def get_active_shotgun_projects():
 
 
 # ---------------------------------------------------------------------------------------------------------------------
+# Run Queue
+# ---------------------------------------------------------------------------------------------------------------------
+def file_queue():
+    logger.debug('Queue Running...')
+    while True:
+        full_filename = q.get()
+        logger.debug('Queued file: %s' % full_filename)
+        copying = True
+        size2 = -1
+        while copying:
+            size = os.stat(full_filename).st_size
+            if size == size2:
+                time.sleep(2)
+                process_file(full_filename)
+                copying = False
+            else:
+                size2 = os.stat(full_filename).st_size
+                time.sleep(2)
+
+
+# Start the thread
+t = threading.Thread(target=file_queue, name='FileQueue')
+t.setDaemon(True)
+t.start()
+
+
+# ---------------------------------------------------------------------------------------------------------------------
 # Watch Folder
 # ---------------------------------------------------------------------------------------------------------------------
-
 class remoteAutoPublisher(win32serviceutil.ServiceFramework):
     _svc_name_ = "RemoteAutoPublisher"
     _svc_display_name_ = "Remote Auto Publisher"
@@ -656,17 +692,8 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                 if action == 1:
                     if os.path.isfile(full_filename):
                         logger.info('New file detected. %s' % full_filename)
-                        copying = True
-                        size2 = -1
-                        while copying:
-                            size = os.stat(full_filename).st_size
-                            if size == size2:
-                                time.sleep(2)
-                                process_file(full_filename)
-                                copying = False
-                            else:
-                                size2 = os.stat(full_filename).st_size
-                                time.sleep(2)
+                        # From here down, I should move this into a Queue.  Then the Queue can handle multiple files.
+                        q.put(full_filename)
 
 
 if __name__ == '__main__':
@@ -697,14 +724,7 @@ if __name__ == '__main__':
 #         if action == 1:
 #             if os.path.isfile(full_filename):
 #                 logger.info('New file detected. %s' % full_filename)
-#                 copying = True
-#                 size2 = -1
-#                 while copying:
-#                     size = os.stat(full_filename).st_size
-#                     if size == size2:
-#                         time.sleep(2)
-#                         process_file(full_filename)
-#                         copying = False
-#                     else:
-#                         size2 = os.stat(full_filename).st_size
-#                         time.sleep(2)
+#                 # From here, add to the queue and let it handle multiple files.
+#                 q.put(full_filename)
+
+
