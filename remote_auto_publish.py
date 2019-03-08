@@ -241,6 +241,7 @@ def process_file(filename):
                 logger.debug('Asset type: %s' % asset_type)
 
                 task = get_set_task(asset=find_asset, proj_id=proj_id)
+                logger.debug('Task ID returned: %s' % task)
 
                 # Find the Shotgun configuration root path
                 find_config = get_configuration(proj_id)
@@ -248,18 +249,28 @@ def process_file(filename):
 
                 # If a Shotgun configuration is found, continue processing.
                 if find_config:
+                    logger.debug('find_config passes.')
                     # The the template.yml file and load it into a yaml object
                     templates_path = find_config + relative_config_path
                     logger.debug('templates_path: %s' % templates_path)
                     template_file = os.path.join(templates_path, 'templates.yml')
+                    logger.debug('template file returns: %s' % template_file)
                     root_file = os.path.join(templates_path, 'roots.yml')
+                    logger.debug('root_file returns: %s' % root_file)
+                    template_file = template_file.replace('/', '\\')
+                    root_file = root_file.replace('/', '\\')
                     f = open(template_file, 'r')
+                    logger.debug('template file opened.')
                     r = open(root_file, 'r')
+                    logger.debug('root file opened.')
                     template = yaml.load(f)
+                    logger.debug('template yaml created.')
                     roots = yaml.load(r)
+                    logger.debug('root yaml created.')
                     # Look for publish types from the extension
                     if ext in publish_types:
                         # Find out from the ext which configuration to get from the template.
+                        logger.debug('This is a publish level file...')
                         publish_type = publish_types[ext]
                         template_type = templates[publish_type]
 
@@ -388,7 +399,6 @@ def process_file(filename):
         logger.info('Finished processing the file')
         logger.info('=' * 100)
         q.task_done()
-        return True
 
 
 def process_Photoshop_image(template=None, filename=None, task=None, pub_area=None, type=None, proj_id=None, asset=None,
@@ -483,11 +493,11 @@ def get_set_task(asset=None, proj_id=None):
         logger.debug('TASKS RETURNS: %s' % tasks)
         if tasks:
             logger.info('Searching for remote task...')
-            for t in tasks:
-                if t['content'] == task_name:
+            for tsk in tasks:
+                if tsk['content'] == task_name:
                     logger.info('Task found!')
-                    task_id = t['id']
-                    task_step = t['step']['id']
+                    task_id = tsk['id']
+                    task_step = tsk['step']['id']
                     task = task_id
                     break
         if not task:
@@ -615,7 +625,7 @@ def get_active_shotgun_projects():
         'tank_name'
     ]
     projects_list = sg.find('Project', filters, fields)
-    logger.info('Active Projects Found: %s' % projects_list)
+    logger.debug('Active Projects Found: %s' % projects_list)
     return projects_list
 
 
@@ -649,82 +659,82 @@ t.start()
 # ---------------------------------------------------------------------------------------------------------------------
 # Watch Folder
 # ---------------------------------------------------------------------------------------------------------------------
-class remoteAutoPublisher(win32serviceutil.ServiceFramework):
-    _svc_name_ = "RemoteAutoPublisher"
-    _svc_display_name_ = "Remote Auto Publisher"
-
-    def __init__(self, args):
-        win32serviceutil.ServiceFramework.__init__(self, args)
-        self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
-        socket.setdefaulttimeout(60)
-
-    def SvcStop(self):
-        self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
-        win32event.SetEvent(self.hWaitStop)
-
-    def SvcDoRun(self):
-        servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
-                              servicemanager.PYS_SERVICE_STARTED,
-                              (self._svc_name_, ''))
-        self.main()
-
-    def main(self):
-        while 1:
-            results = win32file.ReadDirectoryChangesW(
-                hDir,
-                1024,
-                True,
-                win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-                win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-                win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-                win32con.FILE_NOTIFY_CHANGE_SIZE |
-                win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-                win32con.FILE_NOTIFY_CHANGE_SECURITY,
-                None,
-                None
-            )
-            for action, file in results:
-                full_filename = os.path.join(path_to_watch, file)
-                print full_filename, ACTIONS.get(action, "Unknown")
-                logger.info(full_filename, ACTIONS.get(action, "Unknown"))
-                # This is where my internal processes get triggered.
-                # Needs a logger at the very least, although a window would be nice too.
-                if action == 1:
-                    if os.path.isfile(full_filename):
-                        logger.info('New file detected. %s' % full_filename)
-                        # From here down, I should move this into a Queue.  Then the Queue can handle multiple files.
-                        q.put(full_filename)
-
-
-if __name__ == '__main__':
-    win32serviceutil.HandleCommandLine(remoteAutoPublisher)
+# class remoteAutoPublisher(win32serviceutil.ServiceFramework):
+#     _svc_name_ = "RemoteAutoPublisher"
+#     _svc_display_name_ = "Remote Auto Publisher"
+#
+#     def __init__(self, args):
+#         win32serviceutil.ServiceFramework.__init__(self, args)
+#         self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
+#         socket.setdefaulttimeout(60)
+#
+#     def SvcStop(self):
+#         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
+#         win32event.SetEvent(self.hWaitStop)
+#
+#     def SvcDoRun(self):
+#         servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
+#                               servicemanager.PYS_SERVICE_STARTED,
+#                               (self._svc_name_, ''))
+#         self.main()
+#
+#     def main(self):
+#         while 1:
+#             results = win32file.ReadDirectoryChangesW(
+#                 hDir,
+#                 1024,
+#                 True,
+#                 win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
+#                 win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
+#                 win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
+#                 win32con.FILE_NOTIFY_CHANGE_SIZE |
+#                 win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
+#                 win32con.FILE_NOTIFY_CHANGE_SECURITY,
+#                 None,
+#                 None
+#             )
+#             for action, file in results:
+#                 full_filename = os.path.join(path_to_watch, file)
+#                 print full_filename, ACTIONS.get(action, "Unknown")
+#                 logger.info(full_filename, ACTIONS.get(action, "Unknown"))
+#                 # This is where my internal processes get triggered.
+#                 # Needs a logger at the very least, although a window would be nice too.
+#                 if action == 1:
+#                     if os.path.isfile(full_filename):
+#                         logger.info('New file detected. %s' % full_filename)
+#                         # From here down, I should move this into a Queue.  Then the Queue can handle multiple files.
+#                         q.put(full_filename)
+#
+#
+# if __name__ == '__main__':
+#     win32serviceutil.HandleCommandLine(remoteAutoPublisher)
 
 # -------------------------------------------------------------------------------------------------------------
 # TESTING SETUP
 # -------------------------------------------------------------------------------------------------------------
-# while 1:
-#     results = win32file.ReadDirectoryChangesW(
-#         hDir,
-#         1024,
-#         True,
-#         win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-#         win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-#         win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-#         win32con.FILE_NOTIFY_CHANGE_SIZE |
-#         win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-#         win32con.FILE_NOTIFY_CHANGE_SECURITY,
-#         None,
-#         None
-#     )
-#     for action, file in results:
-#         full_filename = os.path.join(path_to_watch, file)
-#         print full_filename, ACTIONS.get(action, "Unknown")
-#         # This is where my internal processes get triggered.
-#         # Needs a logger at the very least, although a window would be nice too.
-#         if action == 1:
-#             if os.path.isfile(full_filename):
-#                 logger.info('New file detected. %s' % full_filename)
-#                 # From here, add to the queue and let it handle multiple files.
-#                 q.put(full_filename)
+while 1:
+    results = win32file.ReadDirectoryChangesW(
+        hDir,
+        1024,
+        True,
+        win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
+        win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
+        win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
+        win32con.FILE_NOTIFY_CHANGE_SIZE |
+        win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
+        win32con.FILE_NOTIFY_CHANGE_SECURITY,
+        None,
+        None
+    )
+    for action, file in results:
+        full_filename = os.path.join(path_to_watch, file)
+        print full_filename, ACTIONS.get(action, "Unknown")
+        # This is where my internal processes get triggered.
+        # Needs a logger at the very least, although a window would be nice too.
+        if action == 1:
+            if os.path.isfile(full_filename):
+                logger.info('New file detected. %s' % full_filename)
+                # From here, add to the queue and let it handle multiple files.
+                q.put(full_filename)
 
 
