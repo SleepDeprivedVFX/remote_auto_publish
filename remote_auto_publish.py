@@ -54,7 +54,7 @@ hDir = win32file.CreateFile(
 
 
 # Create Log file
-log_level = logging.DEBUG
+log_level = logging.INFO
 
 def _setFilePathOnLogger(logger, path):
     # Remove any previous handler.
@@ -200,10 +200,12 @@ def process_file(filename):
 
         # Get the path details from the filename
         path = os.path.dirname(filename)
+        logger.debug('PATH: %s' % path)
         # Filename without path
         base_file = os.path.basename(filename)
         # Relative path outside the dropbox structure
-        rel_path = path.strip(path_to_watch)
+        rel_path = path.split(path_to_watch)[1]
+        logger.debug('Relative Path: %s' % rel_path)
 
         f = os.path.splitext(base_file)
         # File extension
@@ -528,7 +530,7 @@ def resolve_template_path(template_key, template):
 
 
 def get_asset_details_from_path(project=None, proj_id=None, path=None):
-    logger.info('Searching for Assets...')
+    logger.info('Searching for Assets in %s...' % path)
     ass = {}
     if project and path:
         filters = [
@@ -544,7 +546,7 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
         if find_assets:
             logger.debug('Assets exist!  Finding our guy...')
             for asset in find_assets:
-                logger.debug('Testing %s...' % asset)
+                logger.debug('Testing %s IN %s...' % (asset['code'], path))
                 if asset['code'] in path:
                     ass['name'] = asset['code']
                     ass['id'] = asset['id']
@@ -610,95 +612,62 @@ def get_active_shotgun_projects():
 # ---------------------------------------------------------------------------------------------------------------------
 # Watch Folder
 # ---------------------------------------------------------------------------------------------------------------------
-while 1:
-    results = win32file.ReadDirectoryChangesW(
-        hDir,
-        1024,
-        True,
-        win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-        win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-        win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-        win32con.FILE_NOTIFY_CHANGE_SIZE |
-        win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-        win32con.FILE_NOTIFY_CHANGE_SECURITY,
-        None,
-        None
-    )
-    for action, file in results:
-        full_filename = os.path.join(path_to_watch, file)
-        print full_filename, ACTIONS.get(action, "Unknown")
-        # This is where my internal processes get triggered.
-        # Needs a logger at the very least, although a window would be nice too.
-        if action == 1:
-            if os.path.isfile(full_filename):
-                logger.info('New file detected. %s' % full_filename)
-                copying = True
-                size2 = -1
-                while copying:
-                    size = os.stat(full_filename).st_size
-                    if size == size2:
-                        time.sleep(2)
-                        process_file(full_filename)
-                        copying = False
-                    else:
-                        size2 = os.stat(full_filename).st_size
-                        time.sleep(2)
 
-# class remoteAutoPublisher(win32serviceutil.ServiceFramework):
-#     _svc_name_ = "RemoteAutoPublisher"
-#     _svc_display_name_ = "Remote Auto Publisher"
-#
-#     def __init__(self, args):
-#         win32serviceutil.ServiceFramework.__init__(self, args)
-#         self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
-#         socket.setdefaulttimeout(60)
-#
-#     def SvcStop(self):
-#         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
-#         win32event.SetEvent(self.hWaitStop)
-#
-#     def SvcDoRun(self):
-#         servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
-#                               servicemanager.PYS_SERVICE_STARTED,
-#                               (self._svc_name_, ''))
-#         self.main()
-#
-#     def main(self):
-#         while 1:
-#             results = win32file.ReadDirectoryChangesW(
-#                 hDir,
-#                 1024,
-#                 True,
-#                 win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-#                 win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-#                 win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-#                 win32con.FILE_NOTIFY_CHANGE_SIZE |
-#                 win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-#                 win32con.FILE_NOTIFY_CHANGE_SECURITY,
-#                 None,
-#                 None
-#             )
-#             for action, file in results:
-#                 full_filename = os.path.join(path_to_watch, file)
-#                 print full_filename, ACTIONS.get(action, "Unknown")
-#                 # This is where my internal processes get triggered.
-#                 # Needs a logger at the very least, although a window would be nice too.
-#                 if action == 1:
-#                     if os.path.isfile(full_filename):
-#                         logger.info('New file detected. %s' % full_filename)
-#                         copying = True
-#                         size2 = -1
-#                         while copying:
-#                             size = os.stat(full_filename).st_size
-#                             if size == size2:
-#                                 time.sleep(2)
-#                                 process_file(full_filename)
-#                                 copying = False
-#                             else:
-#                                 size2 = os.stat(full_filename).st_size
-#                                 time.sleep(2)
+class remoteAutoPublisher(win32serviceutil.ServiceFramework):
+    _svc_name_ = "RemoteAutoPublisher"
+    _svc_display_name_ = "Remote Auto Publisher"
+
+    def __init__(self, args):
+        win32serviceutil.ServiceFramework.__init__(self, args)
+        self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
+        socket.setdefaulttimeout(60)
+
+    def SvcStop(self):
+        self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
+        win32event.SetEvent(self.hWaitStop)
+
+    def SvcDoRun(self):
+        servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
+                              servicemanager.PYS_SERVICE_STARTED,
+                              (self._svc_name_, ''))
+        self.main()
+
+    def main(self):
+        while 1:
+            results = win32file.ReadDirectoryChangesW(
+                hDir,
+                1024,
+                True,
+                win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
+                win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
+                win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
+                win32con.FILE_NOTIFY_CHANGE_SIZE |
+                win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
+                win32con.FILE_NOTIFY_CHANGE_SECURITY,
+                None,
+                None
+            )
+            for action, file in results:
+                full_filename = os.path.join(path_to_watch, file)
+                print full_filename, ACTIONS.get(action, "Unknown")
+                # This is where my internal processes get triggered.
+                # Needs a logger at the very least, although a window would be nice too.
+                if action == 1:
+                    if os.path.isfile(full_filename):
+                        logger.info('New file detected. %s' % full_filename)
+                        copying = True
+                        size2 = -1
+                        while copying:
+                            size = os.stat(full_filename).st_size
+                            if size == size2:
+                                time.sleep(2)
+                                process_file(full_filename)
+                                copying = False
+                            else:
+                                size2 = os.stat(full_filename).st_size
+                                time.sleep(2)
 
 
-# if __name__ == '__main__':
-#     win32serviceutil.HandleCommandLine(remoteAutoPublisher)
+if __name__ == '__main__':
+    win32serviceutil.HandleCommandLine(remoteAutoPublisher)
 
