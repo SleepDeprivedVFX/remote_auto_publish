@@ -56,7 +56,7 @@ hDir = win32file.CreateFile(
 
 
 # Create Log file
-log_level = logging.INFO
+log_level = logging.DEBUG
 
 
 def _setFilePathOnLogger(logger, path):
@@ -65,7 +65,7 @@ def _setFilePathOnLogger(logger, path):
 
     # Add the file handler
     handler = logging.handlers.TimedRotatingFileHandler(path, 'midnight', backupCount=10)
-    handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
+    handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s:%(lineno)d"))
     logger.addHandler(handler)
 
 
@@ -176,6 +176,12 @@ templates = {
         'work_template': None,
         'publish_area': 'asset_texture_publish_area',
         'publish_template': 'asset_texture_publish'
+    },
+    'Send Today': {
+        'work_area': 'send_today',
+        'work_template': None,
+        'publish_area': None,
+        'publish_template': None
     }
 }
 task_name_format = '{Asset}_{task_name}_*{ext}'
@@ -266,7 +272,7 @@ def process_file(filename):
                         r = open(root_file, 'r')
                         logger.debug('root file opened.')
                     except Exception, e:
-                        logger.error('Files won\'t open!  FUCK! Here\'s what it\'s saying. %s', % e)
+                        logger.error('Files won\'t open!  FUCK! Here\'s what it\'s saying. %s' % e)
                     template = yaml.load(f)
                     logger.debug('template yaml created.')
                     roots = yaml.load(r)
@@ -390,16 +396,33 @@ def process_file(filename):
                                                                  version=version)
                         logger.debug('Publish Path: %s' % res_publish_path)
                         next_version = version + 1
-                        # try:
-                        logger.info('Attempting to publish...')
-                        publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
-                                           proj_id=proj_id, task_id=task, next_version=next_version)
-                        # except Exception, e:
-                        #     logger.error('Publish failed for the following! %s' % e)
+                        try:
+                            logger.info('Attempting to publish...')
+                            publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
+                                               proj_id=proj_id, task_id=task, next_version=next_version)
+                        except Exception, e:
+                            logger.error('Publish failed for the following! %s' % e)
 
                     elif ext.lower() in upload_types:
+                        # getting template settings
+                        send_today_template = template['paths']['send_today']
+                        project_root = roots['primary']['windows_path']
+                        root_template_path = os.path.join(project_root, proj_name)
+                        logger.debug('send_today_template: %s' % send_today_template)
+                        resolved_send_today_template = resolve_template_path('send_today', template)
+                        logger.debug('RESOLVED send_today_template: %s' % resolved_send_today_template)
+                        send_today_path = os.path.join(root_template_path, resolved_send_today_template)
+                        logger.debug('SEND TODAY PATH: %s' % send_today_path)
                         logger.info('Uploading for review %s' % file_name)
-                        upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id)
+                        send = upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id)
+                        logger.debug('SEND: %s' % send)
+                        if send:
+                            # Run the Send Today portion of our show.
+                            # This will need to get the send folder from the template, and make sure there is a date
+                            # folder.
+                            is_sent = send_today(filename=filename, path=send_today_path)
+                            logger.info('is_sent RETURNS: %s' % is_sent)
+
         logger.info('Finished processing the file')
         logger.info('=' * 100)
         q.task_done()
@@ -432,11 +455,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         file_to_publish.compose().save(render_path)
 
         # Upload a version
-        send = upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
-        if send:
-            # Run the Send Today portion of our show.
-            # This will need to get the send folder from the template, and make sure there is a date folder.
-            is_sent = send_today(filename=filename, template=template)
+        upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
 
 
 def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
@@ -464,8 +483,11 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
     return False
 
 
-def send_today(filename=None):
-    pass
+def send_today(filename=None, path=None):
+    logger.info('Getting the Send Today folder from the template...')
+    logger.debug('INCOMING FILENAME: %s' % filename)
+    logger.debug('INCOMING PATH: %s' % path)
+    return True
 
 
 def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj_id=None, task_id=None, next_version=1):
