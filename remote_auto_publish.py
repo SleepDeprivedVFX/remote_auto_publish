@@ -260,10 +260,13 @@ def process_file(filename):
                     logger.debug('root_file returns: %s' % root_file)
                     template_file = template_file.replace('/', '\\')
                     root_file = root_file.replace('/', '\\')
-                    f = open(template_file, 'r')
-                    logger.debug('template file opened.')
-                    r = open(root_file, 'r')
-                    logger.debug('root file opened.')
+                    try:
+                        f = open(template_file, 'r')
+                        logger.debug('template file opened.')
+                        r = open(root_file, 'r')
+                        logger.debug('root file opened.')
+                    except Exception, e:
+                        logger.error('Files won\'t open!  FUCK! Here\'s what it\'s saying. %s', % e)
                     template = yaml.load(f)
                     logger.debug('template yaml created.')
                     roots = yaml.load(r)
@@ -429,7 +432,11 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         file_to_publish.compose().save(render_path)
 
         # Upload a version
-        upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
+        send = upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
+        if send:
+            # Run the Send Today portion of our show.
+            # This will need to get the send folder from the template, and make sure there is a date folder.
+            is_sent = send_today(filename=filename, template=template)
 
 
 def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
@@ -444,13 +451,21 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
         'entity': {'type': 'Asset', 'id': asset_id},
         'sg_task': {'type': 'Task', 'id': task_id}
     }
+    try:
+        new_version = sg.create('Version', version_data)
+        logger.debug('new_version RETURNS: %s' % new_version)
+        version_id = new_version['id']
+        sg.upload_thumbnail('Version', version_id, file_path)
+        sg.upload('Version', version_id, file_path, field_name='sg_uploaded_movie', display_name=file_name)
+        logger.info('New Version Created!')
+        return True
+    except Exception, e:
+        logger.error('The new version could not be created: %s' % e)
+    return False
 
-    new_version = sg.create('Version', version_data)
-    logger.debug('new_version RETURNS: %s' % new_version)
-    version_id = new_version['id']
-    sg.upload_thumbnail('Version', version_id, file_path)
-    sg.upload('Version', version_id, file_path, field_name='sg_uploaded_movie', display_name=file_name)
-    logger.info('New Version Created!')
+
+def send_today(filename=None):
+    pass
 
 
 def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj_id=None, task_id=None, next_version=1):
@@ -572,7 +587,7 @@ def resolve_template_path(template_key, template):
     if template_key and template:
         try:
             read = template['paths'][template_key]['definition']
-        except:
+        except Exception:
             read = template['paths'][template_key]
         read = read.replace('\\', '/')
         split_read = read.split('/')
