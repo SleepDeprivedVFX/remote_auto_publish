@@ -43,7 +43,7 @@ ACTIONS = {
 FILE_LIST_DIRECTORY = 0x0001
 
 # Dropbox Folder
-path_to_watch = "C:/Users/events/Dropbox/ASC_REMOTE"
+path_to_watch = "C:/Users/sleep/OneDrive/Documents/Scripts/Area51"
 hDir = win32file.CreateFile(
     path_to_watch,
     FILE_LIST_DIRECTORY,
@@ -87,7 +87,7 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
 
 
 logDate = str(time.strftime('%m%d%y%H%M%S'))
-logfile = "C:/shotgun/remote_auto_publish/logs/remoteAutoPublish.log"
+logfile = "c:/users/sleep/onedrive/documents/scripts/logs/remote_auto_publish.log"
 logging.basicConfig(level=log_level, filename=logfile)
 logger = logging.getLogger('remoteAutoPublish')
 _setFilePathOnLogger(logger, logfile)
