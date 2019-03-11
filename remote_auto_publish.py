@@ -62,7 +62,7 @@ log_level = logging.DEBUG
 
 def _setFilePathOnLogger(logger, path):
     # Remove any previous handler.
-    _removeHandlersFromLogger(logger, logging.handlers.TimedRotatingFileHandler)
+    _removeHandlersFromLogger(logger, None)
 
     # Add the file handler
     handler = logging.handlers.TimedRotatingFileHandler(path, 'midnight', backupCount=10)
@@ -90,8 +90,13 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
 # logDate = str(time.strftime('%m%d%y%H%M%S'))
 logfile = "c:/users/sleep/onedrive/documents/scripts/logs/remote_auto_publish.log"
 logging.basicConfig(level=log_level, filename=logfile)
-logger = logging.getLogger()
-_setFilePathOnLogger(logger, logfile)
+
+# handler = logging.handlers.TimedRotatingFileHandler(logfile, 'midnight', backupCount=10)
+# handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s:%(lineno)d"))
+logger = logging.getLogger('remote_auto_publish')
+logger.addHandler(logging.handlers.TimedRotatingFileHandler(logfile, 'midnight'))
+# logger.addHandler(handler)
+# _setFilePathOnLogger(logger, logfile)
 
 logger.info('Starting the Remote Auto Publisher...')
 
