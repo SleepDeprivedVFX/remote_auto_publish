@@ -24,6 +24,7 @@ import psd_tools as psd
 import shotgun_api3
 import queue
 import threading
+from datetime import datetime
 
 # Build Shotgun Connection
 sg_url = 'https://asc.shotgunstudio.com'
@@ -86,10 +87,10 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
             logger.removeHandler(handler)
 
 
-logDate = str(time.strftime('%m%d%y%H%M%S'))
+# logDate = str(time.strftime('%m%d%y%H%M%S'))
 logfile = "c:/users/sleep/onedrive/documents/scripts/logs/remote_auto_publish.log"
 logging.basicConfig(level=log_level, filename=logfile)
-logger = logging.getLogger('remoteAutoPublish')
+logger = logging.getLogger()
 _setFilePathOnLogger(logger, logfile)
 
 logger.info('Starting the Remote Auto Publisher...')
@@ -420,7 +421,8 @@ def process_file(filename):
                             # Run the Send Today portion of our show.
                             # This will need to get the send folder from the template, and make sure there is a date
                             # folder.
-                            is_sent = send_today(filename=filename, path=send_today_path)
+                            is_sent = send_today(filename=filename, path=send_today_path, proj_id=proj_id,
+                                                 asset=find_asset)
                             logger.info('is_sent RETURNS: %s' % is_sent)
 
         logger.info('Finished processing the file')
@@ -483,11 +485,249 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
     return False
 
 
-def send_today(filename=None, path=None):
+def send_today(filename=None, path=None, proj_id=None, asset={}):
     logger.info('Getting the Send Today folder from the template...')
     logger.debug('INCOMING FILENAME: %s' % filename)
     logger.debug('INCOMING PATH: %s' % path)
-    return True
+
+    # Find Send Today code in Shotgun; Else use the default.
+    logger.debug('Collecting the Client Naming Convention...')
+    filters = [
+        ['id', 'is', proj_id]
+    ]
+    fields = [
+        'sg_project_naming_convention'
+    ]
+    get_fields = sg.find_one('Project', filters, fields)
+    naming_convention = get_fields['sg_project_naming_convention']
+    logger.debug('NAMING CONVENTION: %s' % naming_convention)
+
+    # set dats
+    date_test = str(datetime.date(datetime.now()))
+    today_path = os.path.join(path, date_test)
+    today_path = os.path.join(today_path, 'REMOTE')
+    if not os.path.exists(today_path):
+        os.makedirs(today_path)
+
+    # Compile the naming convention.
+    # Run Create Client Name here
+    client_name = create_client_name(path=path, filename=filename, proj_id=proj_id, asset=asset)
+    logger.debug('CLIENT NAME: %s' % client_name)
+
+
+def get_sg_translator(sg_task=None, fields=[]):
+    """
+    The T-Sheets Translator requires a special Shotgun page to be created.
+    The fields in the database are as follows:
+    Database Name:  code:                (str) A casual name of the database.
+    sgtask:         sg_sgtask:          (str-unique) The shotgun task. Specifically, '.main' namespaces are removed.
+    tstask:         sg_tstask:          (str) The T-Sheets name for a task
+    ts_short_code:  sg_ts_short_code:   (str) The ironically long name for a 3 letter code.
+    task_depts:     sg_task_grp:        (multi-entity) Returns the groups that are associated with tasks
+    people_override:sg_people_override: (multi-entity) Returns individuals assigned to specific tasks
+
+     :param:        sg_task:            (str) Shotgun task name from context
+    :return:        translation:        (dict) {
+                                                task: sg_tstask
+                                                short: sg_ts_short_code
+                                                dept: sg_task_depts
+                                                people: sg_people_override
+                                                }
+    """
+    translation = {}
+    if sg_task:
+        task_name = sg_task.split('.')[0]
+
+        task_name = task_name.lower()
+
+        filters = [
+            ['sg_sgtask', 'is', task_name]
+        ]
+        translation_data = sg.find_one('CustomNonProjectEntity07', filters, fields=fields)
+
+        if translation_data:
+            task = translation_data['sg_tstask']
+            short = translation_data['sg_ts_short_code']
+            group = translation_data['sg_task_grp']
+            people = translation_data['sg_people_override']
+            delivery_code = translation_data['sg_delivery_code']
+            translation = {'task': task, 'short': short, 'group': group, 'people': people,
+                           'delivery_code': delivery_code}
+        else:
+            translation = {'task': 'General', 'short': 'gnrl', 'group': None, 'people': None, 'delivery_code': None}
+    return translation
+
+
+def create_client_name(path=None, filename=None, proj_id=None, asset={}, version=None):
+    new_name = None
+    document = filename
+    try:
+        # Start Send Today capture
+        custom_tags = {
+            "{Task}": {
+                "type": "translator",
+                "fields": [
+                    "sg_sgtask",
+                    "sg_tstask",
+                    "sg_ts_short_code",
+                    "sg_task_grp",
+                    "sg_people_override",
+                    "sg_delivery_code"
+                ],
+                "correlation": "{task_name}"
+            },
+            "{Stage}": {
+                "type": "property",
+                "fields": [
+                    "stage"
+                ],
+                "correlation": None
+            },
+            "{code}": {
+                "type": "project_info",
+                "fields": [],
+                "correlation": None
+            },
+            "{YYYYMMDD}": {
+                "type": "date",
+                "fields": [],
+                "correlation": "{timestamp}"
+            },
+            "{YYMMDD}": {
+                "type": "date",
+                "fields": [],
+                "correlation": "{timestamp}"
+            },
+            "{YYYYDDMM}": {
+                "type": "date",
+                "fields": [],
+                "correlation": "{timestamp}"
+            },
+            "{YYDDMM}": {
+                "type": "date",
+                "fields": [],
+                "correlation": "{timestamp}"
+            },
+            "{MMDDYY}": {
+                "type": "date",
+                "fields": [],
+                "correlation": "{timestamp}"
+            },
+            "{MMDDYYYY}": {
+                "type": "date",
+                "fields": [],
+                "correlation": "{timestamp}"
+            },
+            "{DDMMYY}": {
+                "type": "date",
+                "fields": [],
+                "correlation": "{timestamp}"
+            },
+            "{DDMMYYYY}": {
+                "type": "date",
+                "fields": [],
+                "correlation": "{timestamp}"
+            },
+        }
+        # Find Send Today code in Shotgun; Else use the default.
+        filters = [
+            ['id', 'is', proj_id]
+        ]
+        fields = [
+            'sg_project_naming_convention'
+        ]
+        get_fields = sg.find_one('Project', filters, fields)
+        logger.info('PROJEcT DETAILS: %s' % get_fields)
+        naming_convention = get_fields['sg_project_naming_convention']
+        logger.info('NAMING CONVENTION: %s' % naming_convention)
+        # Get the fields from the system.
+        work_fields = {'version': version, 'Asset': asset['name'], 'sg_asset_type': asset['type']}
+        # I might need to find the work path and search for existing version.  Can probably steal that routine from
+        # above!
+
+        translations = {}
+        # Read the naming convention:
+        if naming_convention:
+            existing_tags = re.findall(r'{\w*}', naming_convention)
+            if ':' in naming_convention:
+                nc = naming_convention.split(':')
+                naming_convention = nc[0]
+                padding = nc[1]
+                logger.info('PADDING: %s' % padding)
+                if 'version' in work_fields.keys():
+                    # Convert numeric version to padded string
+                    current_version = work_fields['version']
+                    del work_fields['version']
+                    new_num = '%s' % current_version
+                    new_num = new_num.zfill(int(padding))
+                    logger.info('NEW NUM: %s' % new_num)
+                    work_fields['version'] = new_num
+            logger.info('FOUND TAGS: %s' % existing_tags)
+            if existing_tags:
+                for tag in existing_tags:
+                    if tag in custom_tags:
+                        tag_data = custom_tags[tag]
+                        tag_type = tag_data['type']
+                        tag_fields = tag_data['fields']
+                        correlation = tag_data['correlation']
+                        logger.info('Tag Type: %s' % tag_type)
+                        logger.info('Tag Fields: %s' % tag_fields)
+                        logger.info('Correlation: %s' % correlation)
+                        # date, project_info, property, translator
+                        if tag_type == 'translator':
+                            translation = get_sg_translator(sg_task='design.remote', fields=tag_fields)
+                            logger.info('TRANSLATION: %s' % translation)
+                            base_tag = tag.strip('{')
+                            base_tag = base_tag.strip('}')
+                            translations[base_tag] = translation['delivery_code']
+                        elif tag_type == 'project_info':
+                            base_tag = tag.strip('{')
+                            base_tag = base_tag.strip('}')
+                            filters = [
+                                ['id', 'is', proj_id]
+                            ]
+                            fields = [
+                                base_tag
+                            ]
+                            get_fields = sg.find_one('Project', filters, fields)
+                            val = get_fields[base_tag]
+                            logger.info('Project Info Tag: %s' % val)
+                            translations[base_tag] = val
+                        elif tag_type == 'date':
+                            base_tag = tag.strip('{')
+                            base_tag = base_tag.strip('}')
+                            get_year = re.findall('Y*', base_tag)
+                            year = [x for x in get_year if x][0]
+                            year_count = len(year)
+                            if year_count == 4:
+                                year_tag = '%Y'
+                            else:
+                                year_tag = '%y'
+                            logger.info('YEAR: %s' % year)
+                            logger.info('YEAR_TAG: %s' % str(year_tag))
+                            date_tag = base_tag.replace(str(year), str(year_tag))
+                            date_tag = date_tag.replace('MM', '%m')
+                            date_tag = date_tag.replace('DD', '%d')
+                            date = datetime.now().strftime(date_tag)
+                            logger.info('DATE: %s' % date)
+                            translations[base_tag] = date
+                        elif tag_type == 'property':
+                            pass
+            logger.info('TRANSCODES: %s' % translations)
+        if translations:
+            work_fields.update(translations)
+        new_name = naming_convention.format(**work_fields)
+        logger.info('NEW_NAME: %s' % new_name)
+        # item.display_name = new_name
+    except Exception, e:
+        logger.error('It looks like the Project Naming Convention is incorrectly set. See the Admins. %s' % e)
+        return False
+    return new_name
+
+
+# This is to figure out where a random image goes... Although... Don't I already know?  I had to post the version.
+def get_template_path():
+    pass
 
 
 def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj_id=None, task_id=None, next_version=1):
@@ -759,7 +999,7 @@ t.start()
 #         servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
 #                               servicemanager.PYS_SERVICE_STARTED,
 #                               (self._svc_name_, ''))
-#         self.main()
+#         main()
 #
 #     def main(self):
 #         while 1:
