@@ -496,6 +496,9 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
     logger.debug('INCOMING FILENAME: %s' % filename)
     logger.debug('INCOMING PATH: %s' % path)
 
+    # Get the file extension
+    ext = os.path.splitext(filename)[-1]
+
     # Find Send Today code in Shotgun; Else use the default.
     logger.debug('Collecting the Client Naming Convention...')
     filters = [
@@ -519,6 +522,20 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
     # Run Create Client Name here
     client_name = create_client_name(path=path, filename=filename, proj_id=proj_id, asset=asset)
     logger.debug('CLIENT NAME: %s' % client_name)
+    if client_name:
+        client_name += ext
+        send_today_path = os.path.join(today_path, client_name)
+        if os.path.exists(send_today_path):
+            # Create new version number
+            current_version = version_tool(send_today_path)
+            new_version = version_tool(send_today_path, version_up=True)
+            send_today_path = send_today_path.replace(current_version, new_version)
+        try:
+            shutil.copy2(filename, send_today_path)
+        except Exception, e:
+            logger.error('Can not copy the file! %s' % e)
+    else:
+        logger.error('The client naming convention could not be rectified!')
 
 
 def get_sg_translator(sg_task=None, fields=[]):
@@ -564,7 +581,34 @@ def get_sg_translator(sg_task=None, fields=[]):
     return translation
 
 
+def version_tool(path=None, version_up=False, padding=3):
+    logger.debug('Version Tool Activated!!')
+    new_num = '001'
+    if path:
+        logger.debug('Path is discovered: %s' % path)
+        try:
+            find_file_version = re.findall(r'(v\d+|V\d+)', path)[-1]
+        except:
+            find_file_version = re.findall(r'(v\d+|V\d+)', path)
+            logger.debug('BAD INDEX')
+        logger.debug('find_file_version: %s' % find_file_version)
+        if find_file_version:
+            new_num = int(find_file_version.lower().strip('v'))
+            if version_up:
+                new_num += 1
+                logger.debug('version up: %s' % new_num)
+            logger.debug('new_version: %s' % new_num)
+            new_num = str(new_num).zfill(padding)
+            logger.info('NEW_NUM: %s' % new_num)
+        else:
+            new_num = '001'
+    logger.debug('Returning from Version Tools: %s' % new_num)
+    return new_num
+
+
 def create_client_name(path=None, filename=None, proj_id=None, asset={}, version=None):
+    logger.debug('create_client_name PATH: %s' % path)
+    logger.debug('create_client_name FILENAME: %s' % filename)
     new_name = None
     document = filename
     try:
@@ -670,18 +714,13 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
                     logger.info('NEW NUM: %s' % new_num)
                     work_fields['version'] = new_num
                 if work_fields['version'] == 'None':
+                    logger.warning('None detected for the version!  Attempting to correct...')
+                    del work_fields['version']
                     # Attempt to get the version from the file.  Else: 001
-                    find_file_version = re.findall(r'(v\d+|V\d+)', document)[-1]
-                    logger.debug('find_file_version: %s' % find_file_version)
-                    if find_file_version:
-                        del work_fields['version']
-                        new_num = find_file_version.lower().strip('v')
-                        logger.debug('new_version: %s' % new_num)
-                        new_num = str(new_num).zfill(int(padding))
-                        logger.info('NEW_NUM: %s' % new_num)
-                        work_fields['version'] = new_num
-                    else:
-                        new_num = '001'
+                    new_num = version_tool(path=path, padding=padding)
+                    logger.info('Corrected Version Number: %s' % new_num)
+                    logger.debug('Replacing version in work fields...')
+                    work_fields['version'] = new_num
             logger.info('FOUND TAGS: %s' % existing_tags)
             if existing_tags:
                 for tag in existing_tags:
@@ -744,11 +783,6 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
         logger.error('It looks like the Project Naming Convention is incorrectly set. See the Admins. %s' % e)
         return False
     return new_name
-
-
-# This is to figure out where a random image goes... Although... Don't I already know?  I had to post the version.
-def get_template_path():
-    pass
 
 
 def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj_id=None, task_id=None, next_version=1):
