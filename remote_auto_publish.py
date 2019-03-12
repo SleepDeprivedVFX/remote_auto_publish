@@ -86,7 +86,7 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
             logger.removeHandler(handler)
 
 
-logDate = str(time.strftime('%m%d%y%H%M%S'))
+# logDate = str(time.strftime('%m%d%y%H%M%S'))
 logfile = "C:/shotgun/remote_auto_publish/logs/remoteAutoPublish.log"
 logging.basicConfig(level=log_level, filename=logfile)
 logger = logging.getLogger('remoteAutoPublish')
@@ -387,12 +387,12 @@ def process_file(filename):
                                                                  version=version)
                         logger.debug('Publish Path: %s' % res_publish_path)
                         next_version = version + 1
-                        # try:
-                        logger.info('Attempting to publish...')
-                        publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
-                                           proj_id=proj_id, task_id=task, next_version=next_version)
-                        # except Exception, e:
-                        #     logger.error('Publish failed for the following! %s' % e)
+                        try:
+                            logger.info('Attempting to publish...')
+                            publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
+                                               proj_id=proj_id, task_id=task, next_version=next_version)
+                        except Exception, e:
+                            logger.error('Publish failed for the following! %s' % e)
 
                     elif ext.lower() in upload_types:
                         logger.info('Uploading for review %s' % file_name)
@@ -425,8 +425,11 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
 
         # Process the image.
         logger.info('Processing Photoshop file...')
-        file_to_publish = psd.PSDImage.open(filename)
-        file_to_publish.compose().save(render_path)
+        try:
+            file_to_publish = psd.PSDImage.open(filename)
+            file_to_publish.compose().save(render_path)
+        except Exception, e:
+            logger.error('Photoshop File could not generate an image! %s' % e)
 
         # Upload a version
         upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
