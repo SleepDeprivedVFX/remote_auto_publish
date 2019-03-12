@@ -93,6 +93,7 @@ logging.basicConfig(level=log_level, filename=logfile)
 
 # handler = logging.handlers.TimedRotatingFileHandler(logfile, 'midnight', backupCount=10)
 # handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s:%(lineno)d"))
+# logger - logging
 logger = logging.getLogger('remote_auto_publish')
 logger.addHandler(logging.handlers.TimedRotatingFileHandler(logfile, 'midnight'))
 # logger.addHandler(handler)
@@ -655,6 +656,7 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
         if naming_convention:
             existing_tags = re.findall(r'{\w*}', naming_convention)
             if ':' in naming_convention:
+                # TODO: I probably need to write an ELSE for this IF
                 nc = naming_convention.split(':')
                 naming_convention = nc[0]
                 padding = nc[1]
@@ -667,6 +669,19 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
                     new_num = new_num.zfill(int(padding))
                     logger.info('NEW NUM: %s' % new_num)
                     work_fields['version'] = new_num
+                if work_fields['version'] == 'None':
+                    # Attempt to get the version from the file.  Else: 001
+                    find_file_version = re.findall(r'(v\d+|V\d+)', document)[-1]
+                    logger.debug('find_file_version: %s' % find_file_version)
+                    if find_file_version:
+                        del work_fields['version']
+                        new_num = find_file_version.lower().strip('v')
+                        logger.debug('new_version: %s' % new_num)
+                        new_num = str(new_num).zfill(int(padding))
+                        logger.info('NEW_NUM: %s' % new_num)
+                        work_fields['version'] = new_num
+                    else:
+                        new_num = '001'
             logger.info('FOUND TAGS: %s' % existing_tags)
             if existing_tags:
                 for tag in existing_tags:
@@ -721,6 +736,7 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
             logger.info('TRANSCODES: %s' % translations)
         if translations:
             work_fields.update(translations)
+            logger.debug('work_fields: %s' % work_fields)
         new_name = naming_convention.format(**work_fields)
         logger.info('NEW_NAME: %s' % new_name)
         # item.display_name = new_name
