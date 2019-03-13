@@ -56,7 +56,7 @@ hDir = win32file.CreateFile(
 
 
 # Create Log file
-log_level = logging.DEBUG
+log_level = logging.INFO
 
 
 def _setFilePathOnLogger(logger, path):
