@@ -1026,3 +1026,87 @@ INFO:remoteAutoPublish:Versioning up the file...
 INFO:remoteAutoPublish:Version up completed!
 INFO:remoteAutoPublish:Finished processing the file
 INFO:remoteAutoPublish:====================================================================================================
+Starting the Remote Auto Publisher...
+INFO:remote_auto_publish:Starting the Remote Auto Publisher...
+New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\spider.jpg
+INFO:remote_auto_publish:New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\spider.jpg
+New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\spider.jpg.crdownload
+INFO:remote_auto_publish:New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\spider.jpg.crdownload
+Starting the Remote Auto Publisher...
+INFO:remote_auto_publish:Starting the Remote Auto Publisher...
+New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\spider.jpg
+INFO:remote_auto_publish:New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\spider.jpg
+------------------------------------------------------------------------------------------------------------------------
+INFO:remote_auto_publish:------------------------------------------------------------------------------------------------------------------------
+NEW FILE PROCESSING...
+INFO:remote_auto_publish:NEW FILE PROCESSING...
+Attempting to get project details from the path...
+INFO:remote_auto_publish:Attempting to get project details from the path...
+Searching for Assets in \stresstest\Spider...
+INFO:remote_auto_publish:Searching for Assets in \stresstest\Spider...
+Spider found in \stresstest\Spider
+INFO:remote_auto_publish:Spider found in \stresstest\Spider
+The Asset is found in the system! 2471: Spider
+INFO:remote_auto_publish:The Asset is found in the system! 2471: Spider
+Searching for remote task...
+INFO:remote_auto_publish:Searching for remote task...
+Task found!
+INFO:remote_auto_publish:Task found!
+Uploading for review spider
+INFO:remote_auto_publish:Uploading for review spider
+New Version Created!
+INFO:remote_auto_publish:New Version Created!
+Getting the Send Today folder from the template...
+INFO:remote_auto_publish:Getting the Send Today folder from the template...
+PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+INFO:remote_auto_publish:PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+INFO:remote_auto_publish:NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+PADDING: 3
+INFO:remote_auto_publish:PADDING: 3
+NEW NUM: None
+INFO:remote_auto_publish:NEW NUM: None
+None detected for the version!  Attempting to correct...
+WARNING:remote_auto_publish:None detected for the version!  Attempting to correct...
+Corrected Version Number: 001
+INFO:remote_auto_publish:Corrected Version Number: 001
+FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+INFO:remote_auto_publish:FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+Tag Type: project_info
+INFO:remote_auto_publish:Tag Type: project_info
+Tag Fields: []
+INFO:remote_auto_publish:Tag Fields: []
+Correlation: None
+INFO:remote_auto_publish:Correlation: None
+Project Info Tag: STTS
+INFO:remote_auto_publish:Project Info Tag: STTS
+Tag Type: translator
+INFO:remote_auto_publish:Tag Type: translator
+Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+INFO:remote_auto_publish:Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+Correlation: {task_name}
+INFO:remote_auto_publish:Correlation: {task_name}
+TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+INFO:remote_auto_publish:TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+Tag Type: date
+INFO:remote_auto_publish:Tag Type: date
+Tag Fields: []
+INFO:remote_auto_publish:Tag Fields: []
+Correlation: {timestamp}
+INFO:remote_auto_publish:Correlation: {timestamp}
+YEAR: YYYY
+INFO:remote_auto_publish:YEAR: YYYY
+YEAR_TAG: %Y
+INFO:remote_auto_publish:YEAR_TAG: %Y
+DATE: 20190312
+INFO:remote_auto_publish:DATE: 20190312
+TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190312'}
+INFO:remote_auto_publish:TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190312'}
+NEW_NAME: ASC_STTS_Spider_dsn_v001_20190312
+INFO:remote_auto_publish:NEW_NAME: ASC_STTS_Spider_dsn_v001_20190312
+is_sent RETURNS: True
+INFO:remote_auto_publish:is_sent RETURNS: True
+Finished processing the file
+INFO:remote_auto_publish:Finished processing the file
+====================================================================================================
+INFO:remote_auto_publish:====================================================================================================
