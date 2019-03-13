@@ -14,7 +14,6 @@ import win32service
 import win32event
 import servicemanager
 import socket
-import platform
 import time
 import logging
 import logging.handlers
@@ -57,7 +56,7 @@ hDir = win32file.CreateFile(
 
 
 # Create Log file
-log_level = logging.INFO
+log_level = logging.DEBUG
 
 
 def _setFilePathOnLogger(logger, path):
@@ -66,7 +65,7 @@ def _setFilePathOnLogger(logger, path):
 
     # Add the file handler
     handler = logging.handlers.TimedRotatingFileHandler(path, 'midnight', backupCount=10)
-    handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s:%(lineno)d"))
+    handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s:%(lineno)d - %(message)s"))
     logger.addHandler(handler)
 
 
@@ -86,24 +85,29 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
         if handlerTypes is None or isinstance(handler, handlerTypes):
             logger.removeHandler(handler)
 
-
-# logDate = str(time.strftime('%m%d%y%H%M%S'))
 logfile = "C:/shotgun/remote_auto_publish/logs/remoteAutoPublish.log"
-logging.basicConfig(level=log_level, filename=logfile)
 
-# handler = logging.handlers.TimedRotatingFileHandler(logfile, 'midnight', backupCount=10)
-# handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s:%(lineno)d"))
-# logger - logging
 logger = logging.getLogger('remote_auto_publish')
-logger.addHandler(logging.handlers.TimedRotatingFileHandler(logfile, 'midnight'))
-# logger.addHandler(handler)
-# _setFilePathOnLogger(logger, logfile)
+logger.setLevel(log_level)
+_setFilePathOnLogger(logger, logfile)
 
 logger.info('Starting the Remote Auto Publisher...')
 
 # --------------------------------------------------------------------------------------------------------------
 # Global Variables
 # --------------------------------------------------------------------------------------------------------------
+# Because of the simplistic nature of this tool, I am currently limiting its use to one task: design.main.
+# The reason for this is simple: having task folders as subfolders of assets will make remote use cumbersome for
+# designers who struggle with anything more complicated than a doorknob. (The same people who could not set the clock
+# on their VCRs and just let them blink endlessly.)  The other reason is that, currently, only designers will be using
+# this, and there are no immediate plans to change that.  That being said, there is some minor architecture in place
+# to handle a more complex, task-based system if one is ever needed.
+# Thus, the one task_name:
+task_name = 'design.remote'
+task_step = 23
+relative_config_path = '/config/core'
+task_name_format = '{Asset}_{task_name}_*{ext}'
+
 publish_types = {
     '.psd': 'Photoshop Image',
     '.nk': 'Nuke Script',
@@ -191,23 +195,12 @@ templates = {
         'publish_template': None
     }
 }
-task_name_format = '{Asset}_{task_name}_*{ext}'
-
-# Because of the simplistic nature of this tool, I am currently limiting its use to one task.
-# The reason for this is simple: having task folders as subfolders of assets will make remote use cumbersome for
-# designers who struggle with anything more complicated than a doorknob. (The same people who could not set the clock
-# on their VCRs and just let them blink endlessly.)  The other reason is that, currently, only designers will be using
-# this, and there are no immediate plans to change that.  That being said, there is some minor architecture in place
-# to handle a more complex, task-based system if one is ever needed.
-# Thus, the one task_name:
-task_name = 'design.remote'
-task_step = 23
-relative_config_path = '/config/core'
 
 
 # -----------------------------------------------------------------------------------------------------------------
 # Processor Queue
 # -----------------------------------------------------------------------------------------------------------------
+logger.debug('Creating the Queue...')
 q = queue.Queue()
 
 
@@ -215,6 +208,16 @@ q = queue.Queue()
 # Start Processing...
 # -----------------------------------------------------------------------------------------------------------------
 def process_file(filename=None, template=None, roots=None, proj_id=None, proj_name=None):
+    """
+    This processes the new file and decides if it is a simple image, or a more complex file and then figures out what
+     it should do with it from there.
+    :param filename:
+    :param template:
+    :param roots:
+    :param proj_id:
+    :param proj_name:
+    :return:
+    """
     if filename:
         logger.info('-' * 120)
         logger.info('NEW FILE PROCESSING...')
@@ -235,11 +238,6 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
         # Filename without path or extension.
         file_name = f[0]
 
-        # Look for project details based on names in the relative path
-        ''' This may get pushed to the file_queue() function '''
-        # project_details = get_details_from_path(rel_path)
-        # proj_name = project_details['name']
-        # proj_id = project_details['id']
         logger.debug('Project Details returns: project: %s ID: %s' % (proj_name, proj_id))
 
         # If the project is found, continue processing.
@@ -262,30 +260,6 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                 find_config = get_configuration(proj_id)
                 logger.debug('Configuration found: %s' % find_config)
 
-                # If a Shotgun configuration is found, continue processing.
-                # if find_config:
-                #     logger.debug('find_config passes.')
-                #     # The the template.yml file and load it into a yaml object
-                #     templates_path = find_config + relative_config_path
-                #     logger.debug('templates_path: %s' % templates_path)
-                #     template_file = os.path.join(templates_path, 'templates.yml')
-                #     logger.debug('template file returns: %s' % template_file)
-                #     root_file = os.path.join(templates_path, 'roots.yml')
-                #     logger.debug('root_file returns: %s' % root_file)
-                #     template_file = template_file.replace('/', '\\')
-                #     root_file = root_file.replace('/', '\\')
-                #     try:
-                #         f = open(template_file, 'r')
-                #         logger.debug('template file opened.')
-                #         r = open(root_file, 'r')
-                #         logger.debug('root file opened.')
-                #     except Exception, e:
-                #         logger.error('Files won\'t open!  FUCK! Here\'s what it\'s saying. %s' % e)
-                #     template = yaml.load(f)
-                #     logger.debug('template yaml created.')
-                #     roots = yaml.load(r)
-                #     logger.debug('root yaml created.')
-                # Look for publish types from the extension
                 if ext in publish_types:
                     # Find out from the ext which configuration to get from the template.
                     logger.debug('This is a publish level file...')
@@ -430,16 +404,27 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                         # folder.
                         is_sent = send_today(filename=filename, path=send_today_path, proj_id=proj_id,
                                              asset=find_asset)
-                        logger.info('is_sent RETURNS: %s' % is_sent)
+                        logger.debug('is_sent RETURNS: %s' % is_sent)
 
         logger.info('Finished processing the file')
         logger.info('=' * 100)
         q.task_done()
-        print 'Finished processing the file'
 
 
-def process_Photoshop_image(template=None, filename=None, task=None, pub_area=None, type=None, proj_id=None, asset=None,
-                            root=None):
+def process_Photoshop_image(template=None, filename=None, task=None, pub_area=None, f_type=None, proj_id=None,
+                            asset=None, root=None):
+    """
+    This tool processes photoshop files in order to export out an image for uploading.
+    :param template:
+    :param filename:
+    :param task:
+    :param pub_area:
+    :param f_type:
+    :param proj_id:
+    :param asset:
+    :param root:
+    :return:
+    """
     if filename:
         # Find where to save the file from the template
         res_template_path = resolve_template_path(pub_area, template)
@@ -455,7 +440,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         logger.debug('Render filename: %s' % root_filename)
 
         # Create the export path:
-        render = '%s.%s' % (root_filename, type)
+        render = '%s.%s' % (root_filename, f_type)
         render_path = os.path.join(full_path, render)
 
         # Process the image.
@@ -471,6 +456,14 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
 
 
 def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
+    """
+    A simple tool to create Shotgun versions and upload them
+    :param filename:
+    :param asset_id:
+    :param task_id:
+    :param proj_id:
+    :return:
+    """
     file_name = os.path.basename(filename)
     file_path = filename
     description = 'A remote file was detected in Dropbox and this version was created from it.'
@@ -496,6 +489,14 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
 
 
 def send_today(filename=None, path=None, proj_id=None, asset={}):
+    """
+
+    :param filename: (str) Name of the file being sent
+    :param path: (str) relative path for getting send details
+    :param proj_id: (int) Project ID number
+    :param asset: (dict) Asset details, name, id num...
+    :return: (Bool) True or false.
+    """
     logger.info('Getting the Send Today folder from the template...')
     logger.debug('INCOMING FILENAME: %s' % filename)
     logger.debug('INCOMING PATH: %s' % path)
@@ -589,6 +590,13 @@ def get_sg_translator(sg_task=None, fields=[]):
 
 
 def version_tool(path=None, version_up=False, padding=3):
+    """
+    This tool finds and creates padded version numbers
+    :param path: (str) relative path to file
+    :param version_up: (bool) Setting for running a version up
+    :param padding: (int) Number padding
+    :return: new_num (str) a padded string version number.
+    """
     logger.debug('Version Tool Activated!!')
     new_num = '001'
     if path:
@@ -614,6 +622,15 @@ def version_tool(path=None, version_up=False, padding=3):
 
 
 def create_client_name(path=None, filename=None, proj_id=None, asset={}, version=None):
+    """
+    Parses our tagged client file formats and creates proper names from the available data.
+    :param path: (str) path to the file
+    :param filename: (str) The coded filename pattern
+    :param proj_id: (int) project ID number
+    :param asset: (dict) Asset Details
+    :param version: The version number
+    :return: (str) Proper file name
+    """
     logger.debug('create_client_name PATH: %s' % path)
     logger.debug('create_client_name FILENAME: %s' % filename)
     new_name = None
@@ -793,6 +810,16 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
 
 
 def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj_id=None, task_id=None, next_version=1):
+    """
+
+    :param publish_file: (str) The file being published
+    :param publish_path: (str) the publish path
+    :param asset_id: (int) Asset ID number
+    :param proj_id: (int) Project ID number
+    :param task_id: (int) Task ID number
+    :param next_version: (int) version number
+    :return:
+    """
     if publish_file:
         # Copy the file to the publish area.  This will be the file published.
         try:
@@ -854,6 +881,13 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
 
 
 def get_set_task(asset=None, proj_id=None):
+    """
+    This will look for an existing task in Shotgun and return the info. If no task if found, it creates one and returns
+    the info
+    :param asset: (dict) Asset details
+    :param proj_id: (int) Project ID number
+    :return: (int) task: Task ID number
+    """
     global task_step
     task = None
     if asset:
@@ -893,6 +927,13 @@ def get_set_task(asset=None, proj_id=None):
 
 
 def process_template_path(template=None, asset=None, version=0):
+    """
+    This converts the publish template into an actual path
+    :param template: (str) The template being converted
+    :param asset: (dict) the details of the Asset
+    :param version: (int) the version number
+    :return: (str) res_path: the resolved path name
+    """
     res_path = None
     if template:
         if asset:
@@ -908,6 +949,16 @@ def process_template_path(template=None, asset=None, version=0):
 
 
 def resolve_template_path(template_key, template):
+    """
+    This loop cycles in on itself until all the references in a YAML file have been resolved.
+    For instance:
+    @work_area/Publish/{Asset}  -- Becomes:
+    @root/{Asset}/Publish/{Asset} -- Becomes:
+    c:/{Project}/{Asset}/Publish/{Asset} and soforth until all '@' signs have been resolved
+    :param template_key:
+    :param template:
+    :return:
+    """
     if template_key and template:
         try:
             read = template['paths'][template_key]['definition']
@@ -928,6 +979,13 @@ def resolve_template_path(template_key, template):
 
 
 def get_asset_details_from_path(project=None, proj_id=None, path=None):
+    """
+    Convert a path to a series of details about an asset.
+    :param project:
+    :param proj_id:
+    :param path:
+    :return: ass - The asset details
+    """
     logger.info('Searching for Assets in %s...' % path)
     ass = {}
     if project and path:
@@ -955,6 +1013,11 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
 
 
 def get_details_from_path(path):
+    """
+    Get the basic project details from the path
+    :param path:
+    :return: prj - Project details
+    """
     prj = {}
     if path:
         logger.info('Attempting to get project details from the path...')
@@ -971,6 +1034,12 @@ def get_details_from_path(path):
 
 
 def get_configuration(proj_id):
+    """
+    Get the Pipeline configuration from the Project ID.  This gets the windows_path to where the pipeline config files
+    exist on the server
+    :param proj_id:
+    :return: config_path
+    """
     if proj_id:
         filters = [
             ['project', 'is', {'type': 'Project', 'id': proj_id}],
@@ -988,6 +1057,10 @@ def get_configuration(proj_id):
 
 
 def get_active_shotgun_projects():
+    """
+    Creates a list of all active Shotgun Projects to search through
+    :return:
+    """
     filters = [
         {
             'filter_operator': 'or',
@@ -1007,15 +1080,14 @@ def get_active_shotgun_projects():
     return projects_list
 
 
-# The following print lines (and all print lines) are temporary output for the command line window that will
-# be running until I get the service working properly.
-print 'Starting the Dropbox listener...'
-
-
 # ---------------------------------------------------------------------------------------------------------------------
 # Run Queue
 # ---------------------------------------------------------------------------------------------------------------------
 def file_queue():
+    """
+    The Queue.  This handles each of the multiple files dropped, so the tool doesn't overload.
+    :return:
+    """
     logger.debug('Queue Running...')
     print 'Queue running...'
     while True:
@@ -1032,29 +1104,6 @@ def file_queue():
             size = os.stat(full_filename).st_size
             if size == size2:
                 time.sleep(2)
-                ''' Have to move this down to the thing that sends data to the queue.  Pass a dict here, parse out '''
-                # ''' Add all the project stuff here perhaps?  Then send that data to process_file '''
-                # path = os.path.dirname(full_filename)
-                # # base_file = os.path.basename(full_filename)
-                # rel_path = path.split(path_to_watch)[1]
-                # project_details = get_details_from_path(rel_path)
-                # proj_name = project_details['name']
-                # proj_id = project_details['id']
-                # if proj_id:
-                #     find_config = get_configuration(proj_id)
-                #     if find_config:
-                #         templates_path = find_config + relative_config_path
-                #         template_file = os.path.join(templates_path, 'templates.yml')
-                #         root_file = os.path.join(templates_path, 'roots.yml')
-                #         template_file = template_file.replace('/', '\\')
-                #         root_file = root_file.replace('/', '\\')
-                #         try:
-                #             f = open(template_file, 'r')
-                #             r = open(root_file, 'r')
-                #         except Exception, e:
-                #             logger.error('Opening files took a shit.')
-                #         template = yaml.load(f)
-                #         roots = yaml.load(r)
                 process_file(filename=full_filename, template=template, roots=roots, proj_id=proj_id,
                              proj_name=proj_name)
                 copying = False
@@ -1064,7 +1113,10 @@ def file_queue():
 
 
 # Start the thread
-print 'Start Threading...'
+'''
+This starts the thread that runs the queue
+'''
+logger.debug('Starting the thread...')
 t = threading.Thread(target=file_queue, name='FileQueue')
 t.setDaemon(True)
 t.start()
@@ -1074,6 +1126,9 @@ t.start()
 # Watch Folder
 # ---------------------------------------------------------------------------------------------------------------------
 class remoteAutoPublisher(win32serviceutil.ServiceFramework):
+    """
+    This class watches the folder and adds excepted actions to the queue.
+    """
     _svc_name_ = "RemoteAutoPublisher"
     _svc_display_name_ = "Remote Auto Publisher"
 
@@ -1112,15 +1167,11 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                 print full_filename, ACTIONS.get(action, "Unknown")
                 logger.info(full_filename, ACTIONS.get(action, "Unknown"))
                 # This is where my internal processes get triggered.
-                # Needs a logger at the very least, although a window would be nice too.
                 if action == 1:
                     if os.path.isfile(full_filename):
                         logger.info('New file detected. %s' % full_filename)
-                        # From here down, I should move this into a Queue.  Then the Queue can handle multiple files.
 
-                        ''' Add all the project stuff here perhaps?  Then send that data to process_file '''
                         path = os.path.dirname(full_filename)
-                        # base_file = os.path.basename(full_filename)
                         rel_path = path.split(path_to_watch)[1]
                         project_details = get_details_from_path(rel_path)
                         proj_name = project_details['name']
@@ -1134,6 +1185,7 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                                 template_file = template_file.replace('/', '\\')
                                 root_file = root_file.replace('/', '\\')
                                 try:
+                                    logger.info('Opening config files...')
                                     f = open(template_file, 'r')
                                     r = open(root_file, 'r')
                                 except Exception, e:
@@ -1149,43 +1201,3 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
 
 if __name__ == '__main__':
     win32serviceutil.HandleCommandLine(remoteAutoPublisher)
-
-# -------------------------------------------------------------------------------------------------------------
-# TESTING SETUP
-# -------------------------------------------------------------------------------------------------------------
-# print 'Folder watching has begun.'
-# while 1:
-#     results = win32file.ReadDirectoryChangesW(
-#         hDir,
-#         1024,
-#         True,
-#         win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-#         win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-#         win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-#         win32con.FILE_NOTIFY_CHANGE_SIZE |
-#         win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-#         win32con.FILE_NOTIFY_CHANGE_SECURITY,
-#         None,
-#         None
-#     )
-#     for action, file in results:
-#         full_filename = os.path.join(path_to_watch, file)
-#         print full_filename, ACTIONS.get(action, "Unknown")
-#         # This is where my internal processes get triggered.
-#         # Needs a logger at the very least, although a window would be nice too.
-#         if action == 1:
-#             if os.path.isfile(full_filename):
-#                 logger.info('New file detected. %s' % full_filename)
-#                 # From here, add to the queue and let it handle multiple files.
-#                 q.put(full_filename)
-#                 '''
-#                 If I fire this off to another function that reads the project and gets the template data from there
-#                 and then open the template documents outside of the queue, then trigger then load the queue with that
-#                 extra data:
-#                 Example:
-#                 send_to_quque(filename) ---->
-#                 def send_to_queue(filename):
-#                     get the project from the path, use the project to get the template and roots.
-#
-#                 '''
-
