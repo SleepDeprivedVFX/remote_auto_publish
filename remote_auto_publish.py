@@ -214,7 +214,7 @@ q = queue.Queue()
 # -----------------------------------------------------------------------------------------------------------------
 # Start Processing...
 # -----------------------------------------------------------------------------------------------------------------
-def process_file(filename):
+def process_file(filename=None, template=None, roots=None, proj_id=None, proj_name=None):
     if filename:
         logger.info('-' * 120)
         logger.info('NEW FILE PROCESSING...')
@@ -236,9 +236,10 @@ def process_file(filename):
         file_name = f[0]
 
         # Look for project details based on names in the relative path
-        project_details = get_details_from_path(rel_path)
-        proj_name = project_details['name']
-        proj_id = project_details['id']
+        ''' This may get pushed to the file_queue() function '''
+        # project_details = get_details_from_path(rel_path)
+        # proj_name = project_details['name']
+        # proj_id = project_details['id']
         logger.debug('Project Details returns: project: %s ID: %s' % (proj_name, proj_id))
 
         # If the project is found, continue processing.
@@ -262,174 +263,174 @@ def process_file(filename):
                 logger.debug('Configuration found: %s' % find_config)
 
                 # If a Shotgun configuration is found, continue processing.
-                if find_config:
-                    logger.debug('find_config passes.')
-                    # The the template.yml file and load it into a yaml object
-                    templates_path = find_config + relative_config_path
-                    logger.debug('templates_path: %s' % templates_path)
-                    template_file = os.path.join(templates_path, 'templates.yml')
-                    logger.debug('template file returns: %s' % template_file)
-                    root_file = os.path.join(templates_path, 'roots.yml')
-                    logger.debug('root_file returns: %s' % root_file)
-                    template_file = template_file.replace('/', '\\')
-                    root_file = root_file.replace('/', '\\')
+                # if find_config:
+                #     logger.debug('find_config passes.')
+                #     # The the template.yml file and load it into a yaml object
+                #     templates_path = find_config + relative_config_path
+                #     logger.debug('templates_path: %s' % templates_path)
+                #     template_file = os.path.join(templates_path, 'templates.yml')
+                #     logger.debug('template file returns: %s' % template_file)
+                #     root_file = os.path.join(templates_path, 'roots.yml')
+                #     logger.debug('root_file returns: %s' % root_file)
+                #     template_file = template_file.replace('/', '\\')
+                #     root_file = root_file.replace('/', '\\')
+                #     try:
+                #         f = open(template_file, 'r')
+                #         logger.debug('template file opened.')
+                #         r = open(root_file, 'r')
+                #         logger.debug('root file opened.')
+                #     except Exception, e:
+                #         logger.error('Files won\'t open!  FUCK! Here\'s what it\'s saying. %s' % e)
+                #     template = yaml.load(f)
+                #     logger.debug('template yaml created.')
+                #     roots = yaml.load(r)
+                #     logger.debug('root yaml created.')
+                # Look for publish types from the extension
+                if ext in publish_types:
+                    # Find out from the ext which configuration to get from the template.
+                    logger.debug('This is a publish level file...')
+                    publish_type = publish_types[ext]
+                    template_type = templates[publish_type]
+
+                    # Resolve the templates with known data to get the template path.
+                    work_template = resolve_template_path(template_type['work_template'], template)
+                    logger.debug('WORK TEMPLATE: %s' % work_template)
+                    work_area = resolve_template_path(template_type['work_area'], template)
+                    logger.debug('WORK Area: %s' % work_area)
+                    publish_template = resolve_template_path(template_type['publish_template'], template)
+                    logger.debug('PUBLISH TEMPLATE: %s' % publish_template)
+                    publish_area = resolve_template_path(template_type['publish_area'], template)
+                    logger.debug('PUBLISH AREA: %s' % publish_area)
+
+                    # Now to get the show roots.  This listener will be on a windows machine.
+                    project_root = roots['primary']['windows_path']
+
+                    # Each of the template paths put together in complete files.
+                    root_template_path = os.path.join(project_root, proj_name)
+                    work_template_path = os.path.join(root_template_path, work_template).replace('\\', '/')
+                    work_area_path = os.path.join(root_template_path, work_area).replace('\\', '/')
+                    publish_template_path = os.path.join(root_template_path, publish_template).replace('\\', '/')
+                    # publish_area_path = os.path.join(root_template_path, publish_area).replace('\\', '/')
+
+                    # Get the resolved working area and find existing files in it.
+                    res_path_work_area = process_template_path(template=work_area_path, asset=find_asset)
+
+                    # Create paths if they're not already there.
+                    if not os.path.exists(res_path_work_area):
+                        logger.info('Creating paths: %s' % res_path_work_area)
+                        os.makedirs(res_path_work_area)
+
+                    # Create the basic taskname template from the data.
+                    template_name = task_name_format.format(Asset=asset_name, task_name=task_name, ext=ext)
+
+                    find_files_from_template = '%s/%s' % (res_path_work_area, template_name)
+                    get_files = [f for f in glob(find_files_from_template)]
+                    if get_files:
+                        # Look for an existing version number based on the template
+                        logger.debug('GET FILES: %s ' % get_files)
+                        last_file = sorted(get_files)[-1]
+                        logger.debug('last_file: %s' % last_file)
+                        get_filename = os.path.basename(last_file)
+                        find_version = re.findall(r'_v\d*|_V\d*', get_filename)[0]
+                    else:
+                        find_version = None
+
+                    # Set the version number for the new file.
+                    if find_version:
+                        version = int(find_version.lower().strip('_v'))
+                        # Increase to the next available version number
+                        version += 1
+                    else:
+                        version = 1
+                    logger.debug('VERSION: %s' % version)
+
+                    # resolve the working template into an actual file path that can be written out.
+                    res_path_work_template = process_template_path(template=work_template_path, asset=find_asset,
+                                                                   version=version)
+                    res_path_work_template = res_path_work_template.replace('\\', '/')
+
+                    # Copy the file to the correct place on the server.  There are some wait time handlers in here.
+                    logger.info('Copying the file to the server...')
+                    copy_file = filename.replace('\\', '/')
                     try:
-                        f = open(template_file, 'r')
-                        logger.debug('template file opened.')
-                        r = open(root_file, 'r')
-                        logger.debug('root file opened.')
+                        shutil.copy2(copy_file, res_path_work_template)
+                        message = 'The file is copied!  Prepping for publish!'
+                    except IOError, e:
+                        message = ''
+                        # Waiting tries...
+                        attempts = 1
+                        while attempts < 10:
+                            time.sleep(2 * attempts)
+                            try:
+                                shutil.copy2(copy_file, res_path_work_template)
+                                message = 'The File is copied after %i tries!  Prepping for publish' % attempts
+                                break
+                            except Exception:
+                                message = ''
+                                attempts += 1
+                    if message:
+                        logger.info(message)
+                    else:
+                        logger.error('The file could not be copied! %s' % copy_file)
+
+                    new_file = res_path_work_template
+
+                    # Now check to see if the file type needs to generate other file types
+                    if ext in generate_types.keys():
+                        logger.debug('Generator type detected!')
+                        export_type = generate_types[ext]['type']
+                        output_type = generate_types[ext]['output']
+                        render_area = generate_types[ext]['render']
+
+                        # ------------------------------------------------------------------------------------
+                        # Sub Processing Routines
+                        # ------------------------------------------------------------------------------------
+                        # Here I can add different job types as the come up.  For now, it's only Photoshop
+                        if export_type == 'Photoshop':
+                            logger.debug('export type detected: PHOTOSHOP')
+                            get_template_name = templates[render_area]
+                            render_publish_area = get_template_name['publish_area']
+                            logger.debug('get_template_name: %s' % get_template_name)
+                            try:
+                                process_Photoshop_image(template=template, filename=new_file,
+                                                        pub_area=render_publish_area,
+                                                        task=task, type=output_type, proj_id=proj_id,
+                                                        asset=find_asset, root=root_template_path)
+                            except IOError, e:
+                                logger.error('Unable to process the %s for the following reasons: %s' % (ext, e))
+
+                    # Publish the file
+                    res_publish_path = process_template_path(template=publish_template_path, asset=find_asset,
+                                                             version=version)
+                    logger.debug('Publish Path: %s' % res_publish_path)
+                    next_version = version + 1
+                    try:
+                        logger.info('Attempting to publish...')
+                        publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
+                                           proj_id=proj_id, task_id=task, next_version=next_version)
                     except Exception, e:
-                        logger.error('Files won\'t open!  FUCK! Here\'s what it\'s saying. %s' % e)
-                    template = yaml.load(f)
-                    logger.debug('template yaml created.')
-                    roots = yaml.load(r)
-                    logger.debug('root yaml created.')
-                    # Look for publish types from the extension
-                    if ext in publish_types:
-                        # Find out from the ext which configuration to get from the template.
-                        logger.debug('This is a publish level file...')
-                        publish_type = publish_types[ext]
-                        template_type = templates[publish_type]
+                        logger.error('Publish failed for the following! %s' % e)
 
-                        # Resolve the templates with known data to get the template path.
-                        work_template = resolve_template_path(template_type['work_template'], template)
-                        logger.debug('WORK TEMPLATE: %s' % work_template)
-                        work_area = resolve_template_path(template_type['work_area'], template)
-                        logger.debug('WORK Area: %s' % work_area)
-                        publish_template = resolve_template_path(template_type['publish_template'], template)
-                        logger.debug('PUBLISH TEMPLATE: %s' % publish_template)
-                        publish_area = resolve_template_path(template_type['publish_area'], template)
-                        logger.debug('PUBLISH AREA: %s' % publish_area)
-
-                        # Now to get the show roots.  This listener will be on a windows machine.
-                        project_root = roots['primary']['windows_path']
-
-                        # Each of the template paths put together in complete files.
-                        root_template_path = os.path.join(project_root, proj_name)
-                        work_template_path = os.path.join(root_template_path, work_template).replace('\\', '/')
-                        work_area_path = os.path.join(root_template_path, work_area).replace('\\', '/')
-                        publish_template_path = os.path.join(root_template_path, publish_template).replace('\\', '/')
-                        publish_area_path = os.path.join(root_template_path, publish_area).replace('\\', '/')
-
-                        # Get the resolved working area and find existing files in it.
-                        res_path_work_area = process_template_path(template=work_area_path, asset=find_asset)
-
-                        # Create paths if they're not already there.
-                        if not os.path.exists(res_path_work_area):
-                            logger.info('Creating paths: %s' % res_path_work_area)
-                            os.makedirs(res_path_work_area)
-
-                        # Create the basic taskname template from the data.
-                        template_name = task_name_format.format(Asset=asset_name, task_name=task_name, ext=ext)
-
-                        find_files_from_template = '%s/%s' % (res_path_work_area, template_name)
-                        get_files = [f for f in glob(find_files_from_template)]
-                        if get_files:
-                            # Look for an existing version number based on the template
-                            logger.debug('GET FILES: %s ' % get_files)
-                            last_file = sorted(get_files)[-1]
-                            logger.debug('last_file: %s' % last_file)
-                            get_filename = os.path.basename(last_file)
-                            find_version = re.findall(r'_v\d*|_V\d*', get_filename)[0]
-                        else:
-                            find_version = None
-
-                        # Set the version number for the new file.
-                        if find_version:
-                            version = int(find_version.lower().strip('_v'))
-                            # Increase to the next available version number
-                            version += 1
-                        else:
-                            version = 1
-                        logger.debug('VERSION: %s' % version)
-
-                        # resolve the working template into an actual file path that can be written out.
-                        res_path_work_template = process_template_path(template=work_template_path, asset=find_asset,
-                                                                       version=version)
-                        res_path_work_template = res_path_work_template.replace('\\', '/')
-
-                        # Copy the file to the correct place on the server.  There are some wait time handlers in here.
-                        logger.info('Copying the file to the server...')
-                        copy_file = filename.replace('\\', '/')
-                        try:
-                            shutil.copy2(copy_file, res_path_work_template)
-                            message = 'The file is copied!  Prepping for publish!'
-                        except IOError, e:
-                            message = ''
-                            # Waiting tries...
-                            attempts = 1
-                            while attempts < 10:
-                                time.sleep(2 * attempts)
-                                try:
-                                    shutil.copy2(copy_file, res_path_work_template)
-                                    message = 'The File is copied after %i tries!  Prepping for publish' % attempts
-                                    break
-                                except:
-                                    message = ''
-                                    attempts += 1
-                        if message:
-                            logger.info(message)
-                        else:
-                            logger.error('The file could not be copied! %s' % copy_file)
-
-                        new_file = res_path_work_template
-
-                        # Now check to see if the file type needs to generate other file types
-                        if ext in generate_types.keys():
-                            logger.debug('Generator type detected!')
-                            export_type = generate_types[ext]['type']
-                            output_type = generate_types[ext]['output']
-                            render_area = generate_types[ext]['render']
-
-                            # ------------------------------------------------------------------------------------
-                            # Sub Processing Routines
-                            # ------------------------------------------------------------------------------------
-                            # Here I can add different job types as the come up.  For now, it's only Photoshop
-                            if export_type == 'Photoshop':
-                                logger.debug('export type detected: PHOTOSHOP')
-                                get_template_name = templates[render_area]
-                                render_publish_area = get_template_name['publish_area']
-                                logger.debug('get_template_name: %s' % get_template_name)
-                                try:
-                                    process_Photoshop_image(template=template, filename=new_file,
-                                                            pub_area=render_publish_area,
-                                                            task=task, type=output_type, proj_id=proj_id,
-                                                            asset=find_asset, root=root_template_path)
-                                except IOError, e:
-                                    logger.error('Unable to process the %s for the following reasons: %s' % (ext, e))
-
-                        # Publish the file
-                        res_publish_path = process_template_path(template=publish_template_path, asset=find_asset,
-                                                                 version=version)
-                        logger.debug('Publish Path: %s' % res_publish_path)
-                        next_version = version + 1
-                        try:
-                            logger.info('Attempting to publish...')
-                            publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
-                                               proj_id=proj_id, task_id=task, next_version=next_version)
-                        except Exception, e:
-                            logger.error('Publish failed for the following! %s' % e)
-
-                    elif ext.lower() in upload_types:
-                        # getting template settings
-                        send_today_template = template['paths']['send_today']
-                        project_root = roots['primary']['windows_path']
-                        root_template_path = os.path.join(project_root, proj_name)
-                        logger.debug('send_today_template: %s' % send_today_template)
-                        resolved_send_today_template = resolve_template_path('send_today', template)
-                        logger.debug('RESOLVED send_today_template: %s' % resolved_send_today_template)
-                        send_today_path = os.path.join(root_template_path, resolved_send_today_template)
-                        logger.debug('SEND TODAY PATH: %s' % send_today_path)
-                        logger.info('Uploading for review %s' % file_name)
-                        send = upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id)
-                        logger.debug('SEND: %s' % send)
-                        if send:
-                            # Run the Send Today portion of our show.
-                            # This will need to get the send folder from the template, and make sure there is a date
-                            # folder.
-                            is_sent = send_today(filename=filename, path=send_today_path, proj_id=proj_id,
-                                                 asset=find_asset)
-                            logger.info('is_sent RETURNS: %s' % is_sent)
+                elif ext.lower() in upload_types:
+                    # getting template settings
+                    send_today_template = template['paths']['send_today']
+                    project_root = roots['primary']['windows_path']
+                    root_template_path = os.path.join(project_root, proj_name)
+                    logger.debug('send_today_template: %s' % send_today_template)
+                    resolved_send_today_template = resolve_template_path('send_today', template)
+                    logger.debug('RESOLVED send_today_template: %s' % resolved_send_today_template)
+                    send_today_path = os.path.join(root_template_path, resolved_send_today_template)
+                    logger.debug('SEND TODAY PATH: %s' % send_today_path)
+                    logger.info('Uploading for review %s' % file_name)
+                    send = upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id)
+                    logger.debug('SEND: %s' % send)
+                    if send:
+                        # Run the Send Today portion of our show.
+                        # This will need to get the send folder from the template, and make sure there is a date
+                        # folder.
+                        is_sent = send_today(filename=filename, path=send_today_path, proj_id=proj_id,
+                                             asset=find_asset)
+                        logger.info('is_sent RETURNS: %s' % is_sent)
 
         logger.info('Finished processing the file')
         logger.info('=' * 100)
@@ -1018,7 +1019,12 @@ def file_queue():
     logger.debug('Queue Running...')
     print 'Queue running...'
     while True:
-        full_filename = q.get()
+        package = q.get()
+        full_filename = package['filename']
+        template = package['template']
+        roots = package['roots']
+        proj_id = package['proj_id']
+        proj_name = package['proj_name']
         logger.debug('Queued file: %s' % full_filename)
         copying = True
         size2 = -1
@@ -1026,7 +1032,31 @@ def file_queue():
             size = os.stat(full_filename).st_size
             if size == size2:
                 time.sleep(2)
-                process_file(full_filename)
+                ''' Have to move this down to the thing that sends data to the queue.  Pass a dict here, parse out '''
+                # ''' Add all the project stuff here perhaps?  Then send that data to process_file '''
+                # path = os.path.dirname(full_filename)
+                # # base_file = os.path.basename(full_filename)
+                # rel_path = path.split(path_to_watch)[1]
+                # project_details = get_details_from_path(rel_path)
+                # proj_name = project_details['name']
+                # proj_id = project_details['id']
+                # if proj_id:
+                #     find_config = get_configuration(proj_id)
+                #     if find_config:
+                #         templates_path = find_config + relative_config_path
+                #         template_file = os.path.join(templates_path, 'templates.yml')
+                #         root_file = os.path.join(templates_path, 'roots.yml')
+                #         template_file = template_file.replace('/', '\\')
+                #         root_file = root_file.replace('/', '\\')
+                #         try:
+                #             f = open(template_file, 'r')
+                #             r = open(root_file, 'r')
+                #         except Exception, e:
+                #             logger.error('Opening files took a shit.')
+                #         template = yaml.load(f)
+                #         roots = yaml.load(r)
+                process_file(filename=full_filename, template=template, roots=roots, proj_id=proj_id,
+                             proj_name=proj_name)
                 copying = False
             else:
                 size2 = os.stat(full_filename).st_size
@@ -1043,82 +1073,119 @@ t.start()
 # ---------------------------------------------------------------------------------------------------------------------
 # Watch Folder
 # ---------------------------------------------------------------------------------------------------------------------
-# class remoteAutoPublisher(win32serviceutil.ServiceFramework):
-#     _svc_name_ = "RemoteAutoPublisher"
-#     _svc_display_name_ = "Remote Auto Publisher"
-#
-#     def __init__(self, args):
-#         win32serviceutil.ServiceFramework.__init__(self, args)
-#         self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
-#         socket.setdefaulttimeout(60)
-#
-#     def SvcStop(self):
-#         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
-#         win32event.SetEvent(self.hWaitStop)
-#
-#     def SvcDoRun(self):
-#         servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
-#                               servicemanager.PYS_SERVICE_STARTED,
-#                               (self._svc_name_, ''))
-#         self.main()
-#
-#     def main(self):
-#         while 1:
-#             results = win32file.ReadDirectoryChangesW(
-#                 hDir,
-#                 1024,
-#                 True,
-#                 win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-#                 win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-#                 win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-#                 win32con.FILE_NOTIFY_CHANGE_SIZE |
-#                 win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-#                 win32con.FILE_NOTIFY_CHANGE_SECURITY,
-#                 None,
-#                 None
-#             )
-#             for action, file in results:
-#                 full_filename = os.path.join(path_to_watch, file)
-#                 print full_filename, ACTIONS.get(action, "Unknown")
-#                 logger.info(full_filename, ACTIONS.get(action, "Unknown"))
-#                 # This is where my internal processes get triggered.
-#                 # Needs a logger at the very least, although a window would be nice too.
-#                 if action == 1:
-#                     if os.path.isfile(full_filename):
-#                         logger.info('New file detected. %s' % full_filename)
-#                         # From here down, I should move this into a Queue.  Then the Queue can handle multiple files.
-#                         q.put(full_filename)
-#
-#
-# if __name__ == '__main__':
-#     win32serviceutil.HandleCommandLine(remoteAutoPublisher)
+class remoteAutoPublisher(win32serviceutil.ServiceFramework):
+    _svc_name_ = "RemoteAutoPublisher"
+    _svc_display_name_ = "Remote Auto Publisher"
+
+    def __init__(self, args):
+        win32serviceutil.ServiceFramework.__init__(self, args)
+        self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
+        socket.setdefaulttimeout(60)
+
+    def SvcStop(self):
+        self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
+        win32event.SetEvent(self.hWaitStop)
+
+    def SvcDoRun(self):
+        servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
+                              servicemanager.PYS_SERVICE_STARTED,
+                              (self._svc_name_, ''))
+        self.main()
+
+    def main(self):
+        while 1:
+            results = win32file.ReadDirectoryChangesW(
+                hDir,
+                1024,
+                True,
+                win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
+                win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
+                win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
+                win32con.FILE_NOTIFY_CHANGE_SIZE |
+                win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
+                win32con.FILE_NOTIFY_CHANGE_SECURITY,
+                None,
+                None
+            )
+            for action, file in results:
+                full_filename = os.path.join(path_to_watch, file)
+                print full_filename, ACTIONS.get(action, "Unknown")
+                logger.info(full_filename, ACTIONS.get(action, "Unknown"))
+                # This is where my internal processes get triggered.
+                # Needs a logger at the very least, although a window would be nice too.
+                if action == 1:
+                    if os.path.isfile(full_filename):
+                        logger.info('New file detected. %s' % full_filename)
+                        # From here down, I should move this into a Queue.  Then the Queue can handle multiple files.
+
+                        ''' Add all the project stuff here perhaps?  Then send that data to process_file '''
+                        path = os.path.dirname(full_filename)
+                        # base_file = os.path.basename(full_filename)
+                        rel_path = path.split(path_to_watch)[1]
+                        project_details = get_details_from_path(rel_path)
+                        proj_name = project_details['name']
+                        proj_id = project_details['id']
+                        if proj_id:
+                            find_config = get_configuration(proj_id)
+                            if find_config:
+                                templates_path = find_config + relative_config_path
+                                template_file = os.path.join(templates_path, 'templates.yml')
+                                root_file = os.path.join(templates_path, 'roots.yml')
+                                template_file = template_file.replace('/', '\\')
+                                root_file = root_file.replace('/', '\\')
+                                try:
+                                    f = open(template_file, 'r')
+                                    r = open(root_file, 'r')
+                                except Exception, e:
+                                    logger.error('Opening files took a shit.')
+                                template = yaml.load(f)
+                                roots = yaml.load(r)
+
+                                # Package data into a dict for passing to the queue
+                                package = {'filename': full_filename, 'template': template, 'roots': roots,
+                                           'proj_id': proj_id, 'proj_name': proj_name}
+                                q.put(package)
+
+
+if __name__ == '__main__':
+    win32serviceutil.HandleCommandLine(remoteAutoPublisher)
 
 # -------------------------------------------------------------------------------------------------------------
 # TESTING SETUP
 # -------------------------------------------------------------------------------------------------------------
-print 'Folder watching has begun.'
-while 1:
-    results = win32file.ReadDirectoryChangesW(
-        hDir,
-        1024,
-        True,
-        win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-        win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-        win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-        win32con.FILE_NOTIFY_CHANGE_SIZE |
-        win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-        win32con.FILE_NOTIFY_CHANGE_SECURITY,
-        None,
-        None
-    )
-    for action, file in results:
-        full_filename = os.path.join(path_to_watch, file)
-        print full_filename, ACTIONS.get(action, "Unknown")
-        # This is where my internal processes get triggered.
-        # Needs a logger at the very least, although a window would be nice too.
-        if action == 1:
-            if os.path.isfile(full_filename):
-                logger.info('New file detected. %s' % full_filename)
-                # From here, add to the queue and let it handle multiple files.
-                q.put(full_filename)
+# print 'Folder watching has begun.'
+# while 1:
+#     results = win32file.ReadDirectoryChangesW(
+#         hDir,
+#         1024,
+#         True,
+#         win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
+#         win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
+#         win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
+#         win32con.FILE_NOTIFY_CHANGE_SIZE |
+#         win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
+#         win32con.FILE_NOTIFY_CHANGE_SECURITY,
+#         None,
+#         None
+#     )
+#     for action, file in results:
+#         full_filename = os.path.join(path_to_watch, file)
+#         print full_filename, ACTIONS.get(action, "Unknown")
+#         # This is where my internal processes get triggered.
+#         # Needs a logger at the very least, although a window would be nice too.
+#         if action == 1:
+#             if os.path.isfile(full_filename):
+#                 logger.info('New file detected. %s' % full_filename)
+#                 # From here, add to the queue and let it handle multiple files.
+#                 q.put(full_filename)
+#                 '''
+#                 If I fire this off to another function that reads the project and gets the template data from there
+#                 and then open the template documents outside of the queue, then trigger then load the queue with that
+#                 extra data:
+#                 Example:
+#                 send_to_quque(filename) ---->
+#                 def send_to_queue(filename):
+#                     get the project from the path, use the project to get the template and roots.
+#
+#                 '''
 
