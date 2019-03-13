@@ -44,7 +44,7 @@ ACTIONS = {
 FILE_LIST_DIRECTORY = 0x0001
 
 # Dropbox Folder
-path_to_watch = "C:/Users/sleep/OneDrive/Documents/Scripts/Area51"
+path_to_watch = "C:/Users/events/Dropbox/ASC_REMOTE"
 hDir = win32file.CreateFile(
     path_to_watch,
     FILE_LIST_DIRECTORY,
@@ -57,7 +57,7 @@ hDir = win32file.CreateFile(
 
 
 # Create Log file
-log_level = logging.DEBUG
+log_level = logging.INFO
 
 
 def _setFilePathOnLogger(logger, path):
@@ -88,7 +88,7 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
 
 
 # logDate = str(time.strftime('%m%d%y%H%M%S'))
-logfile = "c:/users/sleep/onedrive/documents/scripts/logs/remote_auto_publish.log"
+logfile = "C:/shotgun/remote_auto_publish/logs/remoteAutoPublish.log"
 logging.basicConfig(level=log_level, filename=logfile)
 
 # handler = logging.handlers.TimedRotatingFileHandler(logfile, 'midnight', backupCount=10)
@@ -460,8 +460,11 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
 
         # Process the image.
         logger.info('Processing Photoshop file...')
-        file_to_publish = psd.PSDImage.open(filename)
-        file_to_publish.compose().save(render_path)
+        try:
+            file_to_publish = psd.PSDImage.open(filename)
+            file_to_publish.compose().save(render_path)
+        except Exception, e:
+            logger.error('Photoshop File could not generate an image! %s' % e)
 
         # Upload a version
         upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
