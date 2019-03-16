@@ -64,7 +64,7 @@ def _setFilePathOnLogger(logger, path):
     _removeHandlersFromLogger(logger, None)
 
     # Add the file handler
-    handler = logging.handlers.TimedRotatingFileHandler(path, 'midnight', backupCount=10)
+    handler = logging.handlers.TimedRotatingFileHandler(path, 'D', interval=1, backupCount=10)
     handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s:%(lineno)d - %(message)s"))
     logger.addHandler(handler)
 
@@ -84,6 +84,7 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
     for handler in logger.handlers:
         if handlerTypes is None or isinstance(handler, handlerTypes):
             logger.removeHandler(handler)
+
 
 logfile = "C:/shotgun/remote_auto_publish/logs/remoteAutoPublish.log"
 
@@ -1189,7 +1190,18 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                                     f = open(template_file, 'r')
                                     r = open(root_file, 'r')
                                 except Exception, e:
-                                    logger.error('Opening files took a shit.')
+                                    tries = 1
+                                    while tries < 10:
+                                        logger.error('Opening files took a shit.  Trying again...')
+                                        time.sleep(2)
+                                        try:
+                                            logger.warning('Open attempt #%i' % tries)
+                                            f = open(template_file, 'r')
+                                            r = open(root_file, 'r')
+                                            break
+                                        except Exception, e:
+                                            tries += 1
+
                                 template = yaml.load(f)
                                 roots = yaml.load(r)
 
