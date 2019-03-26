@@ -343,6 +343,8 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                             except Exception:
                                 message = ''
                                 attempts += 1
+                                logger.warning('Copy attempt failed.  Tyring again...')
+                        logger.error('Copying attempts failed! %s' % e)
                     if message:
                         logger.info(message)
                     else:
@@ -963,8 +965,10 @@ def resolve_template_path(template_key, template):
     if template_key and template:
         try:
             read = template['paths'][template_key]['definition']
+            logger.debug('Main read template succeded')
         except Exception:
             read = template['paths'][template_key]
+            logger.warning('Unable to open main template. Alternate read template used.')
         read = read.replace('\\', '/')
         split_read = read.split('/')
         for x in split_read:
@@ -1189,7 +1193,7 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                                     logger.info('Opening config files...')
                                     f = open(template_file, 'r')
                                     r = open(root_file, 'r')
-                                except Exception, e:
+                                except Exception, err:
                                     tries = 1
                                     while tries < 10:
                                         logger.error('Opening files took a shit.  Trying again...')
@@ -1201,6 +1205,8 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                                             break
                                         except Exception, e:
                                             tries += 1
+                                            logging.error('File Open failed again. Trying again... ERROR: %s' % e)
+                                    raise 'Total failure! %s' % err
 
                                 template = yaml.load(f)
                                 roots = yaml.load(r)
