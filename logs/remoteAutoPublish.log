@@ -1,141 +1,401 @@
-2019-03-15 17:08:20,088 - INFO:1173 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\meera tiara_V6.ZTL
-2019-03-15 17:08:20,088 - INFO:1024 - Attempting to get project details from the path...
-2019-03-15 17:08:20,312 - DEBUG:1080 - Active Projects Found: [{'tank_name': 'apocalypse_at_the_north_pole', 'type': 'Project', 'id': 177}, {'tank_name': 'mouseguard', 'type': 'Project', 'id': 222}, {'tank_name': 'newworld', 'type': 'Project', 'id': 250}, {'tank_name': 'asc_studio', 'type': 'Project', 'id': 302}, {'tank_name': 'asc_universe', 'type': 'Project', 'id': 357}, {'tank_name': 'stresstest', 'type': 'Project', 'id': 362}, {'tank_name': 'bureau749', 'type': 'Project', 'id': 367}, {'tank_name': 'curiosities', 'type': 'Project', 'id': 437}, {'tank_name': 'wevr', 'type': 'Project', 'id': 439}, {'tank_name': 'sonsofchaos', 'type': 'Project', 'id': 444}, {'tank_name': 'texas', 'type': 'Project', 'id': 447}, {'tank_name': 'oneyoufeed', 'type': 'Project', 'id': 450}, {'tank_name': 'uglydolls', 'type': 'Project', 'id': 455}, {'tank_name': 'nevermoore', 'type': 'Project', 'id': 456}, {'tank_name': 'dern', 'type': 'Project', 'id': 457}, {'tank_name': 'ipl', 'type': 'Project', 'id': 458}, {'tank_name': 'whitespikes', 'type': 'Project', 'id': 464}, {'tank_name': 'clonedtyrone', 'type': 'Project', 'id': 465}, {'tank_name': 'apple_alien', 'type': 'Project', 'id': 466}, {'tank_name': 'jamm_girl', 'type': 'Project', 'id': 467}, {'tank_name': 'tatumrobot', 'type': 'Project', 'id': 469}]
-2019-03-15 17:08:20,312 - DEBUG:1032 - Project stresstest found.
-2019-03-15 17:08:20,414 - INFO:1189 - Opening config files...
-2019-03-15 17:08:20,532 - DEBUG:1101 - Queued file: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\meera tiara_V6.ZTL
-2019-03-15 17:08:20,532 - INFO:1173 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\ASC_STTS_Spider_dsn_v001_20190312.jpg
-2019-03-15 17:08:20,532 - INFO:1024 - Attempting to get project details from the path...
-2019-03-15 17:08:20,642 - DEBUG:1080 - Active Projects Found: [{'tank_name': 'apocalypse_at_the_north_pole', 'type': 'Project', 'id': 177}, {'tank_name': 'mouseguard', 'type': 'Project', 'id': 222}, {'tank_name': 'newworld', 'type': 'Project', 'id': 250}, {'tank_name': 'asc_studio', 'type': 'Project', 'id': 302}, {'tank_name': 'asc_universe', 'type': 'Project', 'id': 357}, {'tank_name': 'stresstest', 'type': 'Project', 'id': 362}, {'tank_name': 'bureau749', 'type': 'Project', 'id': 367}, {'tank_name': 'curiosities', 'type': 'Project', 'id': 437}, {'tank_name': 'wevr', 'type': 'Project', 'id': 439}, {'tank_name': 'sonsofchaos', 'type': 'Project', 'id': 444}, {'tank_name': 'texas', 'type': 'Project', 'id': 447}, {'tank_name': 'oneyoufeed', 'type': 'Project', 'id': 450}, {'tank_name': 'uglydolls', 'type': 'Project', 'id': 455}, {'tank_name': 'nevermoore', 'type': 'Project', 'id': 456}, {'tank_name': 'dern', 'type': 'Project', 'id': 457}, {'tank_name': 'ipl', 'type': 'Project', 'id': 458}, {'tank_name': 'whitespikes', 'type': 'Project', 'id': 464}, {'tank_name': 'clonedtyrone', 'type': 'Project', 'id': 465}, {'tank_name': 'apple_alien', 'type': 'Project', 'id': 466}, {'tank_name': 'jamm_girl', 'type': 'Project', 'id': 467}, {'tank_name': 'tatumrobot', 'type': 'Project', 'id': 469}]
-2019-03-15 17:08:20,642 - DEBUG:1032 - Project stresstest found.
-2019-03-15 17:08:20,733 - INFO:1189 - Opening config files...
-2019-03-15 17:08:24,532 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-03-15 17:08:24,532 - INFO:224 - NEW FILE PROCESSING...
-2019-03-15 17:08:24,532 - DEBUG:229 - PATH: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider
-2019-03-15 17:08:24,532 - DEBUG:234 - Relative Path: \stresstest\Spider
-2019-03-15 17:08:24,533 - DEBUG:242 - Project Details returns: project: stresstest ID: 362
-2019-03-15 17:08:24,533 - INFO:990 - Searching for Assets in \stresstest\Spider...
-2019-03-15 17:08:24,622 - DEBUG:1002 - Shotgun Returns: [{'code': 'Spider', 'type': 'Asset', 'id': 2471, 'sg_asset_type': 'char'}, {'code': 'roboLeg', 'type': 'Asset', 'id': 2780, 'sg_asset_type': 'prop'}, {'code': 'Demagorgon', 'type': 'Asset', 'id': 2854, 'sg_asset_type': 'char'}, {'code': 'reference', 'type': 'Asset', 'id': 2879, 'sg_asset_type': 'ref'}, {'code': 'Hallway', 'type': 'Asset', 'id': 2923, 'sg_asset_type': 'env'}, {'code': 'eyeBall', 'type': 'Asset', 'id': 2931, 'sg_asset_type': 'prop'}]
-2019-03-15 17:08:24,622 - DEBUG:1004 - Assets exist!  Finding our guy...
-2019-03-15 17:08:24,622 - DEBUG:1006 - Testing Spider IN \stresstest\Spider...
-2019-03-15 17:08:24,624 - INFO:1011 - Spider found in \stresstest\Spider
-2019-03-15 17:08:24,624 - INFO:254 - The Asset is found in the system! 2471: Spider
-2019-03-15 17:08:24,624 - DEBUG:255 - Asset type: char
-2019-03-15 17:08:24,721 - DEBUG:906 - TASKS RETURNS: [{'content': 'rig.main', 'step': {'type': 'Step', 'id': 11, 'name': 'rig'}, 'type': 'Task', 'id': 16799}, {'content': 'turntable.main', 'step': {'type': 'Step', 'id': 92, 'name': 'turntable'}, 'type': 'Task', 'id': 16800}, {'content': 'design.main', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 16801}, {'content': 'lookdev.main', 'step': {'type': 'Step', 'id': 12, 'name': 'lookdev'}, 'type': 'Task', 'id': 16802}, {'content': 'model.main', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 16803}, {'content': 'uv.main', 'step': {'type': 'Step', 'id': 64, 'name': 'uv'}, 'type': 'Task', 'id': 16804}, {'content': 'retopo.main', 'step': {'type': 'Step', 'id': 65, 'name': 'retopo'}, 'type': 'Task', 'id': 16805}, {'content': 'design_sculpt.main', 'step': {'type': 'Step', 'id': 67, 'name': 'design_sculpt'}, 'type': 'Task', 'id': 16806}, {'content': 'layout.main', 'step': {'type': 'Step', 'id': 86, 'name': 'layout'}, 'type': 'Task', 'id': 16807}, {'content': 'model.legs', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18016}, {'content': 'model.butt', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18017}, {'content': 'model.knees', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18018}, {'content': 'model.abs', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18019}, {'content': 'model.face', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18020}, {'content': 'model.lips', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18021}, {'content': 'model.nose', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18022}, {'content': 'model.eyes', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18023}, {'content': 'model.toes', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18024}, {'content': 'model.tongue', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18025}, {'content': 'model.teeth', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18027}, {'content': 'model.anus', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18028}, {'content': 'model.ribs', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18029}, {'content': 'model.thighs', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18030}, {'content': 'design.remote', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 20923}]
-2019-03-15 17:08:24,721 - INFO:908 - Searching for remote task...
-2019-03-15 17:08:24,721 - INFO:911 - Task found!
-2019-03-15 17:08:24,721 - DEBUG:258 - Task ID returned: 20923
-2019-03-15 17:08:24,806 - DEBUG:262 - Configuration found: //skynet/tools/shotgun/stresstest
-2019-03-15 17:08:24,808 - DEBUG:266 - This is a publish level file...
-2019-03-15 17:08:24,808 - DEBUG:978 - resolved path: assets/{sg_asset_type}/{Asset}
-2019-03-15 17:08:24,808 - DEBUG:975 - resolving iteration: assets/{sg_asset_type}/{Asset}/tasks/{task_name}
-2019-03-15 17:08:24,808 - DEBUG:975 - resolving iteration: assets/{sg_asset_type}/{Asset}/tasks/{task_name}/zbrush
-2019-03-15 17:08:24,808 - DEBUG:975 - resolving iteration: assets/{sg_asset_type}/{Asset}/tasks/{task_name}/zbrush/{Asset}_{task_name}_v{version}.ZTL
-2019-03-15 17:08:24,808 - DEBUG:272 - WORK TEMPLATE: assets/{sg_asset_type}/{Asset}/tasks/{task_name}/zbrush/{Asset}_{task_name}_v{version}.ZTL
-2019-03-15 17:08:24,808 - DEBUG:978 - resolved path: assets/{sg_asset_type}/{Asset}
-2019-03-15 17:08:24,808 - DEBUG:975 - resolving iteration: assets/{sg_asset_type}/{Asset}/tasks/{task_name}
-2019-03-15 17:08:24,808 - DEBUG:975 - resolving iteration: assets/{sg_asset_type}/{Asset}/tasks/{task_name}/zbrush
-2019-03-15 17:08:24,808 - DEBUG:274 - WORK Area: assets/{sg_asset_type}/{Asset}/tasks/{task_name}/zbrush
-2019-03-15 17:08:24,808 - DEBUG:978 - resolved path: assets/{sg_asset_type}/{Asset}
-2019-03-15 17:08:24,808 - DEBUG:975 - resolving iteration: assets/{sg_asset_type}/{Asset}/publish
-2019-03-15 17:08:24,808 - DEBUG:975 - resolving iteration: assets/{sg_asset_type}/{Asset}/publish/zbrush/{task_name}
-2019-03-15 17:08:24,809 - DEBUG:975 - resolving iteration: assets/{sg_asset_type}/{Asset}/publish/zbrush/{task_name}/{Asset}_{task_name}_v{version}.ZTL
-2019-03-15 17:08:24,809 - DEBUG:276 - PUBLISH TEMPLATE: assets/{sg_asset_type}/{Asset}/publish/zbrush/{task_name}/{Asset}_{task_name}_v{version}.ZTL
-2019-03-15 17:08:24,809 - DEBUG:978 - resolved path: assets/{sg_asset_type}/{Asset}
-2019-03-15 17:08:24,809 - DEBUG:975 - resolving iteration: assets/{sg_asset_type}/{Asset}/publish
-2019-03-15 17:08:24,809 - DEBUG:975 - resolving iteration: assets/{sg_asset_type}/{Asset}/publish/zbrush/{task_name}
-2019-03-15 17:08:24,809 - DEBUG:278 - PUBLISH AREA: assets/{sg_asset_type}/{Asset}/publish/zbrush/{task_name}
-2019-03-15 17:08:24,809 - DEBUG:948 - RESOLVED PATH: //skynet/jobs/stresstest/assets/char/Spider/tasks/design.remote/zbrush
-2019-03-15 17:08:24,825 - DEBUG:305 - GET FILES: ['//skynet/jobs/stresstest/assets/char/Spider/tasks/design.remote/zbrush\\Spider_design.remote_v001.ZTL', '//skynet/jobs/stresstest/assets/char/Spider/tasks/design.remote/zbrush\\Spider_design.remote_v002.ZTL', '//skynet/jobs/stresstest/assets/char/Spider/tasks/design.remote/zbrush\\Spider_design.remote_v003.ZTL'] 
-2019-03-15 17:08:24,825 - DEBUG:307 - last_file: //skynet/jobs/stresstest/assets/char/Spider/tasks/design.remote/zbrush\Spider_design.remote_v003.ZTL
-2019-03-15 17:08:24,825 - DEBUG:320 - VERSION: 4
-2019-03-15 17:08:24,825 - DEBUG:948 - RESOLVED PATH: //skynet/jobs/stresstest/assets/char/Spider/tasks/design.remote/zbrush/Spider_design.remote_v004.ZTL
-2019-03-15 17:08:24,825 - INFO:328 - Copying the file to the server...
-2019-03-15 17:08:25,739 - INFO:347 - The file is copied!  Prepping for publish!
-2019-03-15 17:08:25,739 - DEBUG:948 - RESOLVED PATH: //skynet/jobs/stresstest/assets/char/Spider/publish/zbrush/design.remote/Spider_design.remote_v004.ZTL
-2019-03-15 17:08:25,739 - DEBUG:380 - Publish Path: //skynet/jobs/stresstest/assets/char/Spider/publish/zbrush/design.remote/Spider_design.remote_v004.ZTL
-2019-03-15 17:08:25,739 - INFO:383 - Attempting to publish...
-2019-03-15 17:08:25,739 - INFO:827 - Copying file to the publish area...
-2019-03-15 17:08:26,894 - ERROR:387 - Publish failed for the following! '.ZTL'
-2019-03-15 17:08:26,894 - INFO:410 - Finished processing the file
-2019-03-15 17:08:26,894 - INFO:411 - ====================================================================================================
-2019-03-15 17:08:26,894 - DEBUG:1101 - Queued file: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\ASC_STTS_Spider_dsn_v001_20190312.jpg
-2019-03-15 17:08:30,894 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-03-15 17:08:30,894 - INFO:224 - NEW FILE PROCESSING...
-2019-03-15 17:08:30,894 - DEBUG:229 - PATH: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider
-2019-03-15 17:08:30,894 - DEBUG:234 - Relative Path: \stresstest\Spider
-2019-03-15 17:08:30,894 - DEBUG:242 - Project Details returns: project: stresstest ID: 362
-2019-03-15 17:08:30,894 - INFO:990 - Searching for Assets in \stresstest\Spider...
-2019-03-15 17:08:30,996 - DEBUG:1002 - Shotgun Returns: [{'code': 'Spider', 'type': 'Asset', 'id': 2471, 'sg_asset_type': 'char'}, {'code': 'roboLeg', 'type': 'Asset', 'id': 2780, 'sg_asset_type': 'prop'}, {'code': 'Demagorgon', 'type': 'Asset', 'id': 2854, 'sg_asset_type': 'char'}, {'code': 'reference', 'type': 'Asset', 'id': 2879, 'sg_asset_type': 'ref'}, {'code': 'Hallway', 'type': 'Asset', 'id': 2923, 'sg_asset_type': 'env'}, {'code': 'eyeBall', 'type': 'Asset', 'id': 2931, 'sg_asset_type': 'prop'}]
-2019-03-15 17:08:30,997 - DEBUG:1004 - Assets exist!  Finding our guy...
-2019-03-15 17:08:30,997 - DEBUG:1006 - Testing Spider IN \stresstest\Spider...
-2019-03-15 17:08:30,997 - INFO:1011 - Spider found in \stresstest\Spider
-2019-03-15 17:08:30,997 - INFO:254 - The Asset is found in the system! 2471: Spider
-2019-03-15 17:08:30,997 - DEBUG:255 - Asset type: char
-2019-03-15 17:08:31,098 - DEBUG:906 - TASKS RETURNS: [{'content': 'rig.main', 'step': {'type': 'Step', 'id': 11, 'name': 'rig'}, 'type': 'Task', 'id': 16799}, {'content': 'turntable.main', 'step': {'type': 'Step', 'id': 92, 'name': 'turntable'}, 'type': 'Task', 'id': 16800}, {'content': 'design.main', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 16801}, {'content': 'lookdev.main', 'step': {'type': 'Step', 'id': 12, 'name': 'lookdev'}, 'type': 'Task', 'id': 16802}, {'content': 'model.main', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 16803}, {'content': 'uv.main', 'step': {'type': 'Step', 'id': 64, 'name': 'uv'}, 'type': 'Task', 'id': 16804}, {'content': 'retopo.main', 'step': {'type': 'Step', 'id': 65, 'name': 'retopo'}, 'type': 'Task', 'id': 16805}, {'content': 'design_sculpt.main', 'step': {'type': 'Step', 'id': 67, 'name': 'design_sculpt'}, 'type': 'Task', 'id': 16806}, {'content': 'layout.main', 'step': {'type': 'Step', 'id': 86, 'name': 'layout'}, 'type': 'Task', 'id': 16807}, {'content': 'model.legs', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18016}, {'content': 'model.butt', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18017}, {'content': 'model.knees', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18018}, {'content': 'model.abs', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18019}, {'content': 'model.face', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18020}, {'content': 'model.lips', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18021}, {'content': 'model.nose', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18022}, {'content': 'model.eyes', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18023}, {'content': 'model.toes', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18024}, {'content': 'model.tongue', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18025}, {'content': 'model.teeth', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18027}, {'content': 'model.anus', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18028}, {'content': 'model.ribs', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18029}, {'content': 'model.thighs', 'step': {'type': 'Step', 'id': 10, 'name': 'model'}, 'type': 'Task', 'id': 18030}, {'content': 'design.remote', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 20923}]
-2019-03-15 17:08:31,098 - INFO:908 - Searching for remote task...
-2019-03-15 17:08:31,098 - INFO:911 - Task found!
-2019-03-15 17:08:31,098 - DEBUG:258 - Task ID returned: 20923
-2019-03-15 17:08:31,190 - DEBUG:262 - Configuration found: //skynet/tools/shotgun/stresstest
-2019-03-15 17:08:31,190 - DEBUG:394 - send_today_template: send/
-2019-03-15 17:08:31,190 - DEBUG:978 - resolved path: send/
-2019-03-15 17:08:31,190 - DEBUG:396 - RESOLVED send_today_template: send/
-2019-03-15 17:08:31,190 - DEBUG:398 - SEND TODAY PATH: \\skynet\jobs\stresstest\send/
-2019-03-15 17:08:31,190 - INFO:399 - Uploading for review ASC_STTS_Spider_dsn_v001_20190312
-2019-03-15 17:08:31,470 - DEBUG:481 - new_version RETURNS: {'code': 'ASC_STTS_Spider_dsn_v001_20190312.jpg', 'description': 'A remote file was detected in Dropbox and this version was created from it.', 'entity': {'type': 'Asset', 'id': 2471, 'name': 'Spider'}, 'project': {'type': 'Project', 'id': 362, 'name': 'StressTest'}, 'sg_status_list': 'rev', 'type': 'Version', 'id': 29150, 'sg_task': {'type': 'Task', 'id': 20923, 'name': 'design.remote'}}
-2019-03-15 17:08:33,592 - INFO:485 - New Version Created!
-2019-03-15 17:08:33,592 - DEBUG:401 - SEND: True
-2019-03-15 17:08:33,592 - INFO:501 - Getting the Send Today folder from the template...
-2019-03-15 17:08:33,592 - DEBUG:502 - INCOMING FILENAME: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\ASC_STTS_Spider_dsn_v001_20190312.jpg
-2019-03-15 17:08:33,592 - DEBUG:503 - INCOMING PATH: \\skynet\jobs\stresstest\send/
-2019-03-15 17:08:33,592 - DEBUG:509 - Collecting the Client Naming Convention...
-2019-03-15 17:08:33,690 - DEBUG:518 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-03-15 17:08:33,691 - DEBUG:635 - create_client_name PATH: \\skynet\jobs\stresstest\send/
-2019-03-15 17:08:33,691 - DEBUG:636 - create_client_name FILENAME: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Spider\ASC_STTS_Spider_dsn_v001_20190312.jpg
-2019-03-15 17:08:33,785 - INFO:715 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
-2019-03-15 17:08:33,785 - INFO:717 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-03-15 17:08:33,785 - INFO:732 - PADDING: 3
-2019-03-15 17:08:33,786 - INFO:739 - NEW NUM: None
-2019-03-15 17:08:33,786 - WARNING:742 - None detected for the version!  Attempting to correct...
-2019-03-15 17:08:33,786 - DEBUG:601 - Version Tool Activated!!
-2019-03-15 17:08:33,786 - DEBUG:604 - Path is discovered: \\skynet\jobs\stresstest\send/
-2019-03-15 17:08:33,786 - DEBUG:609 - BAD INDEX
-2019-03-15 17:08:33,786 - DEBUG:610 - find_file_version: []
-2019-03-15 17:08:33,786 - DEBUG:621 - Returning from Version Tools: 001
-2019-03-15 17:08:33,786 - INFO:746 - Corrected Version Number: 001
-2019-03-15 17:08:33,786 - DEBUG:747 - Replacing version in work fields...
-2019-03-15 17:08:33,786 - INFO:749 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
-2019-03-15 17:08:33,786 - INFO:757 - Tag Type: project_info
-2019-03-15 17:08:33,786 - INFO:758 - Tag Fields: []
-2019-03-15 17:08:33,786 - INFO:759 - Correlation: None
-2019-03-15 17:08:33,868 - INFO:778 - Project Info Tag: STTS
-2019-03-15 17:08:33,868 - INFO:757 - Tag Type: translator
-2019-03-15 17:08:33,868 - INFO:758 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
-2019-03-15 17:08:33,868 - INFO:759 - Correlation: {task_name}
-2019-03-15 17:08:33,960 - INFO:763 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
-2019-03-15 17:08:33,961 - INFO:757 - Tag Type: date
-2019-03-15 17:08:33,961 - INFO:758 - Tag Fields: []
-2019-03-15 17:08:33,961 - INFO:759 - Correlation: {timestamp}
-2019-03-15 17:08:33,961 - INFO:790 - YEAR: YYYY
-2019-03-15 17:08:33,961 - INFO:791 - YEAR_TAG: %Y
-2019-03-15 17:08:33,961 - INFO:796 - DATE: 20190315
-2019-03-15 17:08:33,961 - INFO:800 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190315'}
-2019-03-15 17:08:33,961 - DEBUG:803 - work_fields: {'code': 'STTS', 'Task': 'dsn', 'version': '001', 'Asset': 'Spider', 'YYYYMMDD': '20190315', 'sg_asset_type': 'char'}
-2019-03-15 17:08:33,961 - INFO:805 - NEW_NAME: ASC_STTS_Spider_dsn_v001_20190315
-2019-03-15 17:08:33,961 - DEBUG:530 - CLIENT NAME: ASC_STTS_Spider_dsn_v001_20190315
-2019-03-15 17:08:33,963 - DEBUG:601 - Version Tool Activated!!
-2019-03-15 17:08:33,963 - DEBUG:604 - Path is discovered: \\skynet\jobs\stresstest\send/2019-03-15\REMOTE\ASC_STTS_Spider_dsn_v001_20190315.jpg
-2019-03-15 17:08:33,963 - DEBUG:610 - find_file_version: v001
-2019-03-15 17:08:33,963 - DEBUG:616 - new_version: 1
-2019-03-15 17:08:33,963 - INFO:618 - NEW_NUM: 001
-2019-03-15 17:08:33,963 - DEBUG:621 - Returning from Version Tools: 001
-2019-03-15 17:08:33,963 - DEBUG:601 - Version Tool Activated!!
-2019-03-15 17:08:33,963 - DEBUG:604 - Path is discovered: \\skynet\jobs\stresstest\send/2019-03-15\REMOTE\ASC_STTS_Spider_dsn_v001_20190315.jpg
-2019-03-15 17:08:33,963 - DEBUG:610 - find_file_version: v001
-2019-03-15 17:08:33,963 - DEBUG:615 - version up: 2
-2019-03-15 17:08:33,963 - DEBUG:616 - new_version: 2
-2019-03-15 17:08:33,963 - INFO:618 - NEW_NUM: 002
-2019-03-15 17:08:33,963 - DEBUG:621 - Returning from Version Tools: 002
-2019-03-15 17:08:33,973 - DEBUG:408 - is_sent RETURNS: True
-2019-03-15 17:08:33,973 - INFO:410 - Finished processing the file
-2019-03-15 17:08:33,973 - INFO:411 - ====================================================================================================
+2019-04-12 16:35:27,414 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 17:37:06,322 - INFO:1177 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\eyeBall\TheAmazingAcrobaticDuo.jpg
+2019-04-12 17:37:06,322 - INFO:1028 - Attempting to get project details from the path...
+2019-04-12 17:37:06,655 - INFO:1193 - Opening config files...
+2019-04-12 17:37:07,096 - INFO:1177 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\eyeBall\TheLastBiteWasTooMuch_v003.jpg
+2019-04-12 17:37:07,096 - INFO:1028 - Attempting to get project details from the path...
+2019-04-12 17:37:07,309 - INFO:1193 - Opening config files...
+2019-04-12 17:37:07,428 - INFO:1177 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\eyeBall\ThisHappened v1.jpg
+2019-04-12 17:37:07,428 - INFO:1028 - Attempting to get project details from the path...
+2019-04-12 17:37:07,674 - INFO:1193 - Opening config files...
+2019-04-12 17:37:07,792 - INFO:1177 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\eyeBall\WorstHatEver.jpg
+2019-04-12 17:37:07,792 - INFO:1028 - Attempting to get project details from the path...
+2019-04-12 17:37:08,022 - INFO:1193 - Opening config files...
+2019-04-12 17:37:11,098 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-12 17:37:11,098 - INFO:224 - NEW FILE PROCESSING...
+2019-04-12 17:37:11,098 - INFO:994 - Searching for Assets in \stresstest\eyeBall...
+2019-04-12 17:37:11,213 - INFO:1015 - eyeBall found in \stresstest\eyeBall
+2019-04-12 17:37:11,213 - INFO:254 - The Asset is found in the system! 2931: eyeBall
+2019-04-12 17:37:11,331 - INFO:910 - Searching for remote task...
+2019-04-12 17:37:11,331 - INFO:913 - Task found!
+2019-04-12 17:37:11,434 - WARNING:971 - Unable to open main template. Alternate read template used.
+2019-04-12 17:37:11,434 - INFO:401 - Uploading for review TheAmazingAcrobaticDuo
+2019-04-12 17:37:13,826 - INFO:487 - New Version Created!
+2019-04-12 17:37:13,828 - INFO:503 - Getting the Send Today folder from the template...
+2019-04-12 17:37:14,063 - INFO:717 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-12 17:37:14,063 - INFO:719 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-12 17:37:14,063 - INFO:734 - PADDING: 3
+2019-04-12 17:37:14,063 - INFO:741 - NEW NUM: None
+2019-04-12 17:37:14,063 - WARNING:744 - None detected for the version!  Attempting to correct...
+2019-04-12 17:37:14,063 - INFO:748 - Corrected Version Number: 001
+2019-04-12 17:37:14,063 - INFO:751 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-12 17:37:14,063 - INFO:759 - Tag Type: project_info
+2019-04-12 17:37:14,065 - INFO:760 - Tag Fields: []
+2019-04-12 17:37:14,065 - INFO:761 - Correlation: None
+2019-04-12 17:37:14,176 - INFO:780 - Project Info Tag: STTS
+2019-04-12 17:37:14,176 - INFO:759 - Tag Type: translator
+2019-04-12 17:37:14,177 - INFO:760 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-12 17:37:14,177 - INFO:761 - Correlation: {task_name}
+2019-04-12 17:37:14,293 - INFO:765 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-12 17:37:14,293 - INFO:759 - Tag Type: date
+2019-04-12 17:37:14,293 - INFO:760 - Tag Fields: []
+2019-04-12 17:37:14,293 - INFO:761 - Correlation: {timestamp}
+2019-04-12 17:37:14,293 - INFO:792 - YEAR: YYYY
+2019-04-12 17:37:14,293 - INFO:793 - YEAR_TAG: %Y
+2019-04-12 17:37:14,295 - INFO:798 - DATE: 20190412
+2019-04-12 17:37:14,295 - INFO:802 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
+2019-04-12 17:37:14,295 - INFO:807 - NEW_NAME: ASC_STTS_eyeBall_dsn_v001_20190412
+2019-04-12 17:37:14,308 - INFO:412 - Finished processing the file
+2019-04-12 17:37:14,308 - INFO:413 - ====================================================================================================
+2019-04-12 17:37:18,309 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-12 17:37:18,309 - INFO:224 - NEW FILE PROCESSING...
+2019-04-12 17:37:18,309 - INFO:994 - Searching for Assets in \stresstest\eyeBall...
+2019-04-12 17:37:18,420 - INFO:1015 - eyeBall found in \stresstest\eyeBall
+2019-04-12 17:37:18,420 - INFO:254 - The Asset is found in the system! 2931: eyeBall
+2019-04-12 17:37:18,530 - INFO:910 - Searching for remote task...
+2019-04-12 17:37:18,530 - INFO:913 - Task found!
+2019-04-12 17:37:18,637 - WARNING:971 - Unable to open main template. Alternate read template used.
+2019-04-12 17:37:18,637 - INFO:401 - Uploading for review TheLastBiteWasTooMuch_v003
+2019-04-12 17:37:20,888 - INFO:487 - New Version Created!
+2019-04-12 17:37:20,888 - INFO:503 - Getting the Send Today folder from the template...
+2019-04-12 17:37:21,147 - INFO:717 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-12 17:37:21,147 - INFO:719 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-12 17:37:21,147 - INFO:734 - PADDING: 3
+2019-04-12 17:37:21,147 - INFO:741 - NEW NUM: None
+2019-04-12 17:37:21,147 - WARNING:744 - None detected for the version!  Attempting to correct...
+2019-04-12 17:37:21,147 - INFO:748 - Corrected Version Number: 001
+2019-04-12 17:37:21,147 - INFO:751 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-12 17:37:21,147 - INFO:759 - Tag Type: project_info
+2019-04-12 17:37:21,147 - INFO:760 - Tag Fields: []
+2019-04-12 17:37:21,147 - INFO:761 - Correlation: None
+2019-04-12 17:37:21,256 - INFO:780 - Project Info Tag: STTS
+2019-04-12 17:37:21,256 - INFO:759 - Tag Type: translator
+2019-04-12 17:37:21,256 - INFO:760 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-12 17:37:21,256 - INFO:761 - Correlation: {task_name}
+2019-04-12 17:37:21,380 - INFO:765 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-12 17:37:21,380 - INFO:759 - Tag Type: date
+2019-04-12 17:37:21,380 - INFO:760 - Tag Fields: []
+2019-04-12 17:37:21,380 - INFO:761 - Correlation: {timestamp}
+2019-04-12 17:37:21,380 - INFO:792 - YEAR: YYYY
+2019-04-12 17:37:21,380 - INFO:793 - YEAR_TAG: %Y
+2019-04-12 17:37:21,380 - INFO:798 - DATE: 20190412
+2019-04-12 17:37:21,380 - INFO:802 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
+2019-04-12 17:37:21,381 - INFO:807 - NEW_NAME: ASC_STTS_eyeBall_dsn_v001_20190412
+2019-04-12 17:37:21,381 - INFO:620 - NEW_NUM: 001
+2019-04-12 17:37:21,381 - INFO:620 - NEW_NUM: 002
+2019-04-12 17:37:21,395 - INFO:412 - Finished processing the file
+2019-04-12 17:37:21,395 - INFO:413 - ====================================================================================================
+2019-04-12 17:37:25,397 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-12 17:37:25,397 - INFO:224 - NEW FILE PROCESSING...
+2019-04-12 17:37:25,397 - INFO:994 - Searching for Assets in \stresstest\eyeBall...
+2019-04-12 17:37:25,513 - INFO:1015 - eyeBall found in \stresstest\eyeBall
+2019-04-12 17:37:25,513 - INFO:254 - The Asset is found in the system! 2931: eyeBall
+2019-04-12 17:37:25,641 - INFO:910 - Searching for remote task...
+2019-04-12 17:37:25,641 - INFO:913 - Task found!
+2019-04-12 17:37:25,778 - WARNING:971 - Unable to open main template. Alternate read template used.
+2019-04-12 17:37:25,778 - INFO:401 - Uploading for review ThisHappened v1
+2019-04-12 17:37:28,428 - INFO:487 - New Version Created!
+2019-04-12 17:37:28,428 - INFO:503 - Getting the Send Today folder from the template...
+2019-04-12 17:37:28,650 - INFO:717 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-12 17:37:28,650 - INFO:719 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-12 17:37:28,650 - INFO:734 - PADDING: 3
+2019-04-12 17:37:28,650 - INFO:741 - NEW NUM: None
+2019-04-12 17:37:28,650 - WARNING:744 - None detected for the version!  Attempting to correct...
+2019-04-12 17:37:28,650 - INFO:748 - Corrected Version Number: 001
+2019-04-12 17:37:28,651 - INFO:751 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-12 17:37:28,651 - INFO:759 - Tag Type: project_info
+2019-04-12 17:37:28,651 - INFO:760 - Tag Fields: []
+2019-04-12 17:37:28,651 - INFO:761 - Correlation: None
+2019-04-12 17:37:28,765 - INFO:780 - Project Info Tag: STTS
+2019-04-12 17:37:28,765 - INFO:759 - Tag Type: translator
+2019-04-12 17:37:28,765 - INFO:760 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-12 17:37:28,765 - INFO:761 - Correlation: {task_name}
+2019-04-12 17:37:28,878 - INFO:765 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-12 17:37:28,878 - INFO:759 - Tag Type: date
+2019-04-12 17:37:28,878 - INFO:760 - Tag Fields: []
+2019-04-12 17:37:28,878 - INFO:761 - Correlation: {timestamp}
+2019-04-12 17:37:28,878 - INFO:792 - YEAR: YYYY
+2019-04-12 17:37:28,878 - INFO:793 - YEAR_TAG: %Y
+2019-04-12 17:37:28,878 - INFO:798 - DATE: 20190412
+2019-04-12 17:37:28,878 - INFO:802 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
+2019-04-12 17:37:28,878 - INFO:807 - NEW_NAME: ASC_STTS_eyeBall_dsn_v001_20190412
+2019-04-12 17:37:28,881 - INFO:620 - NEW_NUM: 001
+2019-04-12 17:37:28,881 - INFO:620 - NEW_NUM: 002
+2019-04-12 17:37:28,895 - INFO:412 - Finished processing the file
+2019-04-12 17:37:28,895 - INFO:413 - ====================================================================================================
+2019-04-12 17:37:32,898 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-12 17:37:32,898 - INFO:224 - NEW FILE PROCESSING...
+2019-04-12 17:37:32,898 - INFO:994 - Searching for Assets in \stresstest\eyeBall...
+2019-04-12 17:37:33,003 - INFO:1015 - eyeBall found in \stresstest\eyeBall
+2019-04-12 17:37:33,003 - INFO:254 - The Asset is found in the system! 2931: eyeBall
+2019-04-12 17:37:33,128 - INFO:910 - Searching for remote task...
+2019-04-12 17:37:33,128 - INFO:913 - Task found!
+2019-04-12 17:37:33,219 - WARNING:971 - Unable to open main template. Alternate read template used.
+2019-04-12 17:37:33,219 - INFO:401 - Uploading for review WorstHatEver
+2019-04-12 17:37:35,726 - INFO:487 - New Version Created!
+2019-04-12 17:37:35,726 - INFO:503 - Getting the Send Today folder from the template...
+2019-04-12 17:37:35,961 - INFO:717 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-12 17:37:35,961 - INFO:719 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-12 17:37:35,961 - INFO:734 - PADDING: 3
+2019-04-12 17:37:35,961 - INFO:741 - NEW NUM: None
+2019-04-12 17:37:35,963 - WARNING:744 - None detected for the version!  Attempting to correct...
+2019-04-12 17:37:35,963 - INFO:748 - Corrected Version Number: 001
+2019-04-12 17:37:35,963 - INFO:751 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-12 17:37:35,963 - INFO:759 - Tag Type: project_info
+2019-04-12 17:37:35,963 - INFO:760 - Tag Fields: []
+2019-04-12 17:37:35,963 - INFO:761 - Correlation: None
+2019-04-12 17:37:36,086 - INFO:780 - Project Info Tag: STTS
+2019-04-12 17:37:36,086 - INFO:759 - Tag Type: translator
+2019-04-12 17:37:36,086 - INFO:760 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-12 17:37:36,086 - INFO:761 - Correlation: {task_name}
+2019-04-12 17:37:36,197 - INFO:765 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-12 17:37:36,197 - INFO:759 - Tag Type: date
+2019-04-12 17:37:36,197 - INFO:760 - Tag Fields: []
+2019-04-12 17:37:36,197 - INFO:761 - Correlation: {timestamp}
+2019-04-12 17:37:36,197 - INFO:792 - YEAR: YYYY
+2019-04-12 17:37:36,197 - INFO:793 - YEAR_TAG: %Y
+2019-04-12 17:37:36,197 - INFO:798 - DATE: 20190412
+2019-04-12 17:37:36,197 - INFO:802 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
+2019-04-12 17:37:36,197 - INFO:807 - NEW_NAME: ASC_STTS_eyeBall_dsn_v001_20190412
+2019-04-12 17:37:36,198 - INFO:620 - NEW_NUM: 001
+2019-04-12 17:37:36,198 - INFO:620 - NEW_NUM: 002
+2019-04-12 17:37:36,549 - INFO:412 - Finished processing the file
+2019-04-12 17:37:36,549 - INFO:413 - ====================================================================================================
+2019-04-12 18:03:52,730 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:05:56,213 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
+2019-04-12 18:05:56,213 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:05:56,530 - INFO:1199 - Opening config files...
+2019-04-12 18:06:00,750 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-12 18:06:00,750 - INFO:224 - NEW FILE PROCESSING...
+2019-04-12 18:06:00,750 - INFO:1000 - Searching for Assets in \stresstest\Demagorgon...
+2019-04-12 18:06:00,844 - INFO:1021 - Demagorgon found in \stresstest\Demagorgon
+2019-04-12 18:06:00,844 - INFO:254 - The Asset is found in the system! 2854: Demagorgon
+2019-04-12 18:06:00,933 - INFO:916 - Searching for remote task...
+2019-04-12 18:06:00,933 - INFO:919 - Task found!
+2019-04-12 18:06:01,026 - WARNING:977 - Unable to open main template. Alternate read template used.
+2019-04-12 18:06:01,026 - INFO:403 - Uploading for review tapeworm_v001
+2019-04-12 18:06:03,088 - INFO:490 - New Version Created!
+2019-04-12 18:06:03,088 - INFO:507 - Getting the Send Today folder from the template...
+2019-04-12 18:06:03,267 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-12 18:06:03,267 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-12 18:06:03,267 - INFO:738 - PADDING: 3
+2019-04-12 18:06:03,267 - INFO:745 - NEW NUM: None
+2019-04-12 18:06:03,269 - WARNING:748 - None detected for the version!  Attempting to correct...
+2019-04-12 18:06:03,269 - INFO:752 - Corrected Version Number: 001
+2019-04-12 18:06:03,269 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-12 18:06:03,269 - INFO:763 - Tag Type: project_info
+2019-04-12 18:06:03,269 - INFO:764 - Tag Fields: []
+2019-04-12 18:06:03,269 - INFO:765 - Correlation: None
+2019-04-12 18:06:03,345 - INFO:784 - Project Info Tag: STTS
+2019-04-12 18:06:03,345 - INFO:763 - Tag Type: translator
+2019-04-12 18:06:03,345 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-12 18:06:03,345 - INFO:765 - Correlation: {task_name}
+2019-04-12 18:06:03,437 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-12 18:06:03,437 - INFO:763 - Tag Type: date
+2019-04-12 18:06:03,437 - INFO:764 - Tag Fields: []
+2019-04-12 18:06:03,437 - INFO:765 - Correlation: {timestamp}
+2019-04-12 18:06:03,437 - INFO:796 - YEAR: YYYY
+2019-04-12 18:06:03,437 - INFO:797 - YEAR_TAG: %Y
+2019-04-12 18:06:03,437 - INFO:802 - DATE: 20190412
+2019-04-12 18:06:03,437 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
+2019-04-12 18:06:03,437 - INFO:811 - NEW_NAME: ASC_STTS_Demagorgon_dsn_v001_20190412
+2019-04-12 18:06:03,448 - INFO:414 - Finished processing the file
+2019-04-12 18:06:03,448 - INFO:415 - ====================================================================================================
+2019-04-12 18:10:09,053 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\TheAmazingAcrobaticDuo.jpg
+2019-04-12 18:10:09,053 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:10:09,344 - INFO:1199 - Opening config files...
+2019-04-12 18:10:54,267 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:11:42,901 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\ItSaidNoSmoking_v004.jpg
+2019-04-12 18:11:42,901 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:11:43,127 - INFO:1199 - Opening config files...
+2019-04-12 18:11:47,335 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-12 18:11:47,335 - INFO:224 - NEW FILE PROCESSING...
+2019-04-12 18:11:47,335 - INFO:1000 - Searching for Assets in \stresstest\Demagorgon...
+2019-04-12 18:11:47,441 - INFO:1021 - Demagorgon found in \stresstest\Demagorgon
+2019-04-12 18:11:47,443 - INFO:254 - The Asset is found in the system! 2854: Demagorgon
+2019-04-12 18:11:47,562 - INFO:916 - Searching for remote task...
+2019-04-12 18:11:47,562 - INFO:919 - Task found!
+2019-04-12 18:11:47,661 - WARNING:977 - Unable to open main template. Alternate read template used.
+2019-04-12 18:11:47,661 - INFO:403 - Uploading for review ItSaidNoSmoking_v004
+2019-04-12 18:11:50,296 - INFO:490 - New Version Created!
+2019-04-12 18:11:50,296 - INFO:507 - Getting the Send Today folder from the template...
+2019-04-12 18:11:50,509 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-12 18:11:50,509 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-12 18:11:50,509 - INFO:738 - PADDING: 3
+2019-04-12 18:11:50,509 - INFO:745 - NEW NUM: None
+2019-04-12 18:11:50,509 - WARNING:748 - None detected for the version!  Attempting to correct...
+2019-04-12 18:11:50,510 - INFO:752 - Corrected Version Number: 001
+2019-04-12 18:11:50,510 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-12 18:11:50,510 - INFO:763 - Tag Type: project_info
+2019-04-12 18:11:50,510 - INFO:764 - Tag Fields: []
+2019-04-12 18:11:50,510 - INFO:765 - Correlation: None
+2019-04-12 18:11:50,599 - INFO:784 - Project Info Tag: STTS
+2019-04-12 18:11:50,601 - INFO:763 - Tag Type: translator
+2019-04-12 18:11:50,601 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-12 18:11:50,601 - INFO:765 - Correlation: {task_name}
+2019-04-12 18:11:50,700 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-12 18:11:50,700 - INFO:763 - Tag Type: date
+2019-04-12 18:11:50,700 - INFO:764 - Tag Fields: []
+2019-04-12 18:11:50,700 - INFO:765 - Correlation: {timestamp}
+2019-04-12 18:11:50,700 - INFO:796 - YEAR: YYYY
+2019-04-12 18:11:50,700 - INFO:797 - YEAR_TAG: %Y
+2019-04-12 18:11:50,700 - INFO:802 - DATE: 20190412
+2019-04-12 18:11:50,700 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
+2019-04-12 18:11:50,700 - INFO:811 - NEW_NAME: ASC_STTS_Demagorgon_dsn_v001_20190412
+2019-04-12 18:11:50,703 - INFO:624 - NEW_NUM: 001
+2019-04-12 18:11:50,703 - INFO:624 - NEW_NUM: 002
+2019-04-12 18:11:50,723 - INFO:414 - Finished processing the file
+2019-04-12 18:11:50,723 - INFO:415 - ====================================================================================================
+2019-04-12 18:12:04,631 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\BuriedTreasure.jpg
+2019-04-12 18:12:04,631 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:12:04,828 - INFO:1199 - Opening config files...
+2019-04-12 18:12:08,953 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-12 18:12:08,953 - INFO:224 - NEW FILE PROCESSING...
+2019-04-12 18:12:08,953 - INFO:1000 - Searching for Assets in \stresstest\Demagorgon...
+2019-04-12 18:12:09,046 - INFO:1021 - Demagorgon found in \stresstest\Demagorgon
+2019-04-12 18:12:09,046 - INFO:254 - The Asset is found in the system! 2854: Demagorgon
+2019-04-12 18:12:09,158 - INFO:916 - Searching for remote task...
+2019-04-12 18:12:09,158 - INFO:919 - Task found!
+2019-04-12 18:12:09,292 - WARNING:977 - Unable to open main template. Alternate read template used.
+2019-04-12 18:12:09,292 - INFO:403 - Uploading for review BuriedTreasure
+2019-04-12 18:12:11,428 - INFO:490 - New Version Created!
+2019-04-12 18:12:11,428 - INFO:507 - Getting the Send Today folder from the template...
+2019-04-12 18:12:11,615 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-12 18:12:11,615 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-12 18:12:11,615 - INFO:738 - PADDING: 3
+2019-04-12 18:12:11,615 - INFO:745 - NEW NUM: None
+2019-04-12 18:12:11,615 - WARNING:748 - None detected for the version!  Attempting to correct...
+2019-04-12 18:12:11,615 - INFO:752 - Corrected Version Number: 001
+2019-04-12 18:12:11,615 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-12 18:12:11,615 - INFO:763 - Tag Type: project_info
+2019-04-12 18:12:11,615 - INFO:764 - Tag Fields: []
+2019-04-12 18:12:11,615 - INFO:765 - Correlation: None
+2019-04-12 18:12:11,711 - INFO:784 - Project Info Tag: STTS
+2019-04-12 18:12:11,711 - INFO:763 - Tag Type: translator
+2019-04-12 18:12:11,711 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-12 18:12:11,711 - INFO:765 - Correlation: {task_name}
+2019-04-12 18:12:11,805 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-12 18:12:11,805 - INFO:763 - Tag Type: date
+2019-04-12 18:12:11,805 - INFO:764 - Tag Fields: []
+2019-04-12 18:12:11,805 - INFO:765 - Correlation: {timestamp}
+2019-04-12 18:12:11,806 - INFO:796 - YEAR: YYYY
+2019-04-12 18:12:11,806 - INFO:797 - YEAR_TAG: %Y
+2019-04-12 18:12:11,806 - INFO:802 - DATE: 20190412
+2019-04-12 18:12:11,806 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
+2019-04-12 18:12:11,806 - INFO:811 - NEW_NAME: ASC_STTS_Demagorgon_dsn_v001_20190412
+2019-04-12 18:12:11,809 - INFO:624 - NEW_NUM: 001
+2019-04-12 18:12:11,809 - INFO:624 - NEW_NUM: 002
+2019-04-12 18:12:11,818 - INFO:414 - Finished processing the file
+2019-04-12 18:12:11,818 - INFO:415 - ====================================================================================================
+2019-04-12 18:12:36,398 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
+2019-04-12 18:12:36,398 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:12:36,605 - INFO:1199 - Opening config files...
+2019-04-12 18:12:40,729 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-12 18:12:40,729 - INFO:224 - NEW FILE PROCESSING...
+2019-04-12 18:12:40,729 - INFO:1000 - Searching for Assets in \stresstest\Demagorgon...
+2019-04-12 18:12:40,813 - INFO:1021 - Demagorgon found in \stresstest\Demagorgon
+2019-04-12 18:12:40,813 - INFO:254 - The Asset is found in the system! 2854: Demagorgon
+2019-04-12 18:12:40,923 - INFO:916 - Searching for remote task...
+2019-04-12 18:12:40,924 - INFO:919 - Task found!
+2019-04-12 18:12:41,045 - WARNING:977 - Unable to open main template. Alternate read template used.
+2019-04-12 18:12:41,045 - INFO:403 - Uploading for review tapeworm_v001
+2019-04-12 18:12:43,355 - INFO:490 - New Version Created!
+2019-04-12 18:12:43,357 - INFO:507 - Getting the Send Today folder from the template...
+2019-04-12 18:12:43,586 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-12 18:12:43,586 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-12 18:12:43,586 - INFO:738 - PADDING: 3
+2019-04-12 18:12:43,586 - INFO:745 - NEW NUM: None
+2019-04-12 18:12:43,586 - WARNING:748 - None detected for the version!  Attempting to correct...
+2019-04-12 18:12:43,588 - INFO:752 - Corrected Version Number: 001
+2019-04-12 18:12:43,588 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-12 18:12:43,588 - INFO:763 - Tag Type: project_info
+2019-04-12 18:12:43,588 - INFO:764 - Tag Fields: []
+2019-04-12 18:12:43,588 - INFO:765 - Correlation: None
+2019-04-12 18:12:43,684 - INFO:784 - Project Info Tag: STTS
+2019-04-12 18:12:43,684 - INFO:763 - Tag Type: translator
+2019-04-12 18:12:43,684 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-12 18:12:43,684 - INFO:765 - Correlation: {task_name}
+2019-04-12 18:12:43,773 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-12 18:12:43,773 - INFO:763 - Tag Type: date
+2019-04-12 18:12:43,773 - INFO:764 - Tag Fields: []
+2019-04-12 18:12:43,773 - INFO:765 - Correlation: {timestamp}
+2019-04-12 18:12:43,773 - INFO:796 - YEAR: YYYY
+2019-04-12 18:12:43,773 - INFO:797 - YEAR_TAG: %Y
+2019-04-12 18:12:43,773 - INFO:802 - DATE: 20190412
+2019-04-12 18:12:43,773 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
+2019-04-12 18:12:43,773 - INFO:811 - NEW_NAME: ASC_STTS_Demagorgon_dsn_v001_20190412
+2019-04-12 18:12:43,776 - INFO:624 - NEW_NUM: 001
+2019-04-12 18:12:43,776 - INFO:624 - NEW_NUM: 002
+2019-04-12 18:12:43,786 - INFO:414 - Finished processing the file
+2019-04-12 18:12:43,786 - INFO:415 - ====================================================================================================
+2019-04-12 18:13:45,842 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:14:08,358 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\TheLastBiteWasTooMuch_v003.jpg
+2019-04-12 18:14:08,358 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:14:08,562 - INFO:1199 - Opening config files...
+2019-04-12 18:14:12,762 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-12 18:14:12,762 - INFO:224 - NEW FILE PROCESSING...
+2019-04-12 18:14:12,762 - INFO:1000 - Searching for Assets in \stresstest\Demagorgon...
+2019-04-12 18:14:12,842 - INFO:1021 - Demagorgon found in \stresstest\Demagorgon
+2019-04-12 18:14:12,842 - INFO:254 - The Asset is found in the system! 2854: Demagorgon
+2019-04-12 18:14:12,934 - INFO:916 - Searching for remote task...
+2019-04-12 18:14:12,934 - INFO:919 - Task found!
+2019-04-12 18:14:13,032 - WARNING:977 - Unable to open main template. Alternate read template used.
+2019-04-12 18:14:13,032 - INFO:403 - Uploading for review TheLastBiteWasTooMuch_v003
+2019-04-12 18:14:15,420 - INFO:490 - New Version Created!
+2019-04-12 18:14:15,420 - INFO:507 - Getting the Send Today folder from the template...
+2019-04-12 18:14:15,638 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-12 18:14:15,638 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-12 18:14:15,638 - INFO:738 - PADDING: 3
+2019-04-12 18:14:15,638 - INFO:745 - NEW NUM: None
+2019-04-12 18:14:15,638 - WARNING:748 - None detected for the version!  Attempting to correct...
+2019-04-12 18:14:15,638 - INFO:752 - Corrected Version Number: 001
+2019-04-12 18:14:15,638 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-12 18:14:15,640 - INFO:763 - Tag Type: project_info
+2019-04-12 18:14:15,640 - INFO:764 - Tag Fields: []
+2019-04-12 18:14:15,640 - INFO:765 - Correlation: None
+2019-04-12 18:14:15,737 - INFO:784 - Project Info Tag: STTS
+2019-04-12 18:14:15,737 - INFO:763 - Tag Type: translator
+2019-04-12 18:14:15,737 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-12 18:14:15,737 - INFO:765 - Correlation: {task_name}
+2019-04-12 18:14:15,832 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-12 18:14:15,832 - INFO:763 - Tag Type: date
+2019-04-12 18:14:15,832 - INFO:764 - Tag Fields: []
+2019-04-12 18:14:15,832 - INFO:765 - Correlation: {timestamp}
+2019-04-12 18:14:15,832 - INFO:796 - YEAR: YYYY
+2019-04-12 18:14:15,832 - INFO:797 - YEAR_TAG: %Y
+2019-04-12 18:14:15,832 - INFO:802 - DATE: 20190412
+2019-04-12 18:14:15,832 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
+2019-04-12 18:14:15,832 - INFO:811 - NEW_NAME: ASC_STTS_Demagorgon_dsn_v001_20190412
+2019-04-12 18:14:15,835 - INFO:624 - NEW_NUM: 001
+2019-04-12 18:14:15,835 - INFO:624 - NEW_NUM: 002
+2019-04-12 18:14:15,848 - INFO:414 - Finished processing the file
+2019-04-12 18:14:15,848 - INFO:415 - ====================================================================================================
+2019-04-12 18:28:10,625 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:28:34,740 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
+2019-04-12 18:28:34,740 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:28:34,933 - INFO:1199 - Opening config files...
+2019-04-12 18:31:33,920 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:31:53,079 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
+2019-04-12 18:31:53,079 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:31:53,286 - INFO:1199 - Opening config files...
+2019-04-12 18:33:53,937 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:34:03,785 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
+2019-04-12 18:34:03,785 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:34:03,971 - INFO:1199 - Opening config files...
+2019-04-12 18:34:59,980 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:35:10,178 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\PIXNIO-283135-4560x3044.jpg
+2019-04-12 18:35:10,178 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:35:10,378 - INFO:1199 - Opening config files...
+2019-04-12 18:35:52,299 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:36:38,976 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:37:07,086 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\ItSaidNoSmoking_v004.jpg
+2019-04-12 18:37:07,088 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:37:07,292 - INFO:1199 - Opening config files...
+2019-04-12 18:38:54,923 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:39:58,908 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\ItSaidNoSmoking_v004.jpg
+2019-04-12 18:39:58,908 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:39:59,209 - INFO:1199 - Opening config files...
+2019-04-12 18:40:41,357 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-12 18:40:54,553 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
+2019-04-12 18:40:54,553 - INFO:1034 - Attempting to get project details from the path...
+2019-04-12 18:40:54,749 - INFO:1199 - Opening config files...

@@ -24,7 +24,7 @@ import psd_tools as psd
 import shotgun_api3
 
 # Build Shotgun Connection
-sg_url = 'https://asc.shotgunstudio.com'
+sg_url = 'https://radiowaves.shotgunstudio.com'
 sg_name = 'remoteAutoPublisher'
 sg_key = '&pmudbcro6esChtccfurpnxwp'
 sg = shotgun_api3.Shotgun(sg_url, sg_name, sg_key)
