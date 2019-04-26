@@ -1,401 +1,592 @@
-2019-04-12 16:35:27,414 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 17:37:06,322 - INFO:1177 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\eyeBall\TheAmazingAcrobaticDuo.jpg
-2019-04-12 17:37:06,322 - INFO:1028 - Attempting to get project details from the path...
-2019-04-12 17:37:06,655 - INFO:1193 - Opening config files...
-2019-04-12 17:37:07,096 - INFO:1177 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\eyeBall\TheLastBiteWasTooMuch_v003.jpg
-2019-04-12 17:37:07,096 - INFO:1028 - Attempting to get project details from the path...
-2019-04-12 17:37:07,309 - INFO:1193 - Opening config files...
-2019-04-12 17:37:07,428 - INFO:1177 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\eyeBall\ThisHappened v1.jpg
-2019-04-12 17:37:07,428 - INFO:1028 - Attempting to get project details from the path...
-2019-04-12 17:37:07,674 - INFO:1193 - Opening config files...
-2019-04-12 17:37:07,792 - INFO:1177 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\eyeBall\WorstHatEver.jpg
-2019-04-12 17:37:07,792 - INFO:1028 - Attempting to get project details from the path...
-2019-04-12 17:37:08,022 - INFO:1193 - Opening config files...
-2019-04-12 17:37:11,098 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-04-12 17:37:11,098 - INFO:224 - NEW FILE PROCESSING...
-2019-04-12 17:37:11,098 - INFO:994 - Searching for Assets in \stresstest\eyeBall...
-2019-04-12 17:37:11,213 - INFO:1015 - eyeBall found in \stresstest\eyeBall
-2019-04-12 17:37:11,213 - INFO:254 - The Asset is found in the system! 2931: eyeBall
-2019-04-12 17:37:11,331 - INFO:910 - Searching for remote task...
-2019-04-12 17:37:11,331 - INFO:913 - Task found!
-2019-04-12 17:37:11,434 - WARNING:971 - Unable to open main template. Alternate read template used.
-2019-04-12 17:37:11,434 - INFO:401 - Uploading for review TheAmazingAcrobaticDuo
-2019-04-12 17:37:13,826 - INFO:487 - New Version Created!
-2019-04-12 17:37:13,828 - INFO:503 - Getting the Send Today folder from the template...
-2019-04-12 17:37:14,063 - INFO:717 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
-2019-04-12 17:37:14,063 - INFO:719 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-04-12 17:37:14,063 - INFO:734 - PADDING: 3
-2019-04-12 17:37:14,063 - INFO:741 - NEW NUM: None
-2019-04-12 17:37:14,063 - WARNING:744 - None detected for the version!  Attempting to correct...
-2019-04-12 17:37:14,063 - INFO:748 - Corrected Version Number: 001
-2019-04-12 17:37:14,063 - INFO:751 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
-2019-04-12 17:37:14,063 - INFO:759 - Tag Type: project_info
-2019-04-12 17:37:14,065 - INFO:760 - Tag Fields: []
-2019-04-12 17:37:14,065 - INFO:761 - Correlation: None
-2019-04-12 17:37:14,176 - INFO:780 - Project Info Tag: STTS
-2019-04-12 17:37:14,176 - INFO:759 - Tag Type: translator
-2019-04-12 17:37:14,177 - INFO:760 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
-2019-04-12 17:37:14,177 - INFO:761 - Correlation: {task_name}
-2019-04-12 17:37:14,293 - INFO:765 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
-2019-04-12 17:37:14,293 - INFO:759 - Tag Type: date
-2019-04-12 17:37:14,293 - INFO:760 - Tag Fields: []
-2019-04-12 17:37:14,293 - INFO:761 - Correlation: {timestamp}
-2019-04-12 17:37:14,293 - INFO:792 - YEAR: YYYY
-2019-04-12 17:37:14,293 - INFO:793 - YEAR_TAG: %Y
-2019-04-12 17:37:14,295 - INFO:798 - DATE: 20190412
-2019-04-12 17:37:14,295 - INFO:802 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
-2019-04-12 17:37:14,295 - INFO:807 - NEW_NAME: ASC_STTS_eyeBall_dsn_v001_20190412
-2019-04-12 17:37:14,308 - INFO:412 - Finished processing the file
-2019-04-12 17:37:14,308 - INFO:413 - ====================================================================================================
-2019-04-12 17:37:18,309 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-04-12 17:37:18,309 - INFO:224 - NEW FILE PROCESSING...
-2019-04-12 17:37:18,309 - INFO:994 - Searching for Assets in \stresstest\eyeBall...
-2019-04-12 17:37:18,420 - INFO:1015 - eyeBall found in \stresstest\eyeBall
-2019-04-12 17:37:18,420 - INFO:254 - The Asset is found in the system! 2931: eyeBall
-2019-04-12 17:37:18,530 - INFO:910 - Searching for remote task...
-2019-04-12 17:37:18,530 - INFO:913 - Task found!
-2019-04-12 17:37:18,637 - WARNING:971 - Unable to open main template. Alternate read template used.
-2019-04-12 17:37:18,637 - INFO:401 - Uploading for review TheLastBiteWasTooMuch_v003
-2019-04-12 17:37:20,888 - INFO:487 - New Version Created!
-2019-04-12 17:37:20,888 - INFO:503 - Getting the Send Today folder from the template...
-2019-04-12 17:37:21,147 - INFO:717 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
-2019-04-12 17:37:21,147 - INFO:719 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-04-12 17:37:21,147 - INFO:734 - PADDING: 3
-2019-04-12 17:37:21,147 - INFO:741 - NEW NUM: None
-2019-04-12 17:37:21,147 - WARNING:744 - None detected for the version!  Attempting to correct...
-2019-04-12 17:37:21,147 - INFO:748 - Corrected Version Number: 001
-2019-04-12 17:37:21,147 - INFO:751 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
-2019-04-12 17:37:21,147 - INFO:759 - Tag Type: project_info
-2019-04-12 17:37:21,147 - INFO:760 - Tag Fields: []
-2019-04-12 17:37:21,147 - INFO:761 - Correlation: None
-2019-04-12 17:37:21,256 - INFO:780 - Project Info Tag: STTS
-2019-04-12 17:37:21,256 - INFO:759 - Tag Type: translator
-2019-04-12 17:37:21,256 - INFO:760 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
-2019-04-12 17:37:21,256 - INFO:761 - Correlation: {task_name}
-2019-04-12 17:37:21,380 - INFO:765 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
-2019-04-12 17:37:21,380 - INFO:759 - Tag Type: date
-2019-04-12 17:37:21,380 - INFO:760 - Tag Fields: []
-2019-04-12 17:37:21,380 - INFO:761 - Correlation: {timestamp}
-2019-04-12 17:37:21,380 - INFO:792 - YEAR: YYYY
-2019-04-12 17:37:21,380 - INFO:793 - YEAR_TAG: %Y
-2019-04-12 17:37:21,380 - INFO:798 - DATE: 20190412
-2019-04-12 17:37:21,380 - INFO:802 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
-2019-04-12 17:37:21,381 - INFO:807 - NEW_NAME: ASC_STTS_eyeBall_dsn_v001_20190412
-2019-04-12 17:37:21,381 - INFO:620 - NEW_NUM: 001
-2019-04-12 17:37:21,381 - INFO:620 - NEW_NUM: 002
-2019-04-12 17:37:21,395 - INFO:412 - Finished processing the file
-2019-04-12 17:37:21,395 - INFO:413 - ====================================================================================================
-2019-04-12 17:37:25,397 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-04-12 17:37:25,397 - INFO:224 - NEW FILE PROCESSING...
-2019-04-12 17:37:25,397 - INFO:994 - Searching for Assets in \stresstest\eyeBall...
-2019-04-12 17:37:25,513 - INFO:1015 - eyeBall found in \stresstest\eyeBall
-2019-04-12 17:37:25,513 - INFO:254 - The Asset is found in the system! 2931: eyeBall
-2019-04-12 17:37:25,641 - INFO:910 - Searching for remote task...
-2019-04-12 17:37:25,641 - INFO:913 - Task found!
-2019-04-12 17:37:25,778 - WARNING:971 - Unable to open main template. Alternate read template used.
-2019-04-12 17:37:25,778 - INFO:401 - Uploading for review ThisHappened v1
-2019-04-12 17:37:28,428 - INFO:487 - New Version Created!
-2019-04-12 17:37:28,428 - INFO:503 - Getting the Send Today folder from the template...
-2019-04-12 17:37:28,650 - INFO:717 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
-2019-04-12 17:37:28,650 - INFO:719 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-04-12 17:37:28,650 - INFO:734 - PADDING: 3
-2019-04-12 17:37:28,650 - INFO:741 - NEW NUM: None
-2019-04-12 17:37:28,650 - WARNING:744 - None detected for the version!  Attempting to correct...
-2019-04-12 17:37:28,650 - INFO:748 - Corrected Version Number: 001
-2019-04-12 17:37:28,651 - INFO:751 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
-2019-04-12 17:37:28,651 - INFO:759 - Tag Type: project_info
-2019-04-12 17:37:28,651 - INFO:760 - Tag Fields: []
-2019-04-12 17:37:28,651 - INFO:761 - Correlation: None
-2019-04-12 17:37:28,765 - INFO:780 - Project Info Tag: STTS
-2019-04-12 17:37:28,765 - INFO:759 - Tag Type: translator
-2019-04-12 17:37:28,765 - INFO:760 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
-2019-04-12 17:37:28,765 - INFO:761 - Correlation: {task_name}
-2019-04-12 17:37:28,878 - INFO:765 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
-2019-04-12 17:37:28,878 - INFO:759 - Tag Type: date
-2019-04-12 17:37:28,878 - INFO:760 - Tag Fields: []
-2019-04-12 17:37:28,878 - INFO:761 - Correlation: {timestamp}
-2019-04-12 17:37:28,878 - INFO:792 - YEAR: YYYY
-2019-04-12 17:37:28,878 - INFO:793 - YEAR_TAG: %Y
-2019-04-12 17:37:28,878 - INFO:798 - DATE: 20190412
-2019-04-12 17:37:28,878 - INFO:802 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
-2019-04-12 17:37:28,878 - INFO:807 - NEW_NAME: ASC_STTS_eyeBall_dsn_v001_20190412
-2019-04-12 17:37:28,881 - INFO:620 - NEW_NUM: 001
-2019-04-12 17:37:28,881 - INFO:620 - NEW_NUM: 002
-2019-04-12 17:37:28,895 - INFO:412 - Finished processing the file
-2019-04-12 17:37:28,895 - INFO:413 - ====================================================================================================
-2019-04-12 17:37:32,898 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-04-12 17:37:32,898 - INFO:224 - NEW FILE PROCESSING...
-2019-04-12 17:37:32,898 - INFO:994 - Searching for Assets in \stresstest\eyeBall...
-2019-04-12 17:37:33,003 - INFO:1015 - eyeBall found in \stresstest\eyeBall
-2019-04-12 17:37:33,003 - INFO:254 - The Asset is found in the system! 2931: eyeBall
-2019-04-12 17:37:33,128 - INFO:910 - Searching for remote task...
-2019-04-12 17:37:33,128 - INFO:913 - Task found!
-2019-04-12 17:37:33,219 - WARNING:971 - Unable to open main template. Alternate read template used.
-2019-04-12 17:37:33,219 - INFO:401 - Uploading for review WorstHatEver
-2019-04-12 17:37:35,726 - INFO:487 - New Version Created!
-2019-04-12 17:37:35,726 - INFO:503 - Getting the Send Today folder from the template...
-2019-04-12 17:37:35,961 - INFO:717 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
-2019-04-12 17:37:35,961 - INFO:719 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-04-12 17:37:35,961 - INFO:734 - PADDING: 3
-2019-04-12 17:37:35,961 - INFO:741 - NEW NUM: None
-2019-04-12 17:37:35,963 - WARNING:744 - None detected for the version!  Attempting to correct...
-2019-04-12 17:37:35,963 - INFO:748 - Corrected Version Number: 001
-2019-04-12 17:37:35,963 - INFO:751 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
-2019-04-12 17:37:35,963 - INFO:759 - Tag Type: project_info
-2019-04-12 17:37:35,963 - INFO:760 - Tag Fields: []
-2019-04-12 17:37:35,963 - INFO:761 - Correlation: None
-2019-04-12 17:37:36,086 - INFO:780 - Project Info Tag: STTS
-2019-04-12 17:37:36,086 - INFO:759 - Tag Type: translator
-2019-04-12 17:37:36,086 - INFO:760 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
-2019-04-12 17:37:36,086 - INFO:761 - Correlation: {task_name}
-2019-04-12 17:37:36,197 - INFO:765 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
-2019-04-12 17:37:36,197 - INFO:759 - Tag Type: date
-2019-04-12 17:37:36,197 - INFO:760 - Tag Fields: []
-2019-04-12 17:37:36,197 - INFO:761 - Correlation: {timestamp}
-2019-04-12 17:37:36,197 - INFO:792 - YEAR: YYYY
-2019-04-12 17:37:36,197 - INFO:793 - YEAR_TAG: %Y
-2019-04-12 17:37:36,197 - INFO:798 - DATE: 20190412
-2019-04-12 17:37:36,197 - INFO:802 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
-2019-04-12 17:37:36,197 - INFO:807 - NEW_NAME: ASC_STTS_eyeBall_dsn_v001_20190412
-2019-04-12 17:37:36,198 - INFO:620 - NEW_NUM: 001
-2019-04-12 17:37:36,198 - INFO:620 - NEW_NUM: 002
-2019-04-12 17:37:36,549 - INFO:412 - Finished processing the file
-2019-04-12 17:37:36,549 - INFO:413 - ====================================================================================================
-2019-04-12 18:03:52,730 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:05:56,213 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
-2019-04-12 18:05:56,213 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:05:56,530 - INFO:1199 - Opening config files...
-2019-04-12 18:06:00,750 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-04-12 18:06:00,750 - INFO:224 - NEW FILE PROCESSING...
-2019-04-12 18:06:00,750 - INFO:1000 - Searching for Assets in \stresstest\Demagorgon...
-2019-04-12 18:06:00,844 - INFO:1021 - Demagorgon found in \stresstest\Demagorgon
-2019-04-12 18:06:00,844 - INFO:254 - The Asset is found in the system! 2854: Demagorgon
-2019-04-12 18:06:00,933 - INFO:916 - Searching for remote task...
-2019-04-12 18:06:00,933 - INFO:919 - Task found!
-2019-04-12 18:06:01,026 - WARNING:977 - Unable to open main template. Alternate read template used.
-2019-04-12 18:06:01,026 - INFO:403 - Uploading for review tapeworm_v001
-2019-04-12 18:06:03,088 - INFO:490 - New Version Created!
-2019-04-12 18:06:03,088 - INFO:507 - Getting the Send Today folder from the template...
-2019-04-12 18:06:03,267 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
-2019-04-12 18:06:03,267 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-04-12 18:06:03,267 - INFO:738 - PADDING: 3
-2019-04-12 18:06:03,267 - INFO:745 - NEW NUM: None
-2019-04-12 18:06:03,269 - WARNING:748 - None detected for the version!  Attempting to correct...
-2019-04-12 18:06:03,269 - INFO:752 - Corrected Version Number: 001
-2019-04-12 18:06:03,269 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
-2019-04-12 18:06:03,269 - INFO:763 - Tag Type: project_info
-2019-04-12 18:06:03,269 - INFO:764 - Tag Fields: []
-2019-04-12 18:06:03,269 - INFO:765 - Correlation: None
-2019-04-12 18:06:03,345 - INFO:784 - Project Info Tag: STTS
-2019-04-12 18:06:03,345 - INFO:763 - Tag Type: translator
-2019-04-12 18:06:03,345 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
-2019-04-12 18:06:03,345 - INFO:765 - Correlation: {task_name}
-2019-04-12 18:06:03,437 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
-2019-04-12 18:06:03,437 - INFO:763 - Tag Type: date
-2019-04-12 18:06:03,437 - INFO:764 - Tag Fields: []
-2019-04-12 18:06:03,437 - INFO:765 - Correlation: {timestamp}
-2019-04-12 18:06:03,437 - INFO:796 - YEAR: YYYY
-2019-04-12 18:06:03,437 - INFO:797 - YEAR_TAG: %Y
-2019-04-12 18:06:03,437 - INFO:802 - DATE: 20190412
-2019-04-12 18:06:03,437 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
-2019-04-12 18:06:03,437 - INFO:811 - NEW_NAME: ASC_STTS_Demagorgon_dsn_v001_20190412
-2019-04-12 18:06:03,448 - INFO:414 - Finished processing the file
-2019-04-12 18:06:03,448 - INFO:415 - ====================================================================================================
-2019-04-12 18:10:09,053 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\TheAmazingAcrobaticDuo.jpg
-2019-04-12 18:10:09,053 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:10:09,344 - INFO:1199 - Opening config files...
-2019-04-12 18:10:54,267 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:11:42,901 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\ItSaidNoSmoking_v004.jpg
-2019-04-12 18:11:42,901 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:11:43,127 - INFO:1199 - Opening config files...
-2019-04-12 18:11:47,335 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-04-12 18:11:47,335 - INFO:224 - NEW FILE PROCESSING...
-2019-04-12 18:11:47,335 - INFO:1000 - Searching for Assets in \stresstest\Demagorgon...
-2019-04-12 18:11:47,441 - INFO:1021 - Demagorgon found in \stresstest\Demagorgon
-2019-04-12 18:11:47,443 - INFO:254 - The Asset is found in the system! 2854: Demagorgon
-2019-04-12 18:11:47,562 - INFO:916 - Searching for remote task...
-2019-04-12 18:11:47,562 - INFO:919 - Task found!
-2019-04-12 18:11:47,661 - WARNING:977 - Unable to open main template. Alternate read template used.
-2019-04-12 18:11:47,661 - INFO:403 - Uploading for review ItSaidNoSmoking_v004
-2019-04-12 18:11:50,296 - INFO:490 - New Version Created!
-2019-04-12 18:11:50,296 - INFO:507 - Getting the Send Today folder from the template...
-2019-04-12 18:11:50,509 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
-2019-04-12 18:11:50,509 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-04-12 18:11:50,509 - INFO:738 - PADDING: 3
-2019-04-12 18:11:50,509 - INFO:745 - NEW NUM: None
-2019-04-12 18:11:50,509 - WARNING:748 - None detected for the version!  Attempting to correct...
-2019-04-12 18:11:50,510 - INFO:752 - Corrected Version Number: 001
-2019-04-12 18:11:50,510 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
-2019-04-12 18:11:50,510 - INFO:763 - Tag Type: project_info
-2019-04-12 18:11:50,510 - INFO:764 - Tag Fields: []
-2019-04-12 18:11:50,510 - INFO:765 - Correlation: None
-2019-04-12 18:11:50,599 - INFO:784 - Project Info Tag: STTS
-2019-04-12 18:11:50,601 - INFO:763 - Tag Type: translator
-2019-04-12 18:11:50,601 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
-2019-04-12 18:11:50,601 - INFO:765 - Correlation: {task_name}
-2019-04-12 18:11:50,700 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
-2019-04-12 18:11:50,700 - INFO:763 - Tag Type: date
-2019-04-12 18:11:50,700 - INFO:764 - Tag Fields: []
-2019-04-12 18:11:50,700 - INFO:765 - Correlation: {timestamp}
-2019-04-12 18:11:50,700 - INFO:796 - YEAR: YYYY
-2019-04-12 18:11:50,700 - INFO:797 - YEAR_TAG: %Y
-2019-04-12 18:11:50,700 - INFO:802 - DATE: 20190412
-2019-04-12 18:11:50,700 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
-2019-04-12 18:11:50,700 - INFO:811 - NEW_NAME: ASC_STTS_Demagorgon_dsn_v001_20190412
-2019-04-12 18:11:50,703 - INFO:624 - NEW_NUM: 001
-2019-04-12 18:11:50,703 - INFO:624 - NEW_NUM: 002
-2019-04-12 18:11:50,723 - INFO:414 - Finished processing the file
-2019-04-12 18:11:50,723 - INFO:415 - ====================================================================================================
-2019-04-12 18:12:04,631 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\BuriedTreasure.jpg
-2019-04-12 18:12:04,631 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:12:04,828 - INFO:1199 - Opening config files...
-2019-04-12 18:12:08,953 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-04-12 18:12:08,953 - INFO:224 - NEW FILE PROCESSING...
-2019-04-12 18:12:08,953 - INFO:1000 - Searching for Assets in \stresstest\Demagorgon...
-2019-04-12 18:12:09,046 - INFO:1021 - Demagorgon found in \stresstest\Demagorgon
-2019-04-12 18:12:09,046 - INFO:254 - The Asset is found in the system! 2854: Demagorgon
-2019-04-12 18:12:09,158 - INFO:916 - Searching for remote task...
-2019-04-12 18:12:09,158 - INFO:919 - Task found!
-2019-04-12 18:12:09,292 - WARNING:977 - Unable to open main template. Alternate read template used.
-2019-04-12 18:12:09,292 - INFO:403 - Uploading for review BuriedTreasure
-2019-04-12 18:12:11,428 - INFO:490 - New Version Created!
-2019-04-12 18:12:11,428 - INFO:507 - Getting the Send Today folder from the template...
-2019-04-12 18:12:11,615 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
-2019-04-12 18:12:11,615 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-04-12 18:12:11,615 - INFO:738 - PADDING: 3
-2019-04-12 18:12:11,615 - INFO:745 - NEW NUM: None
-2019-04-12 18:12:11,615 - WARNING:748 - None detected for the version!  Attempting to correct...
-2019-04-12 18:12:11,615 - INFO:752 - Corrected Version Number: 001
-2019-04-12 18:12:11,615 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
-2019-04-12 18:12:11,615 - INFO:763 - Tag Type: project_info
-2019-04-12 18:12:11,615 - INFO:764 - Tag Fields: []
-2019-04-12 18:12:11,615 - INFO:765 - Correlation: None
-2019-04-12 18:12:11,711 - INFO:784 - Project Info Tag: STTS
-2019-04-12 18:12:11,711 - INFO:763 - Tag Type: translator
-2019-04-12 18:12:11,711 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
-2019-04-12 18:12:11,711 - INFO:765 - Correlation: {task_name}
-2019-04-12 18:12:11,805 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
-2019-04-12 18:12:11,805 - INFO:763 - Tag Type: date
-2019-04-12 18:12:11,805 - INFO:764 - Tag Fields: []
-2019-04-12 18:12:11,805 - INFO:765 - Correlation: {timestamp}
-2019-04-12 18:12:11,806 - INFO:796 - YEAR: YYYY
-2019-04-12 18:12:11,806 - INFO:797 - YEAR_TAG: %Y
-2019-04-12 18:12:11,806 - INFO:802 - DATE: 20190412
-2019-04-12 18:12:11,806 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
-2019-04-12 18:12:11,806 - INFO:811 - NEW_NAME: ASC_STTS_Demagorgon_dsn_v001_20190412
-2019-04-12 18:12:11,809 - INFO:624 - NEW_NUM: 001
-2019-04-12 18:12:11,809 - INFO:624 - NEW_NUM: 002
-2019-04-12 18:12:11,818 - INFO:414 - Finished processing the file
-2019-04-12 18:12:11,818 - INFO:415 - ====================================================================================================
-2019-04-12 18:12:36,398 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
-2019-04-12 18:12:36,398 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:12:36,605 - INFO:1199 - Opening config files...
-2019-04-12 18:12:40,729 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-04-12 18:12:40,729 - INFO:224 - NEW FILE PROCESSING...
-2019-04-12 18:12:40,729 - INFO:1000 - Searching for Assets in \stresstest\Demagorgon...
-2019-04-12 18:12:40,813 - INFO:1021 - Demagorgon found in \stresstest\Demagorgon
-2019-04-12 18:12:40,813 - INFO:254 - The Asset is found in the system! 2854: Demagorgon
-2019-04-12 18:12:40,923 - INFO:916 - Searching for remote task...
-2019-04-12 18:12:40,924 - INFO:919 - Task found!
-2019-04-12 18:12:41,045 - WARNING:977 - Unable to open main template. Alternate read template used.
-2019-04-12 18:12:41,045 - INFO:403 - Uploading for review tapeworm_v001
-2019-04-12 18:12:43,355 - INFO:490 - New Version Created!
-2019-04-12 18:12:43,357 - INFO:507 - Getting the Send Today folder from the template...
-2019-04-12 18:12:43,586 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
-2019-04-12 18:12:43,586 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-04-12 18:12:43,586 - INFO:738 - PADDING: 3
-2019-04-12 18:12:43,586 - INFO:745 - NEW NUM: None
-2019-04-12 18:12:43,586 - WARNING:748 - None detected for the version!  Attempting to correct...
-2019-04-12 18:12:43,588 - INFO:752 - Corrected Version Number: 001
-2019-04-12 18:12:43,588 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
-2019-04-12 18:12:43,588 - INFO:763 - Tag Type: project_info
-2019-04-12 18:12:43,588 - INFO:764 - Tag Fields: []
-2019-04-12 18:12:43,588 - INFO:765 - Correlation: None
-2019-04-12 18:12:43,684 - INFO:784 - Project Info Tag: STTS
-2019-04-12 18:12:43,684 - INFO:763 - Tag Type: translator
-2019-04-12 18:12:43,684 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
-2019-04-12 18:12:43,684 - INFO:765 - Correlation: {task_name}
-2019-04-12 18:12:43,773 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
-2019-04-12 18:12:43,773 - INFO:763 - Tag Type: date
-2019-04-12 18:12:43,773 - INFO:764 - Tag Fields: []
-2019-04-12 18:12:43,773 - INFO:765 - Correlation: {timestamp}
-2019-04-12 18:12:43,773 - INFO:796 - YEAR: YYYY
-2019-04-12 18:12:43,773 - INFO:797 - YEAR_TAG: %Y
-2019-04-12 18:12:43,773 - INFO:802 - DATE: 20190412
-2019-04-12 18:12:43,773 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
-2019-04-12 18:12:43,773 - INFO:811 - NEW_NAME: ASC_STTS_Demagorgon_dsn_v001_20190412
-2019-04-12 18:12:43,776 - INFO:624 - NEW_NUM: 001
-2019-04-12 18:12:43,776 - INFO:624 - NEW_NUM: 002
-2019-04-12 18:12:43,786 - INFO:414 - Finished processing the file
-2019-04-12 18:12:43,786 - INFO:415 - ====================================================================================================
-2019-04-12 18:13:45,842 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:14:08,358 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\TheLastBiteWasTooMuch_v003.jpg
-2019-04-12 18:14:08,358 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:14:08,562 - INFO:1199 - Opening config files...
-2019-04-12 18:14:12,762 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
-2019-04-12 18:14:12,762 - INFO:224 - NEW FILE PROCESSING...
-2019-04-12 18:14:12,762 - INFO:1000 - Searching for Assets in \stresstest\Demagorgon...
-2019-04-12 18:14:12,842 - INFO:1021 - Demagorgon found in \stresstest\Demagorgon
-2019-04-12 18:14:12,842 - INFO:254 - The Asset is found in the system! 2854: Demagorgon
-2019-04-12 18:14:12,934 - INFO:916 - Searching for remote task...
-2019-04-12 18:14:12,934 - INFO:919 - Task found!
-2019-04-12 18:14:13,032 - WARNING:977 - Unable to open main template. Alternate read template used.
-2019-04-12 18:14:13,032 - INFO:403 - Uploading for review TheLastBiteWasTooMuch_v003
-2019-04-12 18:14:15,420 - INFO:490 - New Version Created!
-2019-04-12 18:14:15,420 - INFO:507 - Getting the Send Today folder from the template...
-2019-04-12 18:14:15,638 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
-2019-04-12 18:14:15,638 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
-2019-04-12 18:14:15,638 - INFO:738 - PADDING: 3
-2019-04-12 18:14:15,638 - INFO:745 - NEW NUM: None
-2019-04-12 18:14:15,638 - WARNING:748 - None detected for the version!  Attempting to correct...
-2019-04-12 18:14:15,638 - INFO:752 - Corrected Version Number: 001
-2019-04-12 18:14:15,638 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
-2019-04-12 18:14:15,640 - INFO:763 - Tag Type: project_info
-2019-04-12 18:14:15,640 - INFO:764 - Tag Fields: []
-2019-04-12 18:14:15,640 - INFO:765 - Correlation: None
-2019-04-12 18:14:15,737 - INFO:784 - Project Info Tag: STTS
-2019-04-12 18:14:15,737 - INFO:763 - Tag Type: translator
-2019-04-12 18:14:15,737 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
-2019-04-12 18:14:15,737 - INFO:765 - Correlation: {task_name}
-2019-04-12 18:14:15,832 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
-2019-04-12 18:14:15,832 - INFO:763 - Tag Type: date
-2019-04-12 18:14:15,832 - INFO:764 - Tag Fields: []
-2019-04-12 18:14:15,832 - INFO:765 - Correlation: {timestamp}
-2019-04-12 18:14:15,832 - INFO:796 - YEAR: YYYY
-2019-04-12 18:14:15,832 - INFO:797 - YEAR_TAG: %Y
-2019-04-12 18:14:15,832 - INFO:802 - DATE: 20190412
-2019-04-12 18:14:15,832 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190412'}
-2019-04-12 18:14:15,832 - INFO:811 - NEW_NAME: ASC_STTS_Demagorgon_dsn_v001_20190412
-2019-04-12 18:14:15,835 - INFO:624 - NEW_NUM: 001
-2019-04-12 18:14:15,835 - INFO:624 - NEW_NUM: 002
-2019-04-12 18:14:15,848 - INFO:414 - Finished processing the file
-2019-04-12 18:14:15,848 - INFO:415 - ====================================================================================================
-2019-04-12 18:28:10,625 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:28:34,740 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
-2019-04-12 18:28:34,740 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:28:34,933 - INFO:1199 - Opening config files...
-2019-04-12 18:31:33,920 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:31:53,079 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
-2019-04-12 18:31:53,079 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:31:53,286 - INFO:1199 - Opening config files...
-2019-04-12 18:33:53,937 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:34:03,785 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
-2019-04-12 18:34:03,785 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:34:03,971 - INFO:1199 - Opening config files...
-2019-04-12 18:34:59,980 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:35:10,178 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\PIXNIO-283135-4560x3044.jpg
-2019-04-12 18:35:10,178 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:35:10,378 - INFO:1199 - Opening config files...
-2019-04-12 18:35:52,299 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:36:38,976 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:37:07,086 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\ItSaidNoSmoking_v004.jpg
-2019-04-12 18:37:07,088 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:37:07,292 - INFO:1199 - Opening config files...
-2019-04-12 18:38:54,923 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:39:58,908 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\ItSaidNoSmoking_v004.jpg
-2019-04-12 18:39:58,908 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:39:59,209 - INFO:1199 - Opening config files...
-2019-04-12 18:40:41,357 - INFO:95 - Starting the Remote Auto Publisher...
-2019-04-12 18:40:54,553 - INFO:1183 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\Demagorgon\tapeworm_v001.jpg
-2019-04-12 18:40:54,553 - INFO:1034 - Attempting to get project details from the path...
-2019-04-12 18:40:54,749 - INFO:1199 - Opening config files...
+2019-04-26 11:43:34,576 - INFO:95 - Starting the Remote Auto Publisher...
+2019-04-26 11:43:34,576 - DEBUG:204 - Creating the Queue...
+2019-04-26 11:43:34,576 - DEBUG:1136 - Starting the thread...
+2019-04-26 11:43:34,576 - DEBUG:1102 - Queue Running...
+2019-04-26 11:44:01,351 - DEBUG:1186 - TIMER CHECK: 26.7740001678
+2019-04-26 11:44:01,351 - DEBUG:1192 - MAIN: Results: [(1, u'stresstest\\CowMagnet\\tapeworm_v001.jpg')]
+2019-04-26 11:44:01,351 - DEBUG:1194 - action: 1
+2019-04-26 11:44:01,351 - DEBUG:1195 - file: stresstest\CowMagnet\tapeworm_v001.jpg
+2019-04-26 11:44:01,351 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 11:44:01,352 - DEBUG:1200 - QUEUE PREP CONTENTS: []
+2019-04-26 11:44:01,355 - INFO:1204 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet\tapeworm_v001.jpg
+2019-04-26 11:44:01,355 - INFO:1034 - Attempting to get project details from the path...
+2019-04-26 11:44:01,444 - DEBUG:1090 - Active Projects Found: [{'tank_name': 'asc_northpole', 'type': 'Project', 'id': 177}, {'tank_name': 'asc_newworld', 'type': 'Project', 'id': 250}, {'tank_name': 'asc_studio', 'type': 'Project', 'id': 302}, {'tank_name': 'asc_universe', 'type': 'Project', 'id': 357}, {'tank_name': 'stresstest', 'type': 'Project', 'id': 362}, {'tank_name': 'bureau749', 'type': 'Project', 'id': 367}, {'tank_name': 'keepers', 'type': 'Project', 'id': 376}, {'tank_name': 'curiosities', 'type': 'Project', 'id': 437}, {'tank_name': 'wevr', 'type': 'Project', 'id': 439}, {'tank_name': 'sonsofchaos', 'type': 'Project', 'id': 444}, {'tank_name': 'oneyoufeed', 'type': 'Project', 'id': 450}, {'tank_name': 'nevermoore', 'type': 'Project', 'id': 456}, {'tank_name': 'whitespikes', 'type': 'Project', 'id': 464}, {'tank_name': 'clonedtyrone', 'type': 'Project', 'id': 465}, {'tank_name': 'bane', 'type': 'Project', 'id': 471}, {'tank_name': 'jiujitsu', 'type': 'Project', 'id': 472}, {'tank_name': 'call_wild', 'type': 'Project', 'id': 473}, {'tank_name': 'asc_petshopboys', 'type': 'Project', 'id': 474}, {'tank_name': 'asc_tank', 'type': 'Project', 'id': 475}, {'tank_name': 'undergroundrailroad', 'type': 'Project', 'id': 477}, {'tank_name': 'magicleapaec', 'type': 'Project', 'id': 510}, {'tank_name': 'comingtoamerica2', 'type': 'Project', 'id': 511}, {'tank_name': 'asc_patches', 'type': 'Project', 'id': 512}]
+2019-04-26 11:44:01,444 - DEBUG:1042 - Project stresstest found.
+2019-04-26 11:44:01,542 - DEBUG:1213 - find_config RETURNS: //skynet/tools/shotgun/stresstest
+2019-04-26 11:44:01,542 - INFO:1221 - Opening config files...
+2019-04-26 11:44:01,838 - DEBUG:1246 - C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet\tapeworm_v001.jpg added to queue...
+2019-04-26 11:44:01,838 - DEBUG:1111 - Queued file: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet\tapeworm_v001.jpg
+2019-04-26 11:44:01,839 - DEBUG:1186 - TIMER CHECK: 27.2620000839
+2019-04-26 11:44:01,839 - DEBUG:1192 - MAIN: Results: []
+2019-04-26 11:44:02,609 - DEBUG:1186 - TIMER CHECK: 28.0329999924
+2019-04-26 11:44:02,611 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet\\tapeworm_v001.jpg')]
+2019-04-26 11:44:02,611 - DEBUG:1194 - action: 3
+2019-04-26 11:44:02,611 - DEBUG:1195 - file: stresstest\CowMagnet\tapeworm_v001.jpg
+2019-04-26 11:44:02,611 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 11:44:02,611 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\tapeworm_v001.jpg']
+2019-04-26 11:44:02,624 - DEBUG:1186 - TIMER CHECK: 28.0470001698
+2019-04-26 11:44:02,624 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet\\tapeworm_v001.jpg')]
+2019-04-26 11:44:02,624 - DEBUG:1194 - action: 3
+2019-04-26 11:44:02,625 - DEBUG:1195 - file: stresstest\CowMagnet\tapeworm_v001.jpg
+2019-04-26 11:44:02,625 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 11:44:02,625 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\tapeworm_v001.jpg']
+2019-04-26 11:44:03,956 - DEBUG:1186 - TIMER CHECK: 29.3790001869
+2019-04-26 11:44:03,956 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet\\WorstHatEver.jpg')]
+2019-04-26 11:44:03,957 - DEBUG:1194 - action: 3
+2019-04-26 11:44:03,957 - DEBUG:1195 - file: stresstest\CowMagnet\WorstHatEver.jpg
+2019-04-26 11:44:03,957 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 11:44:03,957 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\tapeworm_v001.jpg']
+2019-04-26 11:44:03,959 - INFO:1204 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet\WorstHatEver.jpg
+2019-04-26 11:44:03,959 - INFO:1034 - Attempting to get project details from the path...
+2019-04-26 11:44:04,059 - DEBUG:1090 - Active Projects Found: [{'tank_name': 'asc_northpole', 'type': 'Project', 'id': 177}, {'tank_name': 'asc_newworld', 'type': 'Project', 'id': 250}, {'tank_name': 'asc_studio', 'type': 'Project', 'id': 302}, {'tank_name': 'asc_universe', 'type': 'Project', 'id': 357}, {'tank_name': 'stresstest', 'type': 'Project', 'id': 362}, {'tank_name': 'bureau749', 'type': 'Project', 'id': 367}, {'tank_name': 'keepers', 'type': 'Project', 'id': 376}, {'tank_name': 'curiosities', 'type': 'Project', 'id': 437}, {'tank_name': 'wevr', 'type': 'Project', 'id': 439}, {'tank_name': 'sonsofchaos', 'type': 'Project', 'id': 444}, {'tank_name': 'oneyoufeed', 'type': 'Project', 'id': 450}, {'tank_name': 'nevermoore', 'type': 'Project', 'id': 456}, {'tank_name': 'whitespikes', 'type': 'Project', 'id': 464}, {'tank_name': 'clonedtyrone', 'type': 'Project', 'id': 465}, {'tank_name': 'bane', 'type': 'Project', 'id': 471}, {'tank_name': 'jiujitsu', 'type': 'Project', 'id': 472}, {'tank_name': 'call_wild', 'type': 'Project', 'id': 473}, {'tank_name': 'asc_petshopboys', 'type': 'Project', 'id': 474}, {'tank_name': 'asc_tank', 'type': 'Project', 'id': 475}, {'tank_name': 'undergroundrailroad', 'type': 'Project', 'id': 477}, {'tank_name': 'magicleapaec', 'type': 'Project', 'id': 510}, {'tank_name': 'comingtoamerica2', 'type': 'Project', 'id': 511}, {'tank_name': 'asc_patches', 'type': 'Project', 'id': 512}]
+2019-04-26 11:44:04,059 - DEBUG:1042 - Project stresstest found.
+2019-04-26 11:44:04,158 - DEBUG:1213 - find_config RETURNS: //skynet/tools/shotgun/stresstest
+2019-04-26 11:44:04,158 - INFO:1221 - Opening config files...
+2019-04-26 11:44:04,283 - DEBUG:1246 - C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet\WorstHatEver.jpg added to queue...
+2019-04-26 11:44:04,283 - DEBUG:1186 - TIMER CHECK: 29.7070000172
+2019-04-26 11:44:04,283 - DEBUG:1192 - MAIN: Results: []
+2019-04-26 11:44:05,842 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-26 11:44:05,842 - INFO:224 - NEW FILE PROCESSING...
+2019-04-26 11:44:05,842 - DEBUG:229 - PATH: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet
+2019-04-26 11:44:05,842 - DEBUG:234 - Relative Path: \stresstest\CowMagnet
+2019-04-26 11:44:05,842 - DEBUG:242 - Project Details returns: project: stresstest ID: 362
+2019-04-26 11:44:05,842 - INFO:1000 - Searching for Assets in \stresstest\CowMagnet...
+2019-04-26 11:44:05,947 - DEBUG:1012 - Shotgun Returns: [{'code': 'Spider', 'type': 'Asset', 'id': 2471, 'sg_asset_type': 'char'}, {'code': 'roboLeg', 'type': 'Asset', 'id': 2780, 'sg_asset_type': 'prop'}, {'code': 'Demagorgon', 'type': 'Asset', 'id': 2854, 'sg_asset_type': 'char'}, {'code': 'reference', 'type': 'Asset', 'id': 2879, 'sg_asset_type': 'ref'}, {'code': 'Hallway', 'type': 'Asset', 'id': 2923, 'sg_asset_type': 'env'}, {'code': 'eyeBall', 'type': 'Asset', 'id': 2931, 'sg_asset_type': 'prop'}, {'code': 'CowMagnet', 'type': 'Asset', 'id': 3196, 'sg_asset_type': 'prop'}]
+2019-04-26 11:44:05,947 - DEBUG:1014 - Assets exist!  Finding our guy...
+2019-04-26 11:44:05,947 - DEBUG:1016 - Testing Spider IN \stresstest\CowMagnet...
+2019-04-26 11:44:05,948 - DEBUG:1016 - Testing roboLeg IN \stresstest\CowMagnet...
+2019-04-26 11:44:05,948 - DEBUG:1016 - Testing Demagorgon IN \stresstest\CowMagnet...
+2019-04-26 11:44:05,948 - DEBUG:1016 - Testing reference IN \stresstest\CowMagnet...
+2019-04-26 11:44:05,948 - DEBUG:1016 - Testing Hallway IN \stresstest\CowMagnet...
+2019-04-26 11:44:05,948 - DEBUG:1016 - Testing eyeBall IN \stresstest\CowMagnet...
+2019-04-26 11:44:05,948 - DEBUG:1016 - Testing CowMagnet IN \stresstest\CowMagnet...
+2019-04-26 11:44:05,948 - INFO:1021 - CowMagnet found in \stresstest\CowMagnet
+2019-04-26 11:44:05,948 - INFO:254 - The Asset is found in the system! 3196: CowMagnet
+2019-04-26 11:44:05,948 - DEBUG:255 - Asset type: prop
+2019-04-26 11:44:06,056 - DEBUG:914 - TASKS RETURNS: [{'content': 'design.main', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 21265}, {'content': 'design.remote', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 21266}]
+2019-04-26 11:44:06,056 - INFO:916 - Searching for remote task...
+2019-04-26 11:44:06,058 - INFO:919 - Task found!
+2019-04-26 11:44:06,058 - DEBUG:258 - Task ID returned: 21266
+2019-04-26 11:44:06,154 - DEBUG:262 - Configuration found: //skynet/tools/shotgun/stresstest
+2019-04-26 11:44:06,154 - DEBUG:398 - send_today_template: send/
+2019-04-26 11:44:06,154 - WARNING:977 - Unable to open main template. Alternate read template used.
+2019-04-26 11:44:06,154 - DEBUG:988 - resolved path: send/
+2019-04-26 11:44:06,154 - DEBUG:400 - RESOLVED send_today_template: send/
+2019-04-26 11:44:06,154 - DEBUG:402 - SEND TODAY PATH: \\skynet\jobs\stresstest\send/
+2019-04-26 11:44:06,154 - INFO:403 - Uploading for review tapeworm_v001
+2019-04-26 11:44:06,460 - DEBUG:486 - new_version RETURNS: {'code': 'tapeworm_v001.jpg', 'description': 'A remote file was detected in Dropbox and this version was created from it.', 'entity': {'type': 'Asset', 'id': 3196, 'name': 'CowMagnet'}, 'project': {'type': 'Project', 'id': 362, 'name': 'StressTest'}, 'sg_status_list': 'rev', 'type': 'Version', 'id': 30484, 'sg_task': {'type': 'Task', 'id': 21266, 'name': 'design.remote'}}
+2019-04-26 11:44:08,463 - INFO:490 - New Version Created!
+2019-04-26 11:44:08,463 - DEBUG:405 - SEND: True
+2019-04-26 11:44:08,463 - INFO:507 - Getting the Send Today folder from the template...
+2019-04-26 11:44:08,463 - DEBUG:508 - INCOMING FILENAME: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet\tapeworm_v001.jpg
+2019-04-26 11:44:08,463 - DEBUG:509 - INCOMING PATH: \\skynet\jobs\stresstest\send/
+2019-04-26 11:44:08,463 - DEBUG:515 - Collecting the Client Naming Convention...
+2019-04-26 11:44:08,575 - DEBUG:524 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-26 11:44:08,628 - DEBUG:641 - create_client_name PATH: \\skynet\jobs\stresstest\send/
+2019-04-26 11:44:08,628 - DEBUG:642 - create_client_name FILENAME: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet\tapeworm_v001.jpg
+2019-04-26 11:44:08,739 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-26 11:44:08,740 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-26 11:44:08,740 - INFO:738 - PADDING: 3
+2019-04-26 11:44:08,740 - INFO:745 - NEW NUM: None
+2019-04-26 11:44:08,740 - WARNING:748 - None detected for the version!  Attempting to correct...
+2019-04-26 11:44:08,740 - DEBUG:607 - Version Tool Activated!!
+2019-04-26 11:44:08,740 - DEBUG:610 - Path is discovered: \\skynet\jobs\stresstest\send/
+2019-04-26 11:44:08,740 - DEBUG:615 - BAD INDEX for re.findall.  Using default instead.
+2019-04-26 11:44:08,740 - DEBUG:616 - find_file_version: []
+2019-04-26 11:44:08,740 - DEBUG:627 - Returning from Version Tools: 001
+2019-04-26 11:44:08,740 - INFO:752 - Corrected Version Number: 001
+2019-04-26 11:44:08,740 - DEBUG:753 - Replacing version in work fields...
+2019-04-26 11:44:08,740 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-26 11:44:08,740 - INFO:763 - Tag Type: project_info
+2019-04-26 11:44:08,740 - INFO:764 - Tag Fields: []
+2019-04-26 11:44:08,740 - INFO:765 - Correlation: None
+2019-04-26 11:44:08,845 - INFO:784 - Project Info Tag: STTS
+2019-04-26 11:44:08,845 - INFO:763 - Tag Type: translator
+2019-04-26 11:44:08,845 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-26 11:44:08,845 - INFO:765 - Correlation: {task_name}
+2019-04-26 11:44:08,960 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-26 11:44:08,960 - INFO:763 - Tag Type: date
+2019-04-26 11:44:08,960 - INFO:764 - Tag Fields: []
+2019-04-26 11:44:08,960 - INFO:765 - Correlation: {timestamp}
+2019-04-26 11:44:08,960 - INFO:796 - YEAR: YYYY
+2019-04-26 11:44:08,961 - INFO:797 - YEAR_TAG: %Y
+2019-04-26 11:44:08,961 - INFO:802 - DATE: 20190426
+2019-04-26 11:44:08,961 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190426'}
+2019-04-26 11:44:08,961 - DEBUG:809 - work_fields: {'code': 'STTS', 'Task': 'dsn', 'version': '001', 'Asset': 'CowMagnet', 'YYYYMMDD': '20190426', 'sg_asset_type': 'prop'}
+2019-04-26 11:44:08,961 - INFO:811 - NEW_NAME: ASC_STTS_CowMagnet_dsn_v001_20190426
+2019-04-26 11:44:08,961 - DEBUG:536 - CLIENT NAME: ASC_STTS_CowMagnet_dsn_v001_20190426
+2019-04-26 11:44:08,963 - DEBUG:607 - Version Tool Activated!!
+2019-04-26 11:44:08,963 - DEBUG:610 - Path is discovered: \\skynet\jobs\stresstest\send/2019-04-26\REMOTE\ASC_STTS_CowMagnet_dsn_v001_20190426.jpg
+2019-04-26 11:44:08,963 - DEBUG:616 - find_file_version: v001
+2019-04-26 11:44:08,963 - DEBUG:622 - new_version: 1
+2019-04-26 11:44:08,963 - INFO:624 - NEW_NUM: 001
+2019-04-26 11:44:08,963 - DEBUG:627 - Returning from Version Tools: 001
+2019-04-26 11:44:08,963 - DEBUG:607 - Version Tool Activated!!
+2019-04-26 11:44:08,963 - DEBUG:610 - Path is discovered: \\skynet\jobs\stresstest\send/2019-04-26\REMOTE\ASC_STTS_CowMagnet_dsn_v001_20190426.jpg
+2019-04-26 11:44:08,963 - DEBUG:616 - find_file_version: v001
+2019-04-26 11:44:08,963 - DEBUG:621 - version up: 2
+2019-04-26 11:44:08,963 - DEBUG:622 - new_version: 2
+2019-04-26 11:44:08,964 - INFO:624 - NEW_NUM: 002
+2019-04-26 11:44:08,964 - DEBUG:627 - Returning from Version Tools: 002
+2019-04-26 11:44:08,976 - DEBUG:412 - is_sent RETURNS: True
+2019-04-26 11:44:08,976 - INFO:414 - Finished processing the file
+2019-04-26 11:44:08,976 - INFO:415 - ====================================================================================================
+2019-04-26 11:44:08,976 - DEBUG:1111 - Queued file: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet\WorstHatEver.jpg
+2019-04-26 11:44:12,979 - INFO:223 - ------------------------------------------------------------------------------------------------------------------------
+2019-04-26 11:44:12,979 - INFO:224 - NEW FILE PROCESSING...
+2019-04-26 11:44:12,979 - DEBUG:229 - PATH: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet
+2019-04-26 11:44:12,979 - DEBUG:234 - Relative Path: \stresstest\CowMagnet
+2019-04-26 11:44:12,979 - DEBUG:242 - Project Details returns: project: stresstest ID: 362
+2019-04-26 11:44:12,979 - INFO:1000 - Searching for Assets in \stresstest\CowMagnet...
+2019-04-26 11:44:13,082 - DEBUG:1012 - Shotgun Returns: [{'code': 'Spider', 'type': 'Asset', 'id': 2471, 'sg_asset_type': 'char'}, {'code': 'roboLeg', 'type': 'Asset', 'id': 2780, 'sg_asset_type': 'prop'}, {'code': 'Demagorgon', 'type': 'Asset', 'id': 2854, 'sg_asset_type': 'char'}, {'code': 'reference', 'type': 'Asset', 'id': 2879, 'sg_asset_type': 'ref'}, {'code': 'Hallway', 'type': 'Asset', 'id': 2923, 'sg_asset_type': 'env'}, {'code': 'eyeBall', 'type': 'Asset', 'id': 2931, 'sg_asset_type': 'prop'}, {'code': 'CowMagnet', 'type': 'Asset', 'id': 3196, 'sg_asset_type': 'prop'}]
+2019-04-26 11:44:13,082 - DEBUG:1014 - Assets exist!  Finding our guy...
+2019-04-26 11:44:13,082 - DEBUG:1016 - Testing Spider IN \stresstest\CowMagnet...
+2019-04-26 11:44:13,082 - DEBUG:1016 - Testing roboLeg IN \stresstest\CowMagnet...
+2019-04-26 11:44:13,082 - DEBUG:1016 - Testing Demagorgon IN \stresstest\CowMagnet...
+2019-04-26 11:44:13,082 - DEBUG:1016 - Testing reference IN \stresstest\CowMagnet...
+2019-04-26 11:44:13,082 - DEBUG:1016 - Testing Hallway IN \stresstest\CowMagnet...
+2019-04-26 11:44:13,082 - DEBUG:1016 - Testing eyeBall IN \stresstest\CowMagnet...
+2019-04-26 11:44:13,082 - DEBUG:1016 - Testing CowMagnet IN \stresstest\CowMagnet...
+2019-04-26 11:44:13,082 - INFO:1021 - CowMagnet found in \stresstest\CowMagnet
+2019-04-26 11:44:13,082 - INFO:254 - The Asset is found in the system! 3196: CowMagnet
+2019-04-26 11:44:13,082 - DEBUG:255 - Asset type: prop
+2019-04-26 11:44:13,188 - DEBUG:914 - TASKS RETURNS: [{'content': 'design.main', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 21265}, {'content': 'design.remote', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 21266}]
+2019-04-26 11:44:13,188 - INFO:916 - Searching for remote task...
+2019-04-26 11:44:13,188 - INFO:919 - Task found!
+2019-04-26 11:44:13,188 - DEBUG:258 - Task ID returned: 21266
+2019-04-26 11:44:13,278 - DEBUG:262 - Configuration found: //skynet/tools/shotgun/stresstest
+2019-04-26 11:44:13,278 - DEBUG:398 - send_today_template: send/
+2019-04-26 11:44:13,278 - WARNING:977 - Unable to open main template. Alternate read template used.
+2019-04-26 11:44:13,278 - DEBUG:988 - resolved path: send/
+2019-04-26 11:44:13,278 - DEBUG:400 - RESOLVED send_today_template: send/
+2019-04-26 11:44:13,278 - DEBUG:402 - SEND TODAY PATH: \\skynet\jobs\stresstest\send/
+2019-04-26 11:44:13,278 - INFO:403 - Uploading for review WorstHatEver
+2019-04-26 11:44:13,553 - DEBUG:486 - new_version RETURNS: {'code': 'WorstHatEver.jpg', 'description': 'A remote file was detected in Dropbox and this version was created from it.', 'entity': {'type': 'Asset', 'id': 3196, 'name': 'CowMagnet'}, 'project': {'type': 'Project', 'id': 362, 'name': 'StressTest'}, 'sg_status_list': 'rev', 'type': 'Version', 'id': 30485, 'sg_task': {'type': 'Task', 'id': 21266, 'name': 'design.remote'}}
+2019-04-26 11:44:15,615 - INFO:490 - New Version Created!
+2019-04-26 11:44:15,615 - DEBUG:405 - SEND: True
+2019-04-26 11:44:15,615 - INFO:507 - Getting the Send Today folder from the template...
+2019-04-26 11:44:15,615 - DEBUG:508 - INCOMING FILENAME: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet\WorstHatEver.jpg
+2019-04-26 11:44:15,615 - DEBUG:509 - INCOMING PATH: \\skynet\jobs\stresstest\send/
+2019-04-26 11:44:15,615 - DEBUG:515 - Collecting the Client Naming Convention...
+2019-04-26 11:44:15,724 - DEBUG:524 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-26 11:44:15,726 - DEBUG:641 - create_client_name PATH: \\skynet\jobs\stresstest\send/
+2019-04-26 11:44:15,726 - DEBUG:642 - create_client_name FILENAME: C:/Users/events/Dropbox/ASC_REMOTE\stresstest\CowMagnet\WorstHatEver.jpg
+2019-04-26 11:44:15,842 - INFO:721 - PROJEcT DETAILS: {'type': 'Project', 'id': 362, 'sg_project_naming_convention': 'ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3'}
+2019-04-26 11:44:15,844 - INFO:723 - NAMING CONVENTION: ASC_{code}_{Asset}_{Task}_v{version}_{YYYYMMDD}:3
+2019-04-26 11:44:15,844 - INFO:738 - PADDING: 3
+2019-04-26 11:44:15,844 - INFO:745 - NEW NUM: None
+2019-04-26 11:44:15,844 - WARNING:748 - None detected for the version!  Attempting to correct...
+2019-04-26 11:44:15,844 - DEBUG:607 - Version Tool Activated!!
+2019-04-26 11:44:15,844 - DEBUG:610 - Path is discovered: \\skynet\jobs\stresstest\send/
+2019-04-26 11:44:15,844 - DEBUG:615 - BAD INDEX for re.findall.  Using default instead.
+2019-04-26 11:44:15,844 - DEBUG:616 - find_file_version: []
+2019-04-26 11:44:15,844 - DEBUG:627 - Returning from Version Tools: 001
+2019-04-26 11:44:15,844 - INFO:752 - Corrected Version Number: 001
+2019-04-26 11:44:15,844 - DEBUG:753 - Replacing version in work fields...
+2019-04-26 11:44:15,844 - INFO:755 - FOUND TAGS: ['{code}', '{Asset}', '{Task}', '{version}', '{YYYYMMDD}']
+2019-04-26 11:44:15,844 - INFO:763 - Tag Type: project_info
+2019-04-26 11:44:15,844 - INFO:764 - Tag Fields: []
+2019-04-26 11:44:15,845 - INFO:765 - Correlation: None
+2019-04-26 11:44:15,996 - INFO:784 - Project Info Tag: STTS
+2019-04-26 11:44:15,996 - INFO:763 - Tag Type: translator
+2019-04-26 11:44:15,996 - INFO:764 - Tag Fields: ['sg_sgtask', 'sg_tstask', 'sg_ts_short_code', 'sg_task_grp', 'sg_people_override', 'sg_delivery_code']
+2019-04-26 11:44:15,996 - INFO:765 - Correlation: {task_name}
+2019-04-26 11:44:16,155 - INFO:769 - TRANSLATION: {'delivery_code': 'dsn', 'task': 'Concept Design', 'group': [{'type': 'Group', 'id': 14, 'name': 'Concept & Painting'}], 'people': [], 'short': 'cpt'}
+2019-04-26 11:44:16,155 - INFO:763 - Tag Type: date
+2019-04-26 11:44:16,155 - INFO:764 - Tag Fields: []
+2019-04-26 11:44:16,155 - INFO:765 - Correlation: {timestamp}
+2019-04-26 11:44:16,155 - INFO:796 - YEAR: YYYY
+2019-04-26 11:44:16,155 - INFO:797 - YEAR_TAG: %Y
+2019-04-26 11:44:16,155 - INFO:802 - DATE: 20190426
+2019-04-26 11:44:16,155 - INFO:806 - TRANSCODES: {'Task': 'dsn', 'code': 'STTS', 'YYYYMMDD': '20190426'}
+2019-04-26 11:44:16,155 - DEBUG:809 - work_fields: {'code': 'STTS', 'Task': 'dsn', 'version': '001', 'Asset': 'CowMagnet', 'YYYYMMDD': '20190426', 'sg_asset_type': 'prop'}
+2019-04-26 11:44:16,155 - INFO:811 - NEW_NAME: ASC_STTS_CowMagnet_dsn_v001_20190426
+2019-04-26 11:44:16,157 - DEBUG:536 - CLIENT NAME: ASC_STTS_CowMagnet_dsn_v001_20190426
+2019-04-26 11:44:16,157 - DEBUG:607 - Version Tool Activated!!
+2019-04-26 11:44:16,157 - DEBUG:610 - Path is discovered: \\skynet\jobs\stresstest\send/2019-04-26\REMOTE\ASC_STTS_CowMagnet_dsn_v001_20190426.jpg
+2019-04-26 11:44:16,157 - DEBUG:616 - find_file_version: v001
+2019-04-26 11:44:16,157 - DEBUG:622 - new_version: 1
+2019-04-26 11:44:16,157 - INFO:624 - NEW_NUM: 001
+2019-04-26 11:44:16,157 - DEBUG:627 - Returning from Version Tools: 001
+2019-04-26 11:44:16,157 - DEBUG:607 - Version Tool Activated!!
+2019-04-26 11:44:16,157 - DEBUG:610 - Path is discovered: \\skynet\jobs\stresstest\send/2019-04-26\REMOTE\ASC_STTS_CowMagnet_dsn_v001_20190426.jpg
+2019-04-26 11:44:16,157 - DEBUG:616 - find_file_version: v001
+2019-04-26 11:44:16,157 - DEBUG:621 - version up: 2
+2019-04-26 11:44:16,157 - DEBUG:622 - new_version: 2
+2019-04-26 11:44:16,157 - INFO:624 - NEW_NUM: 002
+2019-04-26 11:44:16,157 - DEBUG:627 - Returning from Version Tools: 002
+2019-04-26 11:44:16,170 - DEBUG:412 - is_sent RETURNS: True
+2019-04-26 11:44:16,170 - INFO:414 - Finished processing the file
+2019-04-26 11:44:16,170 - INFO:415 - ====================================================================================================
+2019-04-26 13:16:29,157 - DEBUG:1186 - TIMER CHECK: 5574.58100009
+2019-04-26 13:16:29,157 - DEBUG:1191 - TIMER RESET!
+2019-04-26 13:16:29,157 - DEBUG:1192 - MAIN: Results: [(1, u'asc_northpole')]
+2019-04-26 13:16:29,157 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,157 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,157 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,158 - DEBUG:1200 - QUEUE PREP CONTENTS: []
+2019-04-26 13:16:29,171 - DEBUG:1186 - TIMER CHECK: 0.0130000114441
+2019-04-26 13:16:29,171 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole')]
+2019-04-26 13:16:29,171 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,171 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,171 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,171 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole']
+2019-04-26 13:16:29,243 - DEBUG:1186 - TIMER CHECK: 0.0859999656677
+2019-04-26 13:16:29,243 - DEBUG:1192 - MAIN: Results: [(1, u'asc_northpole\\YuletideMaker')]
+2019-04-26 13:16:29,243 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,244 - DEBUG:1195 - file: asc_northpole\YuletideMaker
+2019-04-26 13:16:29,244 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,244 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole']
+2019-04-26 13:16:29,244 - DEBUG:1186 - TIMER CHECK: 0.0869998931885
+2019-04-26 13:16:29,246 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole'), (1, u'asc_northpole\\Script'), (3, u'asc_northpole')]
+2019-04-26 13:16:29,246 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,246 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,246 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,246 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker']
+2019-04-26 13:16:29,246 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,246 - DEBUG:1195 - file: asc_northpole\Script
+2019-04-26 13:16:29,246 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,246 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker']
+2019-04-26 13:16:29,246 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,246 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,246 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,247 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script']
+2019-04-26 13:16:29,247 - DEBUG:1186 - TIMER CHECK: 0.0899999141693
+2019-04-26 13:16:29,247 - DEBUG:1192 - MAIN: Results: [(1, u'asc_northpole\\snow gremlin'), (3, u'asc_northpole'), (1, u'asc_northpole\\Santa'), (3, u'asc_northpole'), (1, u'asc_northpole\\ZombieElves'), (3, u'asc_northpole'), (1, u'asc_northpole\\Oscar'), (3, u'asc_northpole'), (1, u'asc_northpole\\Comet')]
+2019-04-26 13:16:29,247 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,247 - DEBUG:1195 - file: asc_northpole\snow gremlin
+2019-04-26 13:16:29,247 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,249 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script']
+2019-04-26 13:16:29,249 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,249 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,249 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,250 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin']
+2019-04-26 13:16:29,250 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,250 - DEBUG:1195 - file: asc_northpole\Santa
+2019-04-26 13:16:29,250 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,250 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin']
+2019-04-26 13:16:29,250 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,250 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,250 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,250 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa']
+2019-04-26 13:16:29,252 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,252 - DEBUG:1195 - file: asc_northpole\ZombieElves
+2019-04-26 13:16:29,252 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,252 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa']
+2019-04-26 13:16:29,252 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,252 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,253 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,253 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves']
+2019-04-26 13:16:29,253 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,253 - DEBUG:1195 - file: asc_northpole\Oscar
+2019-04-26 13:16:29,253 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,253 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves']
+2019-04-26 13:16:29,253 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,253 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,253 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,255 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar']
+2019-04-26 13:16:29,255 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,255 - DEBUG:1195 - file: asc_northpole\Comet
+2019-04-26 13:16:29,255 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,255 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar']
+2019-04-26 13:16:29,256 - DEBUG:1186 - TIMER CHECK: 0.0980000495911
+2019-04-26 13:16:29,256 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole'), (1, u'asc_northpole\\elf'), (3, u'asc_northpole'), (1, u'asc_northpole\\characterlineup'), (3, u'asc_northpole'), (1, u'asc_northpole\\townattack'), (3, u'asc_northpole'), (1, u'asc_northpole\\funeral'), (3, u'asc_northpole'), (1, u'asc_northpole\\OutsideToyFactory'), (3, u'asc_northpole'), (1, u'asc_northpole\\SleighFlightFight'), (3, u'asc_northpole'), (1, u'asc_northpole\\NaughtyNiceMachine'), (3, u'asc_northpole'), (1, u'asc_northpole\\Storyboard_Script_v2'), (3, u'asc_northpole'), (1, u'asc_northpole\\Storyboard_Script_v3'), (3, u'asc_northpole')]
+2019-04-26 13:16:29,256 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,256 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,256 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,256 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet']
+2019-04-26 13:16:29,256 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,256 - DEBUG:1195 - file: asc_northpole\elf
+2019-04-26 13:16:29,256 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,256 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet']
+2019-04-26 13:16:29,256 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,257 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,257 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,257 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf']
+2019-04-26 13:16:29,257 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,257 - DEBUG:1195 - file: asc_northpole\characterlineup
+2019-04-26 13:16:29,257 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,259 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf']
+2019-04-26 13:16:29,259 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,259 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,259 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,259 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup']
+2019-04-26 13:16:29,259 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,259 - DEBUG:1195 - file: asc_northpole\townattack
+2019-04-26 13:16:29,259 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,259 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup']
+2019-04-26 13:16:29,260 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,260 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,260 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,260 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack']
+2019-04-26 13:16:29,260 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,260 - DEBUG:1195 - file: asc_northpole\funeral
+2019-04-26 13:16:29,262 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,262 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack']
+2019-04-26 13:16:29,262 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,262 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,262 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,263 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral']
+2019-04-26 13:16:29,263 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,263 - DEBUG:1195 - file: asc_northpole\OutsideToyFactory
+2019-04-26 13:16:29,263 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,263 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral']
+2019-04-26 13:16:29,263 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,263 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,263 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,265 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory']
+2019-04-26 13:16:29,265 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,265 - DEBUG:1195 - file: asc_northpole\SleighFlightFight
+2019-04-26 13:16:29,265 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,266 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory']
+2019-04-26 13:16:29,266 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,266 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,266 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,266 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight']
+2019-04-26 13:16:29,266 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,266 - DEBUG:1195 - file: asc_northpole\NaughtyNiceMachine
+2019-04-26 13:16:29,266 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,266 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight']
+2019-04-26 13:16:29,266 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,266 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,266 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,267 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine']
+2019-04-26 13:16:29,267 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,267 - DEBUG:1195 - file: asc_northpole\Storyboard_Script_v2
+2019-04-26 13:16:29,267 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,269 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine']
+2019-04-26 13:16:29,269 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,269 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,269 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,269 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2']
+2019-04-26 13:16:29,269 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,269 - DEBUG:1195 - file: asc_northpole\Storyboard_Script_v3
+2019-04-26 13:16:29,269 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,269 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2']
+2019-04-26 13:16:29,270 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,270 - DEBUG:1195 - file: asc_northpole
+2019-04-26 13:16:29,270 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,270 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3']
+2019-04-26 13:16:29,270 - DEBUG:1186 - TIMER CHECK: 0.112999916077
+2019-04-26 13:16:29,272 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\YuletideMaker')]
+2019-04-26 13:16:29,272 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,272 - DEBUG:1195 - file: asc_northpole\YuletideMaker
+2019-04-26 13:16:29,272 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,272 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3']
+2019-04-26 13:16:29,627 - DEBUG:1186 - TIMER CHECK: 0.469000101089
+2019-04-26 13:16:29,627 - DEBUG:1192 - MAIN: Results: [(1, u'stresstest\\HamburgerTrain')]
+2019-04-26 13:16:29,627 - DEBUG:1194 - action: 1
+2019-04-26 13:16:29,627 - DEBUG:1195 - file: stresstest\HamburgerTrain
+2019-04-26 13:16:29,627 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,627 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3']
+2019-04-26 13:16:29,628 - DEBUG:1186 - TIMER CHECK: 0.47000002861
+2019-04-26 13:16:29,628 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest')]
+2019-04-26 13:16:29,628 - DEBUG:1194 - action: 3
+2019-04-26 13:16:29,628 - DEBUG:1195 - file: stresstest
+2019-04-26 13:16:29,628 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:29,628 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain']
+2019-04-26 13:16:30,003 - DEBUG:1186 - TIMER CHECK: 0.84500002861
+2019-04-26 13:16:30,003 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\Script')]
+2019-04-26 13:16:30,003 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,003 - DEBUG:1195 - file: asc_northpole\Script
+2019-04-26 13:16:30,003 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,003 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,032 - DEBUG:1186 - TIMER CHECK: 0.874000072479
+2019-04-26 13:16:30,032 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\snow gremlin')]
+2019-04-26 13:16:30,032 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,032 - DEBUG:1195 - file: asc_northpole\snow gremlin
+2019-04-26 13:16:30,032 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,032 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,062 - DEBUG:1186 - TIMER CHECK: 0.90499997139
+2019-04-26 13:16:30,062 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\Santa')]
+2019-04-26 13:16:30,062 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,062 - DEBUG:1195 - file: asc_northpole\Santa
+2019-04-26 13:16:30,062 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,063 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,089 - DEBUG:1186 - TIMER CHECK: 0.931999921799
+2019-04-26 13:16:30,089 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\ZombieElves')]
+2019-04-26 13:16:30,089 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,091 - DEBUG:1195 - file: asc_northpole\ZombieElves
+2019-04-26 13:16:30,091 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,091 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,115 - DEBUG:1186 - TIMER CHECK: 0.957999944687
+2019-04-26 13:16:30,115 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\Oscar')]
+2019-04-26 13:16:30,115 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,117 - DEBUG:1195 - file: asc_northpole\Oscar
+2019-04-26 13:16:30,117 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,117 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,141 - DEBUG:1186 - TIMER CHECK: 0.983999967575
+2019-04-26 13:16:30,142 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\Comet')]
+2019-04-26 13:16:30,142 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,142 - DEBUG:1195 - file: asc_northpole\Comet
+2019-04-26 13:16:30,142 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,142 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,168 - DEBUG:1186 - TIMER CHECK: 1.00999999046
+2019-04-26 13:16:30,168 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\elf')]
+2019-04-26 13:16:30,168 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,168 - DEBUG:1195 - file: asc_northpole\elf
+2019-04-26 13:16:30,168 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,168 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,200 - DEBUG:1186 - TIMER CHECK: 1.04099988937
+2019-04-26 13:16:30,200 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\characterlineup')]
+2019-04-26 13:16:30,200 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,200 - DEBUG:1195 - file: asc_northpole\characterlineup
+2019-04-26 13:16:30,200 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,201 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,237 - DEBUG:1186 - TIMER CHECK: 1.07999992371
+2019-04-26 13:16:30,237 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\townattack')]
+2019-04-26 13:16:30,237 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,237 - DEBUG:1195 - file: asc_northpole\townattack
+2019-04-26 13:16:30,239 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,240 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,275 - DEBUG:1186 - TIMER CHECK: 1.11599993706
+2019-04-26 13:16:30,275 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\funeral')]
+2019-04-26 13:16:30,275 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,275 - DEBUG:1195 - file: asc_northpole\funeral
+2019-04-26 13:16:30,275 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,276 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,305 - DEBUG:1186 - TIMER CHECK: 1.14599990845
+2019-04-26 13:16:30,305 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\OutsideToyFactory')]
+2019-04-26 13:16:30,305 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,305 - DEBUG:1195 - file: asc_northpole\OutsideToyFactory
+2019-04-26 13:16:30,305 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,305 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,345 - DEBUG:1186 - TIMER CHECK: 1.18700003624
+2019-04-26 13:16:30,345 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\SleighFlightFight')]
+2019-04-26 13:16:30,345 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,345 - DEBUG:1195 - file: asc_northpole\SleighFlightFight
+2019-04-26 13:16:30,345 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,346 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,380 - DEBUG:1186 - TIMER CHECK: 1.22200012207
+2019-04-26 13:16:30,380 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\NaughtyNiceMachine')]
+2019-04-26 13:16:30,380 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,380 - DEBUG:1195 - file: asc_northpole\NaughtyNiceMachine
+2019-04-26 13:16:30,380 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,381 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,410 - DEBUG:1186 - TIMER CHECK: 1.25200009346
+2019-04-26 13:16:30,411 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\Storyboard_Script_v2')]
+2019-04-26 13:16:30,411 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,411 - DEBUG:1195 - file: asc_northpole\Storyboard_Script_v2
+2019-04-26 13:16:30,411 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,411 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,440 - DEBUG:1186 - TIMER CHECK: 1.28299999237
+2019-04-26 13:16:30,440 - DEBUG:1192 - MAIN: Results: [(3, u'asc_northpole\\Storyboard_Script_v3')]
+2019-04-26 13:16:30,440 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,440 - DEBUG:1195 - file: asc_northpole\Storyboard_Script_v3
+2019-04-26 13:16:30,440 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,440 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 13:16:30,477 - DEBUG:1186 - TIMER CHECK: 1.31999993324
+2019-04-26 13:16:30,477 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\HamburgerTrain')]
+2019-04-26 13:16:30,479 - DEBUG:1194 - action: 3
+2019-04-26 13:16:30,479 - DEBUG:1195 - file: stresstest\HamburgerTrain
+2019-04-26 13:16:30,479 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 13:16:30,479 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\YuletideMaker', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Script', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\snow gremlin', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Santa', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\ZombieElves', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Oscar', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Comet', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\elf', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\characterlineup', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\townattack', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\funeral', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\OutsideToyFactory', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\SleighFlightFight', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\NaughtyNiceMachine', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v2', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_northpole\\Storyboard_Script_v3', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\HamburgerTrain', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest']
+2019-04-26 16:03:28,098 - DEBUG:1186 - TIMER CHECK: 10018.9400001
+2019-04-26 16:03:28,098 - DEBUG:1191 - TIMER RESET!
+2019-04-26 16:03:28,098 - DEBUG:1192 - MAIN: Results: [(2, u'stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg')]
+2019-04-26 16:03:28,098 - DEBUG:1194 - action: 2
+2019-04-26 16:03:28,098 - DEBUG:1195 - file: stresstest\CowMagnet\TheLastBiteWasTooMuch_v003.jpg
+2019-04-26 16:03:28,098 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,099 - DEBUG:1200 - QUEUE PREP CONTENTS: []
+2019-04-26 16:03:28,099 - DEBUG:1186 - TIMER CHECK: 0.000999927520752
+2019-04-26 16:03:28,099 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet')]
+2019-04-26 16:03:28,099 - DEBUG:1194 - action: 3
+2019-04-26 16:03:28,101 - DEBUG:1195 - file: stresstest\CowMagnet
+2019-04-26 16:03:28,101 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,101 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg']
+2019-04-26 16:03:28,107 - DEBUG:1186 - TIMER CHECK: 0.00800013542175
+2019-04-26 16:03:28,107 - DEBUG:1192 - MAIN: Results: [(2, u'stresstest\\CowMagnet\\ThisHappened v1.jpg')]
+2019-04-26 16:03:28,107 - DEBUG:1194 - action: 2
+2019-04-26 16:03:28,107 - DEBUG:1195 - file: stresstest\CowMagnet\ThisHappened v1.jpg
+2019-04-26 16:03:28,107 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,108 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet']
+2019-04-26 16:03:28,108 - DEBUG:1186 - TIMER CHECK: 0.00999999046326
+2019-04-26 16:03:28,108 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet')]
+2019-04-26 16:03:28,108 - DEBUG:1194 - action: 3
+2019-04-26 16:03:28,108 - DEBUG:1195 - file: stresstest\CowMagnet
+2019-04-26 16:03:28,108 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,109 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg']
+2019-04-26 16:03:28,115 - DEBUG:1186 - TIMER CHECK: 0.0169999599457
+2019-04-26 16:03:28,115 - DEBUG:1192 - MAIN: Results: [(2, u'stresstest\\CowMagnet\\WorstHatEver.jpg')]
+2019-04-26 16:03:28,115 - DEBUG:1194 - action: 2
+2019-04-26 16:03:28,115 - DEBUG:1195 - file: stresstest\CowMagnet\WorstHatEver.jpg
+2019-04-26 16:03:28,115 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,117 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg']
+2019-04-26 16:03:28,118 - DEBUG:1186 - TIMER CHECK: 0.0190000534058
+2019-04-26 16:03:28,118 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet')]
+2019-04-26 16:03:28,118 - DEBUG:1194 - action: 3
+2019-04-26 16:03:28,118 - DEBUG:1195 - file: stresstest\CowMagnet
+2019-04-26 16:03:28,118 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,118 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg']
+2019-04-26 16:03:28,124 - DEBUG:1186 - TIMER CHECK: 0.0250000953674
+2019-04-26 16:03:28,124 - DEBUG:1192 - MAIN: Results: [(2, u'stresstest\\CowMagnet\\BuriedTreasure.jpg')]
+2019-04-26 16:03:28,124 - DEBUG:1194 - action: 2
+2019-04-26 16:03:28,124 - DEBUG:1195 - file: stresstest\CowMagnet\BuriedTreasure.jpg
+2019-04-26 16:03:28,124 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,125 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg']
+2019-04-26 16:03:28,125 - DEBUG:1186 - TIMER CHECK: 0.0260000228882
+2019-04-26 16:03:28,125 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet')]
+2019-04-26 16:03:28,125 - DEBUG:1194 - action: 3
+2019-04-26 16:03:28,125 - DEBUG:1195 - file: stresstest\CowMagnet
+2019-04-26 16:03:28,125 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,125 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg']
+2019-04-26 16:03:28,131 - DEBUG:1186 - TIMER CHECK: 0.0320000648499
+2019-04-26 16:03:28,131 - DEBUG:1192 - MAIN: Results: [(2, u'stresstest\\CowMagnet\\ItSaidNoSmoking_v004.jpg')]
+2019-04-26 16:03:28,131 - DEBUG:1194 - action: 2
+2019-04-26 16:03:28,131 - DEBUG:1195 - file: stresstest\CowMagnet\ItSaidNoSmoking_v004.jpg
+2019-04-26 16:03:28,131 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,131 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg']
+2019-04-26 16:03:28,132 - DEBUG:1186 - TIMER CHECK: 0.0339999198914
+2019-04-26 16:03:28,132 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet')]
+2019-04-26 16:03:28,132 - DEBUG:1194 - action: 3
+2019-04-26 16:03:28,132 - DEBUG:1195 - file: stresstest\CowMagnet
+2019-04-26 16:03:28,132 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,134 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ItSaidNoSmoking_v004.jpg']
+2019-04-26 16:03:28,138 - DEBUG:1186 - TIMER CHECK: 0.039999961853
+2019-04-26 16:03:28,138 - DEBUG:1192 - MAIN: Results: [(2, u'stresstest\\CowMagnet\\PIXNIO-283135-4560x3044.jpg')]
+2019-04-26 16:03:28,138 - DEBUG:1194 - action: 2
+2019-04-26 16:03:28,138 - DEBUG:1195 - file: stresstest\CowMagnet\PIXNIO-283135-4560x3044.jpg
+2019-04-26 16:03:28,138 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,140 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ItSaidNoSmoking_v004.jpg']
+2019-04-26 16:03:28,140 - DEBUG:1186 - TIMER CHECK: 0.0410001277924
+2019-04-26 16:03:28,140 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet')]
+2019-04-26 16:03:28,141 - DEBUG:1194 - action: 3
+2019-04-26 16:03:28,141 - DEBUG:1195 - file: stresstest\CowMagnet
+2019-04-26 16:03:28,141 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,141 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ItSaidNoSmoking_v004.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\PIXNIO-283135-4560x3044.jpg']
+2019-04-26 16:03:28,145 - DEBUG:1186 - TIMER CHECK: 0.0469999313354
+2019-04-26 16:03:28,145 - DEBUG:1192 - MAIN: Results: [(2, u'stresstest\\CowMagnet\\tapeworm_v001.jpg')]
+2019-04-26 16:03:28,147 - DEBUG:1194 - action: 2
+2019-04-26 16:03:28,147 - DEBUG:1195 - file: stresstest\CowMagnet\tapeworm_v001.jpg
+2019-04-26 16:03:28,147 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,147 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ItSaidNoSmoking_v004.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\PIXNIO-283135-4560x3044.jpg']
+2019-04-26 16:03:28,148 - DEBUG:1186 - TIMER CHECK: 0.0490000247955
+2019-04-26 16:03:28,148 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet')]
+2019-04-26 16:03:28,148 - DEBUG:1194 - action: 3
+2019-04-26 16:03:28,148 - DEBUG:1195 - file: stresstest\CowMagnet
+2019-04-26 16:03:28,148 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,148 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ItSaidNoSmoking_v004.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\PIXNIO-283135-4560x3044.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\tapeworm_v001.jpg']
+2019-04-26 16:03:28,154 - DEBUG:1186 - TIMER CHECK: 0.0550000667572
+2019-04-26 16:03:28,154 - DEBUG:1192 - MAIN: Results: [(2, u'stresstest\\CowMagnet\\TheAmazingAcrobaticDuo.jpg')]
+2019-04-26 16:03:28,154 - DEBUG:1194 - action: 2
+2019-04-26 16:03:28,154 - DEBUG:1195 - file: stresstest\CowMagnet\TheAmazingAcrobaticDuo.jpg
+2019-04-26 16:03:28,154 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,154 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ItSaidNoSmoking_v004.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\PIXNIO-283135-4560x3044.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\tapeworm_v001.jpg']
+2019-04-26 16:03:28,154 - DEBUG:1186 - TIMER CHECK: 0.055999994278
+2019-04-26 16:03:28,154 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet')]
+2019-04-26 16:03:28,154 - DEBUG:1194 - action: 3
+2019-04-26 16:03:28,154 - DEBUG:1195 - file: stresstest\CowMagnet
+2019-04-26 16:03:28,154 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,155 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ItSaidNoSmoking_v004.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\PIXNIO-283135-4560x3044.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\tapeworm_v001.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheAmazingAcrobaticDuo.jpg']
+2019-04-26 16:03:28,161 - DEBUG:1186 - TIMER CHECK: 0.0620000362396
+2019-04-26 16:03:28,161 - DEBUG:1192 - MAIN: Results: [(2, u'stresstest\\CowMagnet\\TheFinalFrontier_V001.jpg')]
+2019-04-26 16:03:28,161 - DEBUG:1194 - action: 2
+2019-04-26 16:03:28,161 - DEBUG:1195 - file: stresstest\CowMagnet\TheFinalFrontier_V001.jpg
+2019-04-26 16:03:28,161 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,161 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ItSaidNoSmoking_v004.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\PIXNIO-283135-4560x3044.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\tapeworm_v001.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheAmazingAcrobaticDuo.jpg']
+2019-04-26 16:03:28,220 - DEBUG:1186 - TIMER CHECK: 0.121000051498
+2019-04-26 16:03:28,220 - DEBUG:1192 - MAIN: Results: [(3, u'stresstest\\CowMagnet')]
+2019-04-26 16:03:28,220 - DEBUG:1194 - action: 3
+2019-04-26 16:03:28,220 - DEBUG:1195 - file: stresstest\CowMagnet
+2019-04-26 16:03:28,220 - DEBUG:1197 - FULL_FILENAME BELOW THIS
+2019-04-26 16:03:28,220 - DEBUG:1200 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheLastBiteWasTooMuch_v003.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ThisHappened v1.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\WorstHatEver.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\BuriedTreasure.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\ItSaidNoSmoking_v004.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\PIXNIO-283135-4560x3044.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\tapeworm_v001.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheAmazingAcrobaticDuo.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\stresstest\\CowMagnet\\TheFinalFrontier_V001.jpg']

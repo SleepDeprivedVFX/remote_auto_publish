@@ -1123,6 +1123,12 @@ def file_queue():
                 time.sleep(2)
 
 
+def datetime_to_float(d):
+    epoch = datetime.utcfromtimestamp(0)
+    total_seconds = (d - epoch).total_seconds()
+    return total_seconds
+
+
 # Start the thread
 '''
 This starts the thread that runs the queue
@@ -1142,6 +1148,9 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
     """
     _svc_name_ = "RemoteAutoPublisher"
     _svc_display_name_ = "Remote Auto Publisher"
+    queue_prep = []
+    start_timer = datetime_to_float(datetime.now())
+    end_timer = datetime_to_float(datetime.now())
 
     def __init__(self, args):
         win32serviceutil.ServiceFramework.__init__(self, args)
@@ -1173,15 +1182,24 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                 None,
                 None
             )
+            self.end_timer = datetime_to_float(datetime.now())
+            logger.debug('TIMER CHECK: %s' % (self.end_timer - self.start_timer))
+            if (self.end_timer - self.start_timer) > 60.0:
+                self.queue_prep = []
+                self.start_timer = datetime_to_float(datetime.now())
+                self.end_timer = datetime_to_float(datetime.now())
+                logger.debug('TIMER RESET!')
             logger.debug('MAIN: Results: %s' % results)
-            for action, file in results:
+            for action, drop_file in results:
                 logger.debug('action: %s' % action)
-                logger.debug('file: %s' % file)
-                full_filename = os.path.join(path_to_watch, file)
+                logger.debug('file: %s' % drop_file)
+                full_filename = os.path.join(path_to_watch, drop_file)
                 logger.debug('FULL_FILENAME BELOW THIS')
                 logger.info(full_filename, ACTIONS.get(action, "Unknown"))
                 # This is where my internal processes get triggered.
-                if action == 1 or 3:
+                logger.debug('QUEUE PREP CONTENTS: %s' % self.queue_prep)
+                if action == 1 or 3 and full_filename not in self.queue_prep:
+                    self.queue_prep.append(full_filename)
                     if os.path.isfile(full_filename):
                         logger.info('New file detected. %s' % full_filename)
 
@@ -1226,6 +1244,7 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                                            'proj_id': proj_id, 'proj_name': proj_name}
                                 q.put(package)
                                 logger.debug('%s added to queue...' % full_filename)
+                                results.remove((action, drop_file))
 
 
 if __name__ == '__main__':
