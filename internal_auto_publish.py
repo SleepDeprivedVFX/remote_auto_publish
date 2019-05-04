@@ -33,9 +33,11 @@ sg_name = 'remoteAutoPublisher'
 sg_key = '&pmudbcro6esChtccfurpnxwp'
 sg = shotgun_api3.Shotgun(sg_url, sg_name, sg_key)
 
+# Server Logs Connections
+HOST, PORT = '0.0.0.0', 514
 
 # Dropbox Folder
-path_to_watch = "C:/Users/events/Dropbox/ASC_REMOTE"
+path_to_watch = "/Jobs/\\w+/publish/\\w+/"
 
 # Create Log file
 log_level = logging.DEBUG
@@ -1126,6 +1128,61 @@ t.start()
 
 
 # ---------------------------------------------------------------------------------------------------------------------
+# Socket Server Log Listener
+# ---------------------------------------------------------------------------------------------------------------------
+class SyslogUDPHandler(SocketServer.BaseRequestHandler):
+
+    def handle(self):
+        logger.info('IT\'S WORKING!!! Handler triggered')
+        data = bytes.decode(self.request[0].strip())
+        socket = self.request[1]
+        data_list = data.split(',')
+
+        # Raw Data List
+        try:
+            event = data_list[0]
+            event = str(event.split(': ')[1])
+        except IndexError:
+            event = None
+        try:
+            path = data_list[1]
+            path = path.split(': ')[1]
+        except IndexError:
+            path = None
+        try:
+            event_type = data_list[2]
+            event_type = event_type.split(': ')[1]
+        except IndexError:
+            event_type = None
+        try:
+            file_size = data_list[3]
+            file_size = file_size.split(': ')[1]
+        except IndexError:
+            file_size = None
+        try:
+            user = data_list[4]
+            user = user.split(': ')[1]
+            user = user.strip('ASC\\')
+        except IndexError:
+            user = None
+        try:
+            ip = data_list[5]
+            ip = ip.split(': ')[1]
+        except IndexError:
+            ip = None
+
+        if event == 'write' or event == 'move':
+            logger.info('Event Triggered: %s' % event)
+            if event_type == 'File':
+                logger.info('Event Type is FILE')
+                if path.startswith('/Jobs/'):
+                    logger.info('JOBS is in the path')
+                    if re.findall(path_to_watch, path):
+                        logger.info('And the path is within the correct parameters')
+                        logger.info(user, path, file_size, ip)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
 # Watch Folder
 # ---------------------------------------------------------------------------------------------------------------------
 class internalAutoPublisher(win32serviceutil.ServiceFramework):
@@ -1151,97 +1208,19 @@ class internalAutoPublisher(win32serviceutil.ServiceFramework):
         servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
                               servicemanager.PYS_SERVICE_STARTED,
                               (self._svc_name_, ''))
-        self.main()
 
-    def main(self):
-        """
-        The new idea here will be that the file will be moved, instead of copied.  Thus, once the publish is done,
-        it won't be able to go on, thus eliminating the duplicates.  For JPGs and such that are currently just being
-        uploaded, those will have to be moved into the renders folder.
-        So...
-        We can probable remove the queue_prep and timers.
-        The if action will now test for the files continued existence... although... where's the bit that keeps track
-        of if it's fully downloaded yet?  That will have to be taken into account.  That is handled from the file_queue
-        function above.
-        :return:
-        """
-        while 1:
-            results = win32file.ReadDirectoryChangesW(
-                rap.hDir,
-                1024,
-                True,
-                win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-                win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-                win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-                win32con.FILE_NOTIFY_CHANGE_SIZE |
-                win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-                win32con.FILE_NOTIFY_CHANGE_SECURITY,
-                None,
-                None
-            )
-            self.end_timer = datetime_to_float(datetime.now())
-            logger.debug('TIMER CHECK: %s' % (self.end_timer - self.start_timer))
-            if (self.end_timer - self.start_timer) > 60.0:
-                self.queue_prep = []
-                self.start_timer = datetime_to_float(datetime.now())
-                self.end_timer = datetime_to_float(datetime.now())
-                logger.debug('TIMER RESET!')
-            logger.debug('MAIN: Results: %s' % results)
-            for action, drop_file in results:
-                logger.debug('action: %s' % action)
-                logger.debug('file: %s' % drop_file)
-                full_filename = os.path.join(path_to_watch, drop_file)
-                logger.debug('FULL_FILENAME BELOW THIS')
-                logger.info(full_filename, rap.ACTIONS.get(action, "Unknown"))
-                # This is where my internal processes get triggered.
-                logger.debug('QUEUE PREP CONTENTS: %s' % self.queue_prep)
-                if action == 1 or 3 and full_filename not in self.queue_prep:
-                    self.queue_prep.append(full_filename)
-                    if os.path.isfile(full_filename):
-                        logger.info('New file detected. %s' % full_filename)
-
-                        path = os.path.dirname(full_filename)
-                        rel_path = path.split(path_to_watch)[1]
-                        project_details = rap.get_details_from_path(rel_path)
-                        proj_name = project_details['name']
-                        proj_id = project_details['id']
-                        if proj_id:
-                            find_config = rap.get_configuration(proj_id)
-                            logger.debug('find_config RETURNS: %s' % find_config)
-                            if find_config:
-                                templates_path = find_config + relative_config_path
-                                template_file = os.path.join(templates_path, 'templates.yml')
-                                root_file = os.path.join(templates_path, 'roots.yml')
-                                template_file = template_file.replace('/', '\\')
-                                root_file = root_file.replace('/', '\\')
-                                try:
-                                    logger.info('Opening config files...')
-                                    f = open(template_file, 'r')
-                                    r = open(root_file, 'r')
-                                except Exception, err:
-                                    tries = 1
-                                    while tries < 10:
-                                        logger.error('Opening files took a shit.  Trying again...')
-                                        time.sleep(2)
-                                        try:
-                                            logger.warning('Open attempt #%i' % tries)
-                                            f = open(template_file, 'r')
-                                            r = open(root_file, 'r')
-                                            break
-                                        except Exception, e:
-                                            tries += 1
-                                            logging.error('File Open failed again. Trying again... ERROR: %s' % e)
-                                    raise 'Total failure! %s' % err
-
-                                template = yaml.load(f)
-                                roots = yaml.load(r)
-
-                                # Package data into a dict for passing to the queue
-                                package = {'filename': full_filename, 'template': template, 'roots': roots,
-                                           'proj_id': proj_id, 'proj_name': proj_name}
-                                q.put(package)
-                                logger.debug('%s added to queue...' % full_filename)
-                                results.remove((action, drop_file))
+        logger.info('MAIN Started...')
+        try:
+            server = SocketServer.UDPServer((HOST, PORT), SyslogUDPHandler)
+            logger.info('Socket Server Set')
+            server.serve_forever(poll_interval=0.5)
+            logger.info('This shit started')
+        except (IOError, SystemExit):
+            logger.error('IO Took a shit.')
+            raise
+        except KeyboardInterrupt:
+            logger.warning('Keyboard shutdown.')
+            print ("Crtl+C Pressed. Shutting down.")
 
 
 if __name__ == '__main__':
