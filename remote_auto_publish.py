@@ -219,7 +219,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
     :param proj_name:
     :return:
     """
-    if filename:
+    if filename and os.path.exists(filename):
         logger.info('-' * 120)
         logger.info('NEW FILE PROCESSING...')
         print 'New File Processing...'
@@ -328,8 +328,8 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                     logger.info('Copying the file to the server...')
                     copy_file = filename.replace('\\', '/')
                     try:
-                        shutil.copy2(copy_file, res_path_work_template)
-                        message = 'The file is copied!  Prepping for publish!'
+                        shutil.move(copy_file, res_path_work_template)
+                        message = 'The file is moved!  Prepping for publish!'
                     except IOError, e:
                         message = ''
                         # Waiting tries...
@@ -337,7 +337,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                         while attempts < 10:
                             time.sleep(2 * attempts)
                             try:
-                                shutil.copy2(copy_file, res_path_work_template)
+                                shutil.move(copy_file, res_path_work_template)
                                 message = 'The File is copied after %i tries!  Prepping for publish' % attempts
                                 break
                             except Exception:
@@ -543,7 +543,7 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
             new_version = version_tool(send_today_path, version_up=True)
             send_today_path = send_today_path.replace(current_version, new_version)
         try:
-            shutil.copy2(filename, send_today_path)
+            shutil.move(filename, send_today_path)
             return True
         except Exception, e:
             logger.error('Can not copy the file! %s' % e)
