@@ -219,6 +219,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
     :param proj_name:
     :return:
     """
+    # Check that data is there and that the file actually exists
     if filename and os.path.exists(filename):
         logger.info('-' * 120)
         logger.info('NEW FILE PROCESSING...')
@@ -288,6 +289,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                     # publish_area_path = os.path.join(root_template_path, publish_area).replace('\\', '/')
 
                     # Get the resolved working area and find existing files in it.
+                    # No version passed because we're only looking for the folder
                     res_path_work_area = process_template_path(template=work_area_path, asset=find_asset)
 
                     # Create paths if they're not already there.
@@ -299,7 +301,9 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                     template_name = task_name_format.format(Asset=asset_name, task_name=task_name, ext=ext)
 
                     find_files_from_template = '%s/%s' % (res_path_work_area, template_name)
+                    logger.debug('find_files_from_template RETURNS: %s' % find_files_from_template)
                     get_files = [f for f in glob(find_files_from_template)]
+                    logger.debug('get_files RAW RETURN: %s' % get_files)
                     if get_files:
                         # Look for an existing version number based on the template
                         logger.debug('GET FILES: %s ' % get_files)
@@ -404,6 +408,11 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                     send = upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id)
                     logger.debug('SEND: %s' % send)
                     if send:
+                        '''
+                        I think this is where the copied version are getting fucked, or at least here is where the 
+                        send_today is being called, and THAT'S where it's getting fucked.  Either way, I think this
+                        is the entry point for the error
+                        '''
                         # Run the Send Today portion of our show.
                         # This will need to get the send folder from the template, and make sure there is a date
                         # folder.
@@ -537,11 +546,18 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
     if client_name:
         client_name += ext
         send_today_path = os.path.join(today_path, client_name)
+        '''
+        This seems to be failing.  If the file exists, current version should be checked by the version tool.
+        '''
         if os.path.exists(send_today_path):
-            # Create new version number
-            current_version = version_tool(send_today_path)
-            new_version = version_tool(send_today_path, version_up=True)
-            send_today_path = send_today_path.replace(current_version, new_version)
+            while os.path.exists(send_today_path):
+                logger.debug('Version already exists!!!  Going to attempt versioning up from current.')
+                # Create new version number
+                current_version = version_tool(send_today_path)
+                logger.debug('Current version number found: %s' % current_version)
+                new_version = version_tool(send_today_path, version_up=True)
+                logger.debug('New version created: %s' % new_version)
+                send_today_path = send_today_path.replace(current_version, new_version)
         try:
             shutil.move(filename, send_today_path)
             return True
@@ -1102,6 +1118,7 @@ def file_queue():
     logger.debug('Queue Running...')
     # print 'Queue running...'
     while True:
+        # Get the package from the Queue and parse it out.
         package = q.get(block=True)
         full_filename = package['filename']
         template = package['template']
@@ -1109,24 +1126,32 @@ def file_queue():
         proj_id = package['proj_id']
         proj_name = package['proj_name']
         logger.debug('Queued file: %s' % full_filename)
+
+        # Set the copying status to true, so it begins waiting for a copy to finish
         copying = True
         size2 = -1
+        # Start Copying...
         while copying:
+            # Check the file size and compare it with the previous file size.  If the same, copying is done.
             size = os.stat(full_filename).st_size
             if size == size2:
                 time.sleep(2)
                 """
                 Here is where we have to start ingecting some "file STILL exists" logic... at least I think.
+                Yeah, like an if file exists: process_file, otherwise fuck right off!
                 """
+                # Once copied, send the file for processing.
                 process_file(filename=full_filename, template=template, roots=roots, proj_id=proj_id,
                              proj_name=proj_name)
                 copying = False
             else:
+                # Copying not finished, wait to seconds and try again...
                 size2 = os.stat(full_filename).st_size
                 time.sleep(2)
 
 
 def datetime_to_float(d):
+    # Change the date-time to a decimal floating point number
     epoch = datetime.utcfromtimestamp(0)
     total_seconds = (d - epoch).total_seconds()
     return total_seconds
@@ -1134,7 +1159,8 @@ def datetime_to_float(d):
 
 # Start the thread
 '''
-This starts the thread that runs the queue
+This starts the thread that runs the queue.
+Currently, the thread starts before the call to the RemoteAutoPublisher.  Could that be part of the problem?
 '''
 logger.debug('Starting the thread...')
 t = threading.Thread(target=file_queue, name='FileQueue')
@@ -1196,15 +1222,23 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                 None,
                 None
             )
+
+            # Set the end timer to the current iteration for comparison later.  This all needs to get removed probably.
             self.end_timer = datetime_to_float(datetime.now())
             logger.debug('TIMER CHECK: %s' % (self.end_timer - self.start_timer))
+
+            # The timer system for clearing out the queue_prep.  This should get replaced with a file existence based
+            # system.
             if (self.end_timer - self.start_timer) > 60.0:
                 self.queue_prep = []
                 self.start_timer = datetime_to_float(datetime.now())
                 self.end_timer = datetime_to_float(datetime.now())
                 logger.debug('TIMER RESET!')
             logger.debug('MAIN: Results: %s' % results)
+
+            # Cycle through the file-change detection results.
             for action, drop_file in results:
+                # Split the action from the dropped file path, then build new paths and filter the actions
                 logger.debug('action: %s' % action)
                 logger.debug('file: %s' % drop_file)
                 full_filename = os.path.join(path_to_watch, drop_file)
@@ -1213,29 +1247,49 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                 # This is where my internal processes get triggered.
                 logger.debug('QUEUE PREP CONTENTS: %s' % self.queue_prep)
                 if action == 1 or 3 and full_filename not in self.queue_prep:
+                    '''
+                    The whole bit with the queue_prep is a nice idea, but this all may need to get reworked into
+                    something that is a little more... "Is the file there? If so, move it".  Making it less dependent
+                    on if it is in a list, and more dependent if it exists, AND WHILE it exists.
+                    '''
                     self.queue_prep.append(full_filename)
+                    '''
+                    For instance, the existence bit could function here, under the if os.path.isfile(full_filename)
+                    detection.
+                    '''
                     if os.path.isfile(full_filename):
                         logger.info('New file detected. %s' % full_filename)
 
+                        # Get the path from the filename
                         path = os.path.dirname(full_filename)
+                        # Strip the relative path out of the full path by splitting at the watch-folder pattern
                         rel_path = path.split(path_to_watch)[1]
+                        # Parse out the publish details from the relative path
                         project_details = get_details_from_path(rel_path)
                         proj_name = project_details['name']
                         proj_id = project_details['id']
+
+                        # Assuming a project id was returned, process the results
                         if proj_id:
+                            # Get the configuration from the project ID
                             find_config = get_configuration(proj_id)
                             logger.debug('find_config RETURNS: %s' % find_config)
+
+                            # If a configuration is found, build paths to the appropriate files
                             if find_config:
                                 templates_path = find_config + relative_config_path
                                 template_file = os.path.join(templates_path, 'templates.yml')
                                 root_file = os.path.join(templates_path, 'roots.yml')
                                 template_file = template_file.replace('/', '\\')
                                 root_file = root_file.replace('/', '\\')
+
+                                # Open the configuration files...
                                 try:
                                     logger.info('Opening config files...')
                                     f = open(template_file, 'r')
                                     r = open(root_file, 'r')
                                 except Exception, err:
+                                    # If unable to open the configuration files, try another 10 times.
                                     tries = 1
                                     while tries < 10:
                                         logger.error('Opening files took a shit.  Trying again...')
@@ -1250,14 +1304,19 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                                             logging.error('File Open failed again. Trying again... ERROR: %s' % e)
                                     raise 'Total failure! %s' % err
 
+                                # Path the tempate fields into something more usable.
                                 template = yaml.load(f)
                                 roots = yaml.load(r)
 
                                 # Package data into a dict for passing to the queue
                                 package = {'filename': full_filename, 'template': template, 'roots': roots,
                                            'proj_id': proj_id, 'proj_name': proj_name}
+                                # Add the package to the queue for processing.
                                 q.put(package)
                                 logger.debug('%s added to queue...' % full_filename)
+
+                                # Remove the action and dropfile from the results.
+                                # The problem with this is that it may get added back in in the next iteration
                                 results.remove((action, drop_file))
 
 
