@@ -115,7 +115,9 @@ publish_types = {
     '.mb': 'Maya Scene',
     '.ma': 'Maya Scene',
     '.ztl': 'ZBrush',
-    '.mud': 'Mudbox'
+    '.mud': 'Mudbox',
+    '.bip': 'Keyshot Package',
+    '.kip': 'Keyshot File'
 }
 '''
 # generate_types will create the values if the keys are certain values.  Thus, if ext == '.psd' then '.jpg' will be made
@@ -176,6 +178,18 @@ templates = {
         'work_template': 'asset_work_mudbox',
         'publish_area': 'asset_publish_area_mudbox',
         'publish_template': 'asset_publish_mudbox'
+    },
+    'Keyshot Pacakge': {
+        'work_area': 'asset_work_area_keyshot',
+        'work_template': 'asset_work_keyshot_bip',
+        'publish_area': 'asset_publish_area_keyshot',
+        'publish_template': 'asset_publish_keyshot_bip'
+    },
+    'Keyshot File': {
+        'work_area': 'asset_work_area_keyshot',
+        'work_template': 'asset_work_keyshot',
+        'publish_area': 'asset_publish_area_keyshot',
+        'publish_template': 'asset_publish_keyshot'
     },
     'Renders': {
         'work_area': None,
