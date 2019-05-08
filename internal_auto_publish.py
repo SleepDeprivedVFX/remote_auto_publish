@@ -89,7 +89,7 @@ logger.info('Starting the Internal Auto Publisher...')
 # to handle a more complex, task-based system if one is ever needed.
 # Thus, the one task_name:
 # TODO: This will need to be changed for the internal artist.
-task_name = 'design.remote'
+task_name = 'design.auto'
 task_step = 23
 relative_config_path = '/config/core'
 task_name_format = '{Asset}_{task_name}_*{ext}'
@@ -231,6 +231,8 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
         logger.info('-' * 120)
         logger.info('NEW FILE PROCESSING...')
         print 'New File Processing...'
+        print filename
+        print 'Published by %s' % user
 
         # Get the path details from the filename
         path = os.path.dirname(filename)
@@ -416,7 +418,8 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                     send_today_path = os.path.join(root_template_path, resolved_send_today_template)
                     logger.debug('SEND TODAY PATH: %s' % send_today_path)
                     logger.info('Uploading for review %s' % file_name)
-                    send = upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id)
+                    send = upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id,
+                                             user=user)
                     logger.debug('SEND: %s' % send)
                     if send:
                         # Run the Send Today portion of our show.
@@ -429,6 +432,8 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
         logger.info('Finished processing the file')
         logger.info('=' * 100)
         q.task_done()
+        print 'Finished processing file.'
+        print '=' * 100
 
 
 def process_Photoshop_image(template=None, filename=None, task=None, pub_area=None, f_type=None, proj_id=None,
@@ -476,7 +481,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
 
 
-def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
+def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, user=None):
     """
     A simple tool to create Shotgun versions and upload them
     :param filename:
@@ -487,7 +492,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
     """
     file_name = os.path.basename(filename)
     file_path = filename
-    description = 'A remote file was detected in Dropbox and this version was created from it.'
+    description = '%s published this file using the Internal Auto Publish utility'
     version_data = {
         'description': description,
         'project': {'type': 'Project', 'id': proj_id},
@@ -541,7 +546,7 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
     # set dats
     date_test = str(datetime.date(datetime.now()))
     today_path = os.path.join(path, date_test)
-    today_path = os.path.join(today_path, 'REMOTE')
+    # today_path = os.path.join(today_path, 'REMOTE')
     if not os.path.exists(today_path):
         os.makedirs(today_path)
 
@@ -592,7 +597,6 @@ def get_sg_translator(sg_task=None, fields=[]):
                                                 people: sg_people_override
                                                 }
     """
-    global task_name
     translation = {}
     if sg_task:
         task_name = sg_task.split('.')[0]
@@ -786,11 +790,19 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
                         logger.info('Correlation: %s' % correlation)
                         # date, project_info, property, translator
                         if tag_type == 'translator':
-                            translation = get_sg_translator(sg_task='design.remote', fields=tag_fields)
+                            translation = get_sg_translator(sg_task=task_name, fields=tag_fields)
                             logger.info('TRANSLATION: %s' % translation)
                             base_tag = tag.strip('{')
                             base_tag = base_tag.strip('}')
-                            translations[base_tag] = translation['delivery_code']
+                            if task_name.endswith('.main') or task_name.endswith('.auto'):
+                                short_task = translation['delivery_code']
+                            else:
+                                try:
+                                    find_suffix = task_name.split('.')[1]
+                                except Exception, e:
+                                    find_suffix = ''
+                                short_task = '%s%s' % (translation['delivery_code'], find_suffix)
+                            translations[base_tag] = short_task
                         elif tag_type == 'project_info':
                             base_tag = tag.strip('{')
                             base_tag = base_tag.strip('}')
@@ -1142,7 +1154,6 @@ def file_queue():
         while copying:
             # Check the file size and compare it with the previous file size.  If the same, copying is done.
             try:
-                print full_filename
                 size = os.stat(full_filename).st_size
                 if size == size2:
                     time.sleep(2)
@@ -1157,7 +1168,7 @@ def file_queue():
                     size2 = os.stat(full_filename).st_size
                     time.sleep(2)
             except WindowsError, e:
-                print e
+                logger.error(e)
                 pass
 
 
