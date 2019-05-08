@@ -422,11 +422,6 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                     send = upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id)
                     logger.debug('SEND: %s' % send)
                     if send:
-                        '''
-                        I think this is where the copied version are getting fucked, or at least here is where the 
-                        send_today is being called, and THAT'S where it's getting fucked.  Either way, I think this
-                        is the entry point for the error
-                        '''
                         # Run the Send Today portion of our show.
                         # This will need to get the send folder from the template, and make sure there is a date
                         # folder.
@@ -560,9 +555,6 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
     if client_name:
         client_name += ext
         send_today_path = os.path.join(today_path, client_name)
-        '''
-        This seems to be failing.  If the file exists, current version should be checked by the version tool.
-        '''
         if os.path.exists(send_today_path):
             while os.path.exists(send_today_path):
                 logger.debug('Version already exists!!!  Going to attempt versioning up from current.')
@@ -1150,10 +1142,7 @@ def file_queue():
             size = os.stat(full_filename).st_size
             if size == size2:
                 time.sleep(2)
-                """
-                Here is where we have to start ingecting some "file STILL exists" logic... at least I think.
-                Yeah, like an if file exists: process_file, otherwise fuck right off!
-                """
+
                 # Once copied, send the file for processing.
                 process_file(filename=full_filename, template=template, roots=roots, proj_id=proj_id,
                              proj_name=proj_name)
@@ -1172,10 +1161,6 @@ def datetime_to_float(d):
 
 
 # Start the thread
-'''
-This starts the thread that runs the queue.
-Currently, the thread starts before the call to the RemoteAutoPublisher.  Could that be part of the problem?
-'''
 logger.debug('Starting the thread...')
 t = threading.Thread(target=file_queue, name='FileQueue')
 t.setDaemon(True)
