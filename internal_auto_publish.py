@@ -37,7 +37,7 @@ sg = shotgun_api3.Shotgun(sg_url, sg_name, sg_key)
 HOST, PORT = '0.0.0.0', 514
 
 # Dropbox Folder
-path_to_watch = "/Jobs/\\w+/publish/\\w+/"
+path_to_watch = "/Jobs/\w+/publish/\w+/"
 
 # Create Log file
 log_level = logging.DEBUG
@@ -1131,9 +1131,10 @@ t.start()
 # Socket Server Log Listener
 # ---------------------------------------------------------------------------------------------------------------------
 class SyslogUDPHandler(SocketServer.BaseRequestHandler):
+    logger.info('Enter the Sandman')
 
     def handle(self):
-        logger.info('IT\'S WORKING!!! Handler triggered')
+        logger.info('IT IS WORKING!!! Handler triggered')
         data = bytes.decode(self.request[0].strip())
         socket = self.request[1]
         data_list = data.split(',')
@@ -1191,9 +1192,6 @@ class internalAutoPublisher(win32serviceutil.ServiceFramework):
     """
     _svc_name_ = "InternalAutoPublisher"
     _svc_display_name_ = "Internal Auto Publisher"
-    queue_prep = []
-    start_timer = datetime_to_float(datetime.now())
-    end_timer = datetime_to_float(datetime.now())
 
     def __init__(self, args):
         win32serviceutil.ServiceFramework.__init__(self, args)
@@ -1208,19 +1206,22 @@ class internalAutoPublisher(win32serviceutil.ServiceFramework):
         servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
                               servicemanager.PYS_SERVICE_STARTED,
                               (self._svc_name_, ''))
+        self.main()
 
+    def main(self):
         logger.info('MAIN Started...')
-        try:
-            server = SocketServer.UDPServer((HOST, PORT), SyslogUDPHandler)
-            logger.info('Socket Server Set')
-            server.serve_forever(poll_interval=0.5)
-            logger.info('This shit started')
-        except (IOError, SystemExit):
-            logger.error('IO Took a shit.')
-            raise
-        except KeyboardInterrupt:
-            logger.warning('Keyboard shutdown.')
-            print ("Crtl+C Pressed. Shutting down.")
+        while True:
+            try:
+                server = SocketServer.UDPServer((HOST, PORT), SyslogUDPHandler)
+                logger.info('Socket Server Set')
+                server.serve_forever(poll_interval=0.5)
+                logger.info('This shit started')
+            except (IOError, SystemExit), e:
+                logger.error('IO Took a shit. %s' % e)
+                raise
+            except KeyboardInterrupt:
+                logger.warning('Keyboard shutdown.')
+                print ("Crtl+C Pressed. Shutting down.")
 
 
 if __name__ == '__main__':
