@@ -37,7 +37,7 @@ sg = shotgun_api3.Shotgun(sg_url, sg_name, sg_key)
 HOST, PORT = '0.0.0.0', 514
 
 # Dropbox Folder
-path_to_watch = "/Jobs/\w+/publish/\w+/"
+path_to_watch = "/Jobs/\w+/publish/\w+"
 
 # Create Log file
 log_level = logging.DEBUG
@@ -207,7 +207,7 @@ q = queue.Queue()
 # -----------------------------------------------------------------------------------------------------------------
 # Start Processing...
 # -----------------------------------------------------------------------------------------------------------------
-def process_file(filename=None, template=None, roots=None, proj_id=None, proj_name=None):
+def process_file(filename=None, template=None, roots=None, proj_id=None, proj_name=None, user=None):
     """
     This processes the new file and decides if it is a simple image, or a more complex file and then figures out what
      it should do with it from there.
@@ -218,6 +218,14 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
     :param proj_name:
     :return:
     """
+
+    # Taking the global task_name, so that it can be set globally and passed to other functions.
+    global task_name
+
+    if user:
+        if '.' in task_name:
+            base_task = task_name.split('.')[0]
+            task_name = '%s.%s' % (base_task, user)
     # Check that data is there and that the file actually exists
     if filename and os.path.exists(filename):
         logger.info('-' * 120)
@@ -230,7 +238,10 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
         # Filename without path
         base_file = os.path.basename(filename)
         # Relative path outside the dropbox structure
-        rel_path = path.split(path_to_watch)[1]
+        split_pattern = re.findall(path_to_watch, path)[0]
+        rel_path = path.split(split_pattern)[1]
+        if not rel_path:
+            rel_path = path
         logger.debug('Relative Path: %s' % rel_path)
 
         f = os.path.splitext(base_file)
@@ -326,6 +337,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                     res_path_work_template = process_template_path(template=work_template_path, asset=find_asset,
                                                                    version=version)
                     res_path_work_template = res_path_work_template.replace('\\', '/')
+                    logger.debug('res_path_work_template: %s' % res_path_work_template)
 
                     # Copy the file to the correct place on the server.  There are some wait time handlers in here.
                     logger.info('Copying the file to the server...')
@@ -549,6 +561,7 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
                 new_version = version_tool(send_today_path, version_up=True)
                 logger.debug('New version created: %s' % new_version)
                 send_today_path = send_today_path.replace(current_version, new_version)
+        logger.debug('send_today_path: %s' % send_today_path)
         try:
             shutil.move(filename, send_today_path)
             return True
@@ -579,6 +592,7 @@ def get_sg_translator(sg_task=None, fields=[]):
                                                 people: sg_people_override
                                                 }
     """
+    global task_name
     translation = {}
     if sg_task:
         task_name = sg_task.split('.')[0]
@@ -834,6 +848,7 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
     :param next_version: (int) version number
     :return:
     """
+    global task_name
     if publish_file:
         # Copy the file to the publish area.  This will be the file published.
         try:
@@ -950,6 +965,7 @@ def process_template_path(template=None, asset=None, version=0):
     :param version: (int) the version number
     :return: (str) res_path: the resolved path name
     """
+    global task_name
     res_path = None
     if template:
         if asset:
@@ -1116,6 +1132,7 @@ def file_queue():
         roots = package['roots']
         proj_id = package['proj_id']
         proj_name = package['proj_name']
+        user = package['user']
         logger.debug('Queued file: %s' % full_filename)
 
         # Set the copying status to true, so it begins waiting for a copy to finish
@@ -1124,19 +1141,24 @@ def file_queue():
         # Start Copying...
         while copying:
             # Check the file size and compare it with the previous file size.  If the same, copying is done.
-            size = os.stat(full_filename).st_size
-            if size == size2:
-                time.sleep(2)
-                """
-                Here is where we have to start ingecting some "file STILL exists" logic... at least I think.
-                """
-                process_file(filename=full_filename, template=template, roots=roots, proj_id=proj_id,
-                                    proj_name=proj_name)
-                copying = False
-            else:
-                # Copying not finished, wait to seconds and try again...
-                size2 = os.stat(full_filename).st_size
-                time.sleep(2)
+            try:
+                print full_filename
+                size = os.stat(full_filename).st_size
+                if size == size2:
+                    time.sleep(2)
+                    """
+                    Here is where we have to start ingecting some "file STILL exists" logic... at least I think.
+                    """
+                    copying = False
+                    process_file(filename=full_filename, template=template, roots=roots, proj_id=proj_id,
+                                 proj_name=proj_name, user=user)
+                else:
+                    # Copying not finished, wait to seconds and try again...
+                    size2 = os.stat(full_filename).st_size
+                    time.sleep(2)
+            except WindowsError, e:
+                print e
+                pass
 
 
 def datetime_to_float(d):
@@ -1163,7 +1185,6 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
     logger.info('Enter the Sandman')
 
     def handle(self):
-        logger.info('IT IS WORKING!!! Handler triggered')
         data = bytes.decode(self.request[0].strip())
         socket = self.request[1]
         data_list = data.split(',')
@@ -1201,7 +1222,7 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
         except IndexError:
             ip = None
 
-        if event == 'write' or event == 'move':
+        if event == 'write':
             logger.info('Event Triggered: %s' % event)
             if event_type == 'File':
                 logger.info('Event Type is FILE')
@@ -1210,6 +1231,67 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
                     if re.findall(path_to_watch, path):
                         logger.info('And the path is within the correct parameters')
                         logger.info('%s | %s | %s | %s' % (user, path, file_size, ip))
+
+                        # Start double check that the file is valid and begin packing it up for processing.
+                        project_details = get_details_from_path(path)
+                        proj_name = project_details['name']
+                        proj_id = project_details['id']
+
+                        # Assuming a project id was returned, process the results
+                        if proj_id:
+                            # Get the configuration from the project ID
+                            find_config = get_configuration(proj_id)
+                            logger.debug('find_config RETURNS: %s' % find_config)
+
+                            # If a configuration is found, build paths to the appropriate files
+                            if find_config:
+                                templates_path = find_config + relative_config_path
+                                template_file = os.path.join(templates_path, 'templates.yml')
+                                root_file = os.path.join(templates_path, 'roots.yml')
+                                template_file = template_file.replace('/', '\\')
+                                root_file = root_file.replace('/', '\\')
+
+                                # Open the configuration files...
+                                try:
+                                    logger.info('Opening config files...')
+                                    f = open(template_file, 'r')
+                                    r = open(root_file, 'r')
+                                except Exception, err:
+                                    # If unable to open the configuration files, try another 10 times.
+                                    tries = 1
+                                    while tries < 10:
+                                        logger.error('Opening files took a shit.  Trying again...')
+                                        time.sleep(2)
+                                        try:
+                                            logger.warning('Open attempt #%i' % tries)
+                                            f = open(template_file, 'r')
+                                            r = open(root_file, 'r')
+                                            break
+                                        except Exception, e:
+                                            tries += 1
+                                            logging.error('File Open failed again. Trying again... ERROR: %s' % e)
+                                    raise 'Total failure! %s' % err
+
+                                # Path the tempate fields into something more usable.
+                                template = yaml.load(f)
+                                roots = yaml.load(r)
+
+                                # TODO: The windows path includes "jobs", so does the drop path.
+                                #       but that's kind of 'unknown', so I may need to relook at this a bit, or come
+                                #       up with a better way to parse this.
+                                #       my feeling is, it'll be something gross, like checking if the first or last
+                                #       bits are the same, then removing one.  I could also just auto-split the
+                                #       template and just pick the very first part.  That would probably work.
+                                get_root_path = roots['primary']['windows_path']
+                                root_drive = str(get_root_path).rsplit('\\', 1)[0]
+                                full_filename = '%s%s' % (root_drive, path)
+
+                                # Package data into a dict for passing to the queue
+                                package = {'filename': full_filename, 'template': template, 'roots': roots,
+                                           'proj_id': proj_id, 'proj_name': proj_name, 'user': user}
+                                # Add the package to the queue for processing.
+                                q.put(package)
+                                logger.debug('%s added to queue...' % full_filename)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
