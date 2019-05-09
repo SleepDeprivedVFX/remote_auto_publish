@@ -1,0 +1,19 @@
+Function Main()
+
+Dim wshShell, fso, loc, cmd
+Import WScript
+Set fso = CreateObject("Scripting.FileSystemObject")
+loc = fso.GetAbsolutePathName(".")
+Set wshShell = CreateObject("WScript.Shell")
+WScript.Echo loc
+
+cmd = "%ComSpec% /k C:\Languages\Python27_32\python.exe C:\shotgun\remote_auto_publish\development\junk_test2.py"
+'~cmd = "C:\Languages\Python\python.exe " + loc + "\test.py"
+WScript.Echo cmd
+
+wshShell.Run cmd
+
+Main = "OK"
+
+End Function
+

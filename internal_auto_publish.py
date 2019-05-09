@@ -21,8 +21,8 @@ import SocketServer
 
 # Build Shotgun Connection
 sg_url = 'https://radiowaves.shotgunstudio.com'
-sg_name = 'remoteAutoPublisher'
-sg_key = '&pmudbcro6esChtccfurpnxwp'
+sg_name = 'InternalAutoPublisher'
+sg_key = 'urNiaiobqzxpwxtpfpq~nie7l'
 sg = shotgun_api3.Shotgun(sg_url, sg_name, sg_key)
 
 # Server Logs Connections
@@ -32,7 +32,12 @@ HOST, PORT = '0.0.0.0', 514
 path_to_watch = "/Jobs/\w+/publish/\w+"
 
 # Create Log file
-log_level = logging.DEBUG
+log_level = logging.INFO
+
+# Output window startup messages
+print '-' * 100
+print 'INTERNAL AUTO PUBLISH UTILITY'
+print '+' * 100
 
 
 def _setFilePathOnLogger(logger, path):
@@ -69,6 +74,8 @@ logger.setLevel(log_level)
 _setFilePathOnLogger(logger, logfile)
 
 logger.info('Starting the Internal Auto Publisher...')
+print 'Starting the Internal Auto Publisher...'
+print 'Logging system setup.'
 
 # --------------------------------------------------------------------------------------------------------------
 # Global Variables
@@ -1126,6 +1133,7 @@ def file_queue():
     :return:
     """
     logger.debug('Queue Running...')
+    print 'Queue Running...'
     # print 'Queue running...'
     while True:
         # Get the package from the Queue and parse it out.
@@ -1178,6 +1186,7 @@ logger.debug('Starting the thread...')
 t = threading.Thread(target=file_queue, name='FileQueue')
 t.setDaemon(True)
 t.start()
+print 'Queue Threading initialized...'
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -1296,6 +1305,8 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
 if __name__ == "__main__":
     try:
         server = SocketServer.UDPServer((HOST, PORT), SyslogUDPHandler)
+        print 'Internal Auto Publisher is now listening!'
+        print '=' * 100
         server.serve_forever(poll_interval=0.5)
     except (IOError, SystemExit):
         raise

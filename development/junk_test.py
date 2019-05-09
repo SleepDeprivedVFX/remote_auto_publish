@@ -1,11 +1,3 @@
-import os
-from datetime import datetime
-import sys
-
-def datetime_to_float(d):
-    epoch = datetime.utcfromtimestamp(0)
-    total_seconds = (d - epoch).total_seconds()
-    return total_seconds
-
-num = datetime_to_float(datetime.now())
-print num
+f = open("C:/shotgun/remote_auto_publish/logs/temp_shit.txt", 'w')
+f.write("oh hai\n")
+f.close()

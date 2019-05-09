@@ -1,76 +1,68 @@
-import os
+#!/usr/bin/env python
 
-import win32file
-import win32con
-import queue
-import threading
+import logging
+import SocketServer
+import re
 
-q = queue.Queue()
+LOG_FILE = 'C:/shotgun/remote_auto_publish/logs/server_test.log'
+HOST, PORT = '0.0.0.0', 514
+pattern = '/Jobs/\w+/publish/\w+/'
 
-
-ACTIONS = {
-    1: "Created",
-    2: "Deleted",
-    3: "Updated",
-    4: "Renamed from something",
-    5: "Renamed to something"
-}
-# Thanks to Claudio Grondi for the correct set of numbers
-FILE_LIST_DIRECTORY = 0x0001
-
-path_to_watch = "C:/Users/events/Dropbox/ASC_REMOTE"
-hDir = win32file.CreateFile(
-    path_to_watch,
-    FILE_LIST_DIRECTORY,
-    win32con.FILE_SHARE_READ | win32con.FILE_SHARE_WRITE | win32con.FILE_SHARE_DELETE,
-    None,
-    win32con.OPEN_EXISTING,
-    win32con.FILE_FLAG_BACKUP_SEMANTICS,
-    None
-)
+logging.basicConfig(level=logging.INFO, format='%(message)s', datefmt='', filename=LOG_FILE, filemode='a')
 
 
-def test_shit():
-    print 'Eat shit'
+class SyslogUDPHandler(SocketServer.BaseRequestHandler):
 
-    while True:
-        turd = q.get()
-        print 'SHIT: %s' % turd
-        q.task_done()
+    def handle(self):
+        data = bytes.decode(self.request[0].strip())
+        socket = self.request[1]
+        data_list = data.split(',')
+
+        # Raw Data List
+        try:
+            event = data_list[0]
+            event = str(event.split(': ')[1])
+        except IndexError:
+            event = None
+        try:
+            path = data_list[1]
+            path = path.split(': ')[1]
+        except IndexError:
+            path = None
+        try:
+            event_type = data_list[2]
+            event_type = event_type.split(': ')[1]
+        except IndexError:
+            event_type = None
+        try:
+            file_size = data_list[3]
+            file_size = file_size.split(': ')[1]
+        except IndexError:
+            file_size = None
+        try:
+            user = data_list[4]
+            user = user.split(': ')[1]
+            user = user.strip('ASC\\')
+        except IndexError:
+            user = None
+        try:
+            ip = data_list[5]
+            ip = ip.split(': ')[1]
+        except IndexError:
+            ip = None
+
+        if event == 'write' or event == 'move':
+            if event_type == 'File':
+                if path.startswith('/Jobs/'):
+                    if re.findall(pattern, path):
+                        print user, path, file_size, ip
 
 
-t = threading.Thread(target=test_shit, name='testShit')
-t.setDaemon(True)
-t.start()
-
-while 1:
-    #
-    # ReadDirectoryChangesW takes a previously-created
-    # handle to a directory, a buffer size for results,
-    # a flag to indicate whether to watch subtrees and
-    # a filter of what changes to notify.
-    #
-    # NB Tim Juchcinski reports that he needed to up
-    # the buffer size to be sure of picking up all
-    # events when a large number of files were
-    # deleted at once.
-    #
-    results = win32file.ReadDirectoryChangesW(
-        hDir,
-        1024,
-        True,
-        win32con.FILE_NOTIFY_CHANGE_FILE_NAME |
-        win32con.FILE_NOTIFY_CHANGE_DIR_NAME |
-        win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES |
-        win32con.FILE_NOTIFY_CHANGE_SIZE |
-        win32con.FILE_NOTIFY_CHANGE_LAST_WRITE |
-        win32con.FILE_NOTIFY_CHANGE_SECURITY,
-        None,
-        None
-    )
-    for action, file in results:
-        full_filename = os.path.join(path_to_watch, file)
-        print full_filename, ACTIONS.get(action, "Unknown")
-        if action == 1:
-            q.put(full_filename)
-
+if __name__ == "__main__":
+    try:
+        server = SocketServer.UDPServer((HOST, PORT), SyslogUDPHandler)
+        server.serve_forever(poll_interval=0.5)
+    except (IOError, SystemExit):
+        raise
+    except KeyboardInterrupt:
+        print ("Crtl+C Pressed. Shutting down.")
