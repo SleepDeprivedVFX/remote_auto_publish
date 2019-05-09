@@ -7,13 +7,6 @@ driver for everything else that will happen.
 import os
 from glob import glob
 import re
-import win32file
-import win32con
-import win32serviceutil
-import win32service
-import win32event
-import servicemanager
-import socket
 import time
 import logging
 import logging.handlers
@@ -24,7 +17,6 @@ import shotgun_api3
 import queue
 import threading
 from datetime import datetime
-# import remote_auto_publish as rap
 import SocketServer
 
 # Build Shotgun Connection
@@ -88,7 +80,6 @@ logger.info('Starting the Internal Auto Publisher...')
 # this, and there are no immediate plans to change that.  That being said, there is some minor architecture in place
 # to handle a more complex, task-based system if one is ever needed.
 # Thus, the one task_name:
-# TODO: This will need to be changed for the internal artist.
 task_name = 'design.auto'
 task_step = 23
 relative_config_path = '/config/core'
@@ -1287,12 +1278,6 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
                                 template = yaml.load(f)
                                 roots = yaml.load(r)
 
-                                # TODO: The windows path includes "jobs", so does the drop path.
-                                #       but that's kind of 'unknown', so I may need to relook at this a bit, or come
-                                #       up with a better way to parse this.
-                                #       my feeling is, it'll be something gross, like checking if the first or last
-                                #       bits are the same, then removing one.  I could also just auto-split the
-                                #       template and just pick the very first part.  That would probably work.
                                 get_root_path = roots['primary']['windows_path']
                                 root_drive = str(get_root_path).rsplit('\\', 1)[0]
                                 full_filename = '%s%s' % (root_drive, path)
