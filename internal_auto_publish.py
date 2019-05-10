@@ -229,218 +229,221 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
     # Taking the global task_name, so that it can be set globally and passed to other functions.
     global task_name
 
-    if user:
-        if '.' in task_name:
-            base_task = task_name.split('.')[0]
-            task_name = '%s.%s' % (base_task, user)
-    # Check that data is there and that the file actually exists
-    if filename and os.path.exists(filename):
-        logger.info('-' * 120)
-        logger.info('NEW FILE PROCESSING...')
-        print 'New File Processing...'
-        print filename
-        print 'Published by %s' % user
+    try:
+        if user:
+            if '.' in task_name:
+                base_task = task_name.split('.')[0]
+                task_name = '%s.%s' % (base_task, user)
+        # Check that data is there and that the file actually exists
+        if filename and os.path.exists(filename):
+            logger.info('-' * 120)
+            logger.info('NEW FILE PROCESSING...')
+            print 'New File Processing...'
+            print filename
+            print 'Published by %s' % user
 
-        # Get the path details from the filename
-        path = os.path.dirname(filename)
-        logger.debug('PATH: %s' % path)
-        # Filename without path
-        base_file = os.path.basename(filename)
-        # Relative path outside the dropbox structure
-        split_pattern = re.findall(publish_path_to_watch, path)[0]
-        rel_path = path.split(split_pattern)[1]
-        if not rel_path:
-            rel_path = path
-        logger.debug('Relative Path: %s' % rel_path)
+            # Get the path details from the filename
+            path = os.path.dirname(filename)
+            logger.debug('PATH: %s' % path)
+            # Filename without path
+            base_file = os.path.basename(filename)
+            # Relative path outside the dropbox structure
+            split_pattern = re.findall(publish_path_to_watch, path)[0]
+            rel_path = path.split(split_pattern)[1]
+            if not rel_path:
+                rel_path = path
+            logger.debug('Relative Path: %s' % rel_path)
 
-        f = os.path.splitext(base_file)
-        # File extension
-        ext = str(f[1]).lower()
-        # Filename without path or extension.
-        file_name = f[0]
+            f = os.path.splitext(base_file)
+            # File extension
+            ext = str(f[1]).lower()
+            # Filename without path or extension.
+            file_name = f[0]
 
-        logger.debug('Project Details returns: project: %s ID: %s' % (proj_name, proj_id))
+            logger.debug('Project Details returns: project: %s ID: %s' % (proj_name, proj_id))
 
-        # If the project is found, continue processing.
-        if proj_id:
-            # Look for assets based on the project name and the relative path
-            find_asset = get_asset_details_from_path(proj_name, proj_id, rel_path)
-            asset_name = find_asset['name']
-            asset_id = find_asset['id']
-            asset_type = find_asset['type']
+            # If the project is found, continue processing.
+            if proj_id:
+                # Look for assets based on the project name and the relative path
+                find_asset = get_asset_details_from_path(proj_name, proj_id, rel_path)
+                asset_name = find_asset['name']
+                asset_id = find_asset['id']
+                asset_type = find_asset['type']
 
-            # If an asset is found, continue processing.
-            if asset_id:
-                logger.info('The Asset is found in the system! %s: %s' % (asset_id, asset_name))
-                logger.debug('Asset type: %s' % asset_type)
+                # If an asset is found, continue processing.
+                if asset_id:
+                    logger.info('The Asset is found in the system! %s: %s' % (asset_id, asset_name))
+                    logger.debug('Asset type: %s' % asset_type)
 
-                task = get_set_task(asset=find_asset, proj_id=proj_id, user=user)
-                logger.debug('Task ID returned: %s' % task)
+                    task = get_set_task(asset=find_asset, proj_id=proj_id, user=user)
+                    logger.debug('Task ID returned: %s' % task)
 
-                # Find the Shotgun configuration root path
-                find_config = get_configuration(proj_id)
-                logger.debug('Configuration found: %s' % find_config)
+                    # Find the Shotgun configuration root path
+                    find_config = get_configuration(proj_id)
+                    logger.debug('Configuration found: %s' % find_config)
 
-                if ext in publish_types:
-                    # Find out from the ext which configuration to get from the template.
-                    logger.debug('This is a publish level file...')
-                    publish_type = publish_types[ext]
-                    template_type = templates[publish_type]
+                    if ext in publish_types:
+                        # Find out from the ext which configuration to get from the template.
+                        logger.debug('This is a publish level file...')
+                        publish_type = publish_types[ext]
+                        template_type = templates[publish_type]
 
-                    # Resolve the templates with known data to get the template path.
-                    work_template = resolve_template_path(template_type['work_template'], template)
-                    logger.debug('WORK TEMPLATE: %s' % work_template)
-                    work_area = resolve_template_path(template_type['work_area'], template)
-                    logger.debug('WORK Area: %s' % work_area)
-                    publish_template = resolve_template_path(template_type['publish_template'], template)
-                    logger.debug('PUBLISH TEMPLATE: %s' % publish_template)
-                    publish_area = resolve_template_path(template_type['publish_area'], template)
-                    logger.debug('PUBLISH AREA: %s' % publish_area)
+                        # Resolve the templates with known data to get the template path.
+                        work_template = resolve_template_path(template_type['work_template'], template)
+                        logger.debug('WORK TEMPLATE: %s' % work_template)
+                        work_area = resolve_template_path(template_type['work_area'], template)
+                        logger.debug('WORK Area: %s' % work_area)
+                        publish_template = resolve_template_path(template_type['publish_template'], template)
+                        logger.debug('PUBLISH TEMPLATE: %s' % publish_template)
+                        publish_area = resolve_template_path(template_type['publish_area'], template)
+                        logger.debug('PUBLISH AREA: %s' % publish_area)
 
-                    # Now to get the show roots.  This listener will be on a windows machine.
-                    project_root = roots['primary']['windows_path']
+                        # Now to get the show roots.  This listener will be on a windows machine.
+                        project_root = roots['primary']['windows_path']
 
-                    # Each of the template paths put together in complete files.
-                    root_template_path = os.path.join(project_root, proj_name)
-                    work_template_path = os.path.join(root_template_path, work_template).replace('\\', '/')
-                    work_area_path = os.path.join(root_template_path, work_area).replace('\\', '/')
-                    publish_template_path = os.path.join(root_template_path, publish_template).replace('\\', '/')
-                    # publish_area_path = os.path.join(root_template_path, publish_area).replace('\\', '/')
+                        # Each of the template paths put together in complete files.
+                        root_template_path = os.path.join(project_root, proj_name)
+                        work_template_path = os.path.join(root_template_path, work_template).replace('\\', '/')
+                        work_area_path = os.path.join(root_template_path, work_area).replace('\\', '/')
+                        publish_template_path = os.path.join(root_template_path, publish_template).replace('\\', '/')
+                        # publish_area_path = os.path.join(root_template_path, publish_area).replace('\\', '/')
 
-                    # Get the resolved working area and find existing files in it.
-                    # No version passed because we're only looking for the folder
-                    res_path_work_area = process_template_path(template=work_area_path, asset=find_asset)
+                        # Get the resolved working area and find existing files in it.
+                        # No version passed because we're only looking for the folder
+                        res_path_work_area = process_template_path(template=work_area_path, asset=find_asset)
 
-                    # Create paths if they're not already there.
-                    if not os.path.exists(res_path_work_area):
-                        logger.info('Creating paths: %s' % res_path_work_area)
-                        os.makedirs(res_path_work_area)
+                        # Create paths if they're not already there.
+                        if not os.path.exists(res_path_work_area):
+                            logger.info('Creating paths: %s' % res_path_work_area)
+                            os.makedirs(res_path_work_area)
 
-                    # Create the basic taskname template from the data.
-                    template_name = task_name_format.format(Asset=asset_name, task_name=task_name, ext=ext)
+                        # Create the basic taskname template from the data.
+                        template_name = task_name_format.format(Asset=asset_name, task_name=task_name, ext=ext)
 
-                    find_files_from_template = '%s/%s' % (res_path_work_area, template_name)
-                    logger.debug('find_files_from_template RETURNS: %s' % find_files_from_template)
-                    get_files = [f for f in glob(find_files_from_template)]
-                    logger.debug('get_files RAW RETURN: %s' % get_files)
-                    if get_files:
-                        # Look for an existing version number based on the template
-                        logger.debug('GET FILES: %s ' % get_files)
-                        last_file = sorted(get_files)[-1]
-                        logger.debug('last_file: %s' % last_file)
-                        get_filename = os.path.basename(last_file)
-                        find_version = re.findall(r'_v\d*|_V\d*', get_filename)[0]
-                    else:
-                        find_version = None
+                        find_files_from_template = '%s/%s' % (res_path_work_area, template_name)
+                        logger.debug('find_files_from_template RETURNS: %s' % find_files_from_template)
+                        get_files = [f for f in glob(find_files_from_template)]
+                        logger.debug('get_files RAW RETURN: %s' % get_files)
+                        if get_files:
+                            # Look for an existing version number based on the template
+                            logger.debug('GET FILES: %s ' % get_files)
+                            last_file = sorted(get_files)[-1]
+                            logger.debug('last_file: %s' % last_file)
+                            get_filename = os.path.basename(last_file)
+                            find_version = re.findall(r'_v\d*|_V\d*', get_filename)[0]
+                        else:
+                            find_version = None
 
-                    # Set the version number for the new file.
-                    if find_version:
-                        version = int(find_version.lower().strip('_v'))
-                        # Increase to the next available version number
-                        version += 1
-                    else:
-                        version = 1
-                    logger.debug('VERSION: %s' % version)
+                        # Set the version number for the new file.
+                        if find_version:
+                            version = int(find_version.lower().strip('_v'))
+                            # Increase to the next available version number
+                            version += 1
+                        else:
+                            version = 1
+                        logger.debug('VERSION: %s' % version)
 
-                    # resolve the working template into an actual file path that can be written out.
-                    res_path_work_template = process_template_path(template=work_template_path, asset=find_asset,
-                                                                   version=version)
-                    res_path_work_template = res_path_work_template.replace('\\', '/')
-                    logger.debug('res_path_work_template: %s' % res_path_work_template)
+                        # resolve the working template into an actual file path that can be written out.
+                        res_path_work_template = process_template_path(template=work_template_path, asset=find_asset,
+                                                                       version=version)
+                        res_path_work_template = res_path_work_template.replace('\\', '/')
+                        logger.debug('res_path_work_template: %s' % res_path_work_template)
 
-                    # Copy the file to the correct place on the server.  There are some wait time handlers in here.
-                    logger.info('Copying the file to the server...')
-                    copy_file = filename.replace('\\', '/')
-                    try:
-                        shutil.move(copy_file, res_path_work_template)
-                        message = 'The file is moved!  Prepping for publish!'
-                    except IOError, e:
-                        message = ''
-                        # Waiting tries...
-                        attempts = 1
-                        while attempts < 10:
-                            time.sleep(2 * attempts)
-                            try:
-                                shutil.move(copy_file, res_path_work_template)
-                                message = 'The File is copied after %i tries!  Prepping for publish' % attempts
-                                break
-                            except Exception:
-                                message = ''
-                                attempts += 1
-                                logger.warning('Copy attempt failed.  Tyring again...')
-                        logger.error('Copying attempts failed! %s' % e)
-                    if message:
-                        logger.info(message)
-                    else:
-                        logger.error('The file could not be copied! %s' % copy_file)
+                        # Copy the file to the correct place on the server.  There are some wait time handlers in here.
+                        logger.info('Copying the file to the server...')
+                        copy_file = filename.replace('\\', '/')
+                        try:
+                            shutil.move(copy_file, res_path_work_template)
+                            message = 'The file is moved!  Prepping for publish!'
+                        except IOError, e:
+                            message = ''
+                            # Waiting tries...
+                            attempts = 1
+                            while attempts < 10:
+                                time.sleep(2 * attempts)
+                                try:
+                                    shutil.move(copy_file, res_path_work_template)
+                                    message = 'The File is copied after %i tries!  Prepping for publish' % attempts
+                                    break
+                                except Exception:
+                                    message = ''
+                                    attempts += 1
+                                    logger.warning('Copy attempt failed.  Tyring again...')
+                            logger.error('Copying attempts failed! %s' % e)
+                        if message:
+                            logger.info(message)
+                        else:
+                            logger.error('The file could not be copied! %s' % copy_file)
 
-                    new_file = res_path_work_template
+                        new_file = res_path_work_template
 
-                    # Now check to see if the file type needs to generate other file types
-                    if ext in generate_types.keys():
-                        logger.debug('Generator type detected!')
-                        export_type = generate_types[ext]['type']
-                        output_type = generate_types[ext]['output']
-                        render_area = generate_types[ext]['render']
+                        # Now check to see if the file type needs to generate other file types
+                        if ext in generate_types.keys():
+                            logger.debug('Generator type detected!')
+                            export_type = generate_types[ext]['type']
+                            output_type = generate_types[ext]['output']
+                            render_area = generate_types[ext]['render']
 
-                        # ------------------------------------------------------------------------------------
-                        # Sub Processing Routines
-                        # ------------------------------------------------------------------------------------
-                        # Here I can add different job types as the come up.  For now, it's only Photoshop
-                        if export_type == 'Photoshop':
-                            logger.debug('export type detected: PHOTOSHOP')
-                            get_template_name = templates[render_area]
-                            render_publish_area = get_template_name['publish_area']
-                            logger.debug('get_template_name: %s' % get_template_name)
-                            try:
-                                process_Photoshop_image(template=template, filename=new_file,
-                                                        pub_area=render_publish_area,
-                                                        task=task, f_type=output_type, proj_id=proj_id,
-                                                        asset=find_asset, root=root_template_path)
-                            except IOError, e:
-                                logger.error('Unable to process the %s for the following reasons: %s' % (ext, e))
-                                pass
+                            # ------------------------------------------------------------------------------------
+                            # Sub Processing Routines
+                            # ------------------------------------------------------------------------------------
+                            # Here I can add different job types as the come up.  For now, it's only Photoshop
+                            if export_type == 'Photoshop':
+                                logger.debug('export type detected: PHOTOSHOP')
+                                get_template_name = templates[render_area]
+                                render_publish_area = get_template_name['publish_area']
+                                logger.debug('get_template_name: %s' % get_template_name)
+                                try:
+                                    process_Photoshop_image(template=template, filename=new_file,
+                                                            pub_area=render_publish_area,
+                                                            task=task, f_type=output_type, proj_id=proj_id,
+                                                            asset=find_asset, root=root_template_path)
+                                except IOError, e:
+                                    logger.error('Unable to process the %s for the following reasons: %s' % (ext, e))
+                                    pass
 
-                    # Publish the file
-                    res_publish_path = process_template_path(template=publish_template_path, asset=find_asset,
-                                                             version=version)
-                    logger.debug('Publish Path: %s' % res_publish_path)
-                    next_version = version + 1
-                    try:
-                        logger.info('Attempting to publish...')
-                        publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
-                                           proj_id=proj_id, task_id=task, next_version=next_version)
-                    except Exception, e:
-                        logger.error('Publish failed for the following! %s' % e)
-                        pass
+                        # Publish the file
+                        res_publish_path = process_template_path(template=publish_template_path, asset=find_asset,
+                                                                 version=version)
+                        logger.debug('Publish Path: %s' % res_publish_path)
+                        next_version = version + 1
+                        try:
+                            logger.info('Attempting to publish...')
+                            publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
+                                               proj_id=proj_id, task_id=task, next_version=next_version)
+                        except Exception, e:
+                            logger.error('Publish failed for the following! %s' % e)
+                            pass
 
-                elif ext.lower() in upload_types:
-                    # getting template settings
-                    send_today_template = template['paths']['send_today']
-                    project_root = roots['primary']['windows_path']
-                    root_template_path = os.path.join(project_root, proj_name)
-                    logger.debug('send_today_template: %s' % send_today_template)
-                    resolved_send_today_template = resolve_template_path('send_today', template)
-                    logger.debug('RESOLVED send_today_template: %s' % resolved_send_today_template)
-                    send_today_path = os.path.join(root_template_path, resolved_send_today_template)
-                    logger.debug('SEND TODAY PATH: %s' % send_today_path)
-                    logger.info('Uploading for review %s' % file_name)
-                    send = upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id,
-                                             user=user)
-                    logger.debug('SEND: %s' % send)
-                    if send:
-                        # Run the Send Today portion of our show.
-                        # This will need to get the send folder from the template, and make sure there is a date
-                        # folder.
-                        is_sent = send_today(filename=filename, path=send_today_path, proj_id=proj_id,
-                                             asset=find_asset)
-                        logger.debug('is_sent RETURNS: %s' % is_sent)
+                    elif ext.lower() in upload_types:
+                        # getting template settings
+                        send_today_template = template['paths']['send_today']
+                        project_root = roots['primary']['windows_path']
+                        root_template_path = os.path.join(project_root, proj_name)
+                        logger.debug('send_today_template: %s' % send_today_template)
+                        resolved_send_today_template = resolve_template_path('send_today', template)
+                        logger.debug('RESOLVED send_today_template: %s' % resolved_send_today_template)
+                        send_today_path = os.path.join(root_template_path, resolved_send_today_template)
+                        logger.debug('SEND TODAY PATH: %s' % send_today_path)
+                        logger.info('Uploading for review %s' % file_name)
+                        send = upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id,
+                                                 user=user)
+                        logger.debug('SEND: %s' % send)
+                        if send:
+                            # Run the Send Today portion of our show.
+                            # This will need to get the send folder from the template, and make sure there is a date
+                            # folder.
+                            is_sent = send_today(filename=filename, path=send_today_path, proj_id=proj_id,
+                                                 asset=find_asset)
+                            logger.debug('is_sent RETURNS: %s' % is_sent)
 
-        logger.info('Finished processing the file')
-        logger.info('=' * 100)
-        q.task_done()
-        print 'Finished processing file.'
-        print '=' * 100
+            logger.info('Finished processing the file')
+            logger.info('=' * 100)
+            q.task_done()
+            print 'Finished processing file.'
+            print '=' * 100
+    except Exception, e:
+        print 'Skipping!  The following error occurred: %s' % e
 
 
 def process_Photoshop_image(template=None, filename=None, task=None, pub_area=None, f_type=None, proj_id=None,
