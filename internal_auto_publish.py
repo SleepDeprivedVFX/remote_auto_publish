@@ -1,7 +1,5 @@
 """
-This is a rebuild of the Dropbox event listener.
-I am starting with a basic folder listener copied from the the web.  I am using this folder event listener as the
-driver for everything else that will happen.
+The Internal Auto Publisher (IAP) is a server listener that gets data from the server logs in order to better port
 """
 
 import os
@@ -28,16 +26,23 @@ sg = shotgun_api3.Shotgun(sg_url, sg_name, sg_key)
 # Server Logs Connections
 HOST, PORT = '0.0.0.0', 514
 
-# Dropbox Folder
-path_to_watch = "/Jobs/\w+/publish/\w+"
-
-# Create Log file
-log_level = logging.INFO
+# Watch Folder Filters
+publish_path_to_watch = "/Jobs/\w+/publish/\w+"
+ref_path_to_watch = '/Jobs/\w+/reference/auto/\w+'
 
 # Output window startup messages
 print '-' * 100
 print 'INTERNAL AUTO PUBLISH UTILITY'
 print '+' * 100
+
+'''
+TODO:
+1. Setup reference system
+2. Need to add auto task assignments for artists who drag and drop into an asset publisher.
+'''
+
+# Create Log file
+log_level = logging.INFO
 
 
 def _setFilePathOnLogger(logger, path):
@@ -45,7 +50,7 @@ def _setFilePathOnLogger(logger, path):
     _removeHandlersFromLogger(logger, None)
 
     # Add the file handler
-    handler = logging.handlers.TimedRotatingFileHandler(path, 'D', interval=1, backupCount=10)
+    handler = logging.handlers.TimedRotatingFileHandler(path, 'D', interval=30, backupCount=10)
     handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s:%(lineno)d - %(message)s"))
     logger.addHandler(handler)
 
@@ -67,7 +72,7 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
             logger.removeHandler(handler)
 
 
-logfile = "C:/shotgun/remote_auto_publish/logs/internalAutoPublish.log"
+logfile = "C:/shotgun/remote_auto_publish/logs/internalAutoPublish.%s.log" % datetime.date(datetime.now())
 
 logger = logging.getLogger('remote_auto_publish')
 logger.setLevel(log_level)
@@ -102,6 +107,10 @@ publish_types = {
     '.bip': 'Keyshot Package',
     '.kip': 'Keyshot File'
 }
+ignore_types = [
+    '.DS_Store'
+]
+
 '''
 # generate_types will create the values if the keys are certain values.  Thus, if ext == '.psd' then '.jpg' will be made
 # Settings are as follows: 
@@ -238,7 +247,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
         # Filename without path
         base_file = os.path.basename(filename)
         # Relative path outside the dropbox structure
-        split_pattern = re.findall(path_to_watch, path)[0]
+        split_pattern = re.findall(publish_path_to_watch, path)[0]
         rel_path = path.split(split_pattern)[1]
         if not rel_path:
             rel_path = path
@@ -265,7 +274,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                 logger.info('The Asset is found in the system! %s: %s' % (asset_id, asset_name))
                 logger.debug('Asset type: %s' % asset_type)
 
-                task = get_set_task(asset=find_asset, proj_id=proj_id)
+                task = get_set_task(asset=find_asset, proj_id=proj_id, user=user)
                 logger.debug('Task ID returned: %s' % task)
 
                 # Find the Shotgun configuration root path
@@ -490,7 +499,10 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
     """
     file_name = os.path.basename(filename)
     file_path = filename
-    description = '%s published this file using the Internal Auto Publish utility'
+    if user:
+        description = '%s published this file using the Internal Auto Publish utility' % user
+    else:
+        description = 'Someone published this file using the Internal Auto Publish utility'
     version_data = {
         'description': description,
         'project': {'type': 'Project', 'id': proj_id},
@@ -921,7 +933,7 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
             pass
 
 
-def get_set_task(asset=None, proj_id=None):
+def get_set_task(asset=None, proj_id=None, user=None):
     """
     This will look for an existing task in Shotgun and return the info. If no task if found, it creates one and returns
     the info
@@ -929,6 +941,7 @@ def get_set_task(asset=None, proj_id=None):
     :param proj_id: (int) Project ID number
     :return: (int) task: Task ID number
     """
+    # TODO: Add task assignments!  I'll need the user info, and I'll need a function that collects human user data
     global task_step
     task = None
     if asset:
@@ -1233,70 +1246,86 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
         except IndexError:
             ip = None
 
-        if event == 'write':
-            logger.info('Event Triggered: %s' % event)
+        if event == 'write' or 'move':
+            logger.debug('Event Triggered: %s' % event)
             if event_type == 'File':
-                logger.info('Event Type is FILE')
+                logger.debug('Event Type is FILE')
                 if path.startswith('/Jobs/'):
-                    logger.info('JOBS is in the path')
-                    if re.findall(path_to_watch, path):
-                        logger.info('And the path is within the correct parameters')
-                        logger.info('%s | %s | %s | %s' % (user, path, file_size, ip))
+                    logger.debug('JOBS is in the path')
 
-                        # Start double check that the file is valid and begin packing it up for processing.
+                    if event == 'move':
+                        crop_path = path.split(' -> ')
+                        path = crop_path[1]
+                    if re.findall(publish_path_to_watch, path):
+                        ignore_this = False
+                        for ignore in ignore_types:
+                            if ignore in path:
+                                ignore_this = True
+                                break
+                        if not ignore_this:
+                            logger.info('Publish path detected!  Testing...')
+                            logger.info('%s | %s | %s | %s' % (user, path, file_size, ip))
+
+                            # Start double check that the file is valid and begin packing it up for processing.
+                            project_details = get_details_from_path(path)
+                            proj_name = project_details['name']
+                            proj_id = project_details['id']
+
+                            # Assuming a project id was returned, process the results
+                            if proj_id:
+                                # Get the configuration from the project ID
+                                find_config = get_configuration(proj_id)
+                                logger.debug('find_config RETURNS: %s' % find_config)
+
+                                # If a configuration is found, build paths to the appropriate files
+                                if find_config:
+                                    templates_path = find_config + relative_config_path
+                                    template_file = os.path.join(templates_path, 'templates.yml')
+                                    root_file = os.path.join(templates_path, 'roots.yml')
+                                    template_file = template_file.replace('/', '\\')
+                                    root_file = root_file.replace('/', '\\')
+
+                                    # Open the configuration files...
+                                    try:
+                                        logger.info('Opening config files...')
+                                        f = open(template_file, 'r')
+                                        r = open(root_file, 'r')
+                                    except Exception, err:
+                                        # If unable to open the configuration files, try another 10 times.
+                                        tries = 1
+                                        while tries < 10:
+                                            logger.error('Opening files took a shit.  Trying again...')
+                                            time.sleep(2)
+                                            try:
+                                                logger.warning('Open attempt #%i' % tries)
+                                                f = open(template_file, 'r')
+                                                r = open(root_file, 'r')
+                                                break
+                                            except Exception, e:
+                                                tries += 1
+                                                logging.error('File Open failed again. Trying again... ERROR: %s' % e)
+                                        raise 'Total failure! %s' % err
+
+                                    # Path the tempate fields into something more usable.
+                                    template = yaml.load(f)
+                                    roots = yaml.load(r)
+
+                                    get_root_path = roots['primary']['windows_path']
+                                    root_drive = str(get_root_path).rsplit('\\', 1)[0]
+                                    full_filename = '%s%s' % (root_drive, path)
+
+                                    # Package data into a dict for passing to the queue
+                                    package = {'filename': full_filename, 'template': template, 'roots': roots,
+                                               'proj_id': proj_id, 'proj_name': proj_name, 'user': user}
+                                    # Add the package to the queue for processing.
+                                    q.put(package)
+                                    logger.debug('%s added to queue...' % full_filename)
+                    elif re.findall(ref_path_to_watch, path):
+                        logger.info('Reference path detected!')
+                        logger.debug('%s | %s | %s | %s' % (user, path, file_size, ip))
                         project_details = get_details_from_path(path)
                         proj_name = project_details['name']
                         proj_id = project_details['id']
-
-                        # Assuming a project id was returned, process the results
-                        if proj_id:
-                            # Get the configuration from the project ID
-                            find_config = get_configuration(proj_id)
-                            logger.debug('find_config RETURNS: %s' % find_config)
-
-                            # If a configuration is found, build paths to the appropriate files
-                            if find_config:
-                                templates_path = find_config + relative_config_path
-                                template_file = os.path.join(templates_path, 'templates.yml')
-                                root_file = os.path.join(templates_path, 'roots.yml')
-                                template_file = template_file.replace('/', '\\')
-                                root_file = root_file.replace('/', '\\')
-
-                                # Open the configuration files...
-                                try:
-                                    logger.info('Opening config files...')
-                                    f = open(template_file, 'r')
-                                    r = open(root_file, 'r')
-                                except Exception, err:
-                                    # If unable to open the configuration files, try another 10 times.
-                                    tries = 1
-                                    while tries < 10:
-                                        logger.error('Opening files took a shit.  Trying again...')
-                                        time.sleep(2)
-                                        try:
-                                            logger.warning('Open attempt #%i' % tries)
-                                            f = open(template_file, 'r')
-                                            r = open(root_file, 'r')
-                                            break
-                                        except Exception, e:
-                                            tries += 1
-                                            logging.error('File Open failed again. Trying again... ERROR: %s' % e)
-                                    raise 'Total failure! %s' % err
-
-                                # Path the tempate fields into something more usable.
-                                template = yaml.load(f)
-                                roots = yaml.load(r)
-
-                                get_root_path = roots['primary']['windows_path']
-                                root_drive = str(get_root_path).rsplit('\\', 1)[0]
-                                full_filename = '%s%s' % (root_drive, path)
-
-                                # Package data into a dict for passing to the queue
-                                package = {'filename': full_filename, 'template': template, 'roots': roots,
-                                           'proj_id': proj_id, 'proj_name': proj_name, 'user': user}
-                                # Add the package to the queue for processing.
-                                q.put(package)
-                                logger.debug('%s added to queue...' % full_filename)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -1306,6 +1335,7 @@ if __name__ == "__main__":
     try:
         server = SocketServer.UDPServer((HOST, PORT), SyslogUDPHandler)
         print 'Internal Auto Publisher is now listening!'
+        print 'Press Ctrl + C to terminate!'
         print '=' * 100
         server.serve_forever(poll_interval=0.5)
     except (IOError, SystemExit):

@@ -64,7 +64,7 @@ def _setFilePathOnLogger(logger, path):
     _removeHandlersFromLogger(logger, None)
 
     # Add the file handler
-    handler = logging.handlers.TimedRotatingFileHandler(path, 'D', interval=1, backupCount=10)
+    handler = logging.handlers.TimedRotatingFileHandler(path, 'D', interval=30, backupCount=10)
     handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s:%(lineno)d - %(message)s"))
     logger.addHandler(handler)
 
@@ -86,7 +86,7 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
             logger.removeHandler(handler)
 
 
-logfile = "C:/shotgun/remote_auto_publish/logs/remoteAutoPublish.log"
+logfile = "C:/shotgun/remote_auto_publish/logs/remoteAutoPublish.%s.log" % datetime.date(datetime.now())
 
 logger = logging.getLogger('remote_auto_publish')
 logger.setLevel(log_level)
