@@ -444,6 +444,8 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             print '=' * 100
     except Exception, e:
         print 'Skipping!  The following error occurred: %s' % e
+        logger.error('Skipping!  The following error occurred: %s' % e)
+        q.task_done()
 
 
 def process_Photoshop_image(template=None, filename=None, task=None, pub_area=None, f_type=None, proj_id=None,
@@ -1135,8 +1137,12 @@ def get_active_shotgun_projects():
         'id',
         'tank_name'
     ]
-    projects_list = sg.find('Project', filters, fields)
-    logger.debug('Active Projects Found: %s' % projects_list)
+    try:
+        projects_list = sg.find('Project', filters, fields)
+        logger.debug('Active Projects Found: %s' % projects_list)
+    except Exception, e:
+        logger.error('The following error occurred: %s' % e)
+        projects_list = []
     return projects_list
 
 
@@ -1178,13 +1184,14 @@ def file_queue():
                     copying = False
                     process_file(filename=full_filename, template=template, roots=roots, proj_id=proj_id,
                                  proj_name=proj_name, user=user)
+                    break
                 else:
                     # Copying not finished, wait to seconds and try again...
                     size2 = os.stat(full_filename).st_size
                     time.sleep(2)
             except WindowsError, e:
                 logger.error(e)
-                pass
+                break
 
 
 def datetime_to_float(d):
@@ -1212,7 +1219,13 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
     logger.info('Enter the Sandman')
 
     def handle(self):
-        data = bytes.decode(self.request[0].strip())
+        try:
+            data = bytes.decode(self.request[0].strip())
+        except UnicodeDecodeError, e:
+            logger.error('Handle attempt failed: %s' % e)
+            print 'Handle attempt failed: %s' % e
+            data_to_unicode = u'%s' % self.request[0]
+            data = bytes.decode(data_to_unicode).strip()
         socket = self.request[1]
         data_list = data.split(',')
 
