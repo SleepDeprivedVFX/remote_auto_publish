@@ -926,17 +926,6 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
         sg.update('PublishedFile', publish_id, publish_update)
         logger.info('%s has been published successfully!' % base_name)
 
-        # Create a new version and save up.
-        new_version = '_v' + str(next_version).zfill(count_digits)
-        version_up = publish_file.replace(find_version, new_version)
-        logger.info('Versioning up the file...')
-        try:
-            shutil.copy2(publish_file, version_up)
-            logger.info('Version up completed!')
-        except Exception, e:
-            logger.error('The version up failed!: %s ' % e)
-            pass
-
 
 def get_set_task(asset=None, proj_id=None, user=None):
     """
@@ -1224,8 +1213,10 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
         except UnicodeDecodeError, e:
             logger.error('Handle attempt failed: %s' % e)
             print 'Handle attempt failed: %s' % e
-            data_to_unicode = u'%s' % self.request[0]
-            data = bytes.decode(data_to_unicode).strip()
+            logger.error('Probably a bad handler message.  Skipping...')
+            print 'Probably a bad handler message.  Skipping...'
+            return False
+
         socket = self.request[1]
         data_list = data.split(',')
 
