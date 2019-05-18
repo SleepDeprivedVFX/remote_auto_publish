@@ -43,6 +43,7 @@ TODO:
 
 # Create Log file
 log_level = logging.INFO
+# log_level = logging.DEBUG
 
 
 def _setFilePathOnLogger(logger, path):
@@ -383,21 +384,38 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                             export_type = generate_types[ext]['type']
                             output_type = generate_types[ext]['output']
                             render_area = generate_types[ext]['render']
+                            logger.debug('export_type: %s' % export_type)
+                            logger.debug('output_type: %s' % output_type)
+                            logger.debug('render_area: %s' % render_area)
 
                             # ------------------------------------------------------------------------------------
                             # Sub Processing Routines
                             # ------------------------------------------------------------------------------------
                             # Here I can add different job types as the come up.  For now, it's only Photoshop
-                            if export_type == 'Photoshop':
+                            if export_type == 'Photoshop Image':
                                 logger.debug('export type detected: PHOTOSHOP')
                                 get_template_name = templates[render_area]
                                 render_publish_area = get_template_name['publish_area']
                                 logger.debug('get_template_name: %s' % get_template_name)
                                 try:
-                                    process_Photoshop_image(template=template, filename=new_file,
-                                                            pub_area=render_publish_area,
-                                                            task=task, f_type=output_type, proj_id=proj_id,
-                                                            asset=find_asset, root=root_template_path)
+                                    image = process_Photoshop_image(template=template, filename=new_file,
+                                                                    pub_area=render_publish_area,
+                                                                    task=task, f_type=output_type, proj_id=proj_id,
+                                                                    asset=find_asset, root=root_template_path)
+                                    if image:
+                                        # getting template settings
+                                        send_today_template = template['paths']['send_today']
+                                        project_root = roots['primary']['windows_path']
+                                        root_template_path = os.path.join(project_root, proj_name)
+                                        logger.debug('send_today_template: %s' % send_today_template)
+                                        resolved_send_today_template = resolve_template_path('send_today', template)
+                                        logger.debug('RESOLVED send_today_template: %s' % resolved_send_today_template)
+                                        send_today_path = os.path.join(root_template_path, resolved_send_today_template)
+                                        logger.debug('SEND TODAY PATH: %s' % send_today_path)
+                                        send_today(filename=image, path=send_today_path, proj_id=proj_id,
+                                                   asset=find_asset)
+                                        # TODO: Perhaps here is where I should put the call to set_related_version
+                                    logger.info('Image file has been created from PSD.')
                                 except IOError, e:
                                     logger.error('Unable to process the %s for the following reasons: %s' % (ext, e))
                                     pass
@@ -462,6 +480,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
     :param root:
     :return:
     """
+    # TODO: The processing of PSDs needs to be able to handle alphas when creating JPGs
     if filename:
         # Find where to save the file from the template
         res_template_path = resolve_template_path(pub_area, template)
@@ -491,6 +510,8 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
 
         # Upload a version
         upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
+        return render_path
+    return None
 
 
 def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, user=None):
@@ -925,6 +946,38 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
         }
         sg.update('PublishedFile', publish_id, publish_update)
         logger.info('%s has been published successfully!' % base_name)
+        # TODO: The following two commented lines are needed to call set_related_version. Needs to be reconfigured.
+        # set_related_version(item, path=publish_path)
+        # return True
+
+
+def set_related_version(item, path=None):
+    if path:
+        file_name = os.path.basename(path)
+        logger.debug('Associated Version: %s' % file_name)
+        # TODO: this will need to be adjusted to get rid of the item.properties. 2 paths in here. from and final.
+        main_file_name = os.path.basename(item.properties['path'])
+        logger.debug('Main Version: %s' % main_file_name)
+
+        # TODO: remove item.context and replace it with the entity information I have from elsewhere.
+        logger.debug('CONTEXT Entity: %s' % item.context.entity)
+        # TODO: replace this with the actual project ID I have elsewhere.  Might need to get passed to the thing.
+        proj_id = item.context.project['id']
+
+        tk = sg.sgtk_from_entity('Project', proj_id)
+
+        filters = [
+            ['project', 'is', {'type': 'Project', 'id': proj_id}],
+            ['code', 'is', main_file_name]
+        ]
+        fields = [
+            'created_at'
+        ]
+        version = sg.find_one('Version', filters, fields, order=[{'field_name': 'created_at', 'direction': 'desc'}])
+        logger.debug('Versions returns: %s' % version)
+        if version:
+            sg.update('Version', version['id'], data={'sg_name_option': file_name})
+            logger.info('Version updated with Send Today Submission')
 
 
 def get_set_task(asset=None, proj_id=None, user=None):
@@ -1054,6 +1107,16 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
             logger.debug('Assets exist!  Finding our guy...')
             for asset in find_assets:
                 logger.debug('Testing %s IN %s...' % (asset['code'], path))
+                # TODO: The following 'if asset['code'] in path:' suffers from the following scenario:
+                #       'Jack' and 'Village_where_Jack_Lives' both have the word 'Jack' in them.  Thus, the system finds
+                #       the correct word, but in the wrong Asset.  I think what I'll have to do is split this further
+                #       if asset['code'] in path:
+                #           split_path = path.split('/')  # Splitting it at the slashes.
+                #           for this in split_path:
+                #               if this == 'Jack':
+                #                   Do some shit.
+                #       The problem with this is that 'Jack' could also be the name of the project, so the pattern will
+                #       have to be respected as well.
                 if asset['code'] in path:
                     ass['name'] = asset['code']
                     ass['id'] = asset['id']
@@ -1256,9 +1319,9 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
         if event == 'write' or 'move':
             logger.debug('Event Triggered: %s' % event)
             if event_type == 'File':
-                logger.debug('Event Type is FILE')
+                # logger.debug('Event Type is FILE')
                 if path.startswith('/Jobs/'):
-                    logger.debug('JOBS is in the path')
+                    # logger.debug('JOBS is in the path')
 
                     if event == 'move':
                         crop_path = path.split(' -> ')
