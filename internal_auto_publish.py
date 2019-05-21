@@ -11,6 +11,7 @@ import logging.handlers
 import shutil
 import yaml
 import psd_tools as psd
+from PIL import Image
 import shotgun_api3
 import queue
 import threading
@@ -109,7 +110,8 @@ publish_types = {
     '.kip': 'Keyshot File'
 }
 ignore_types = [
-    '.DS_Store'
+    '.DS_Store',
+    '.db'
 ]
 
 '''
@@ -122,12 +124,12 @@ ignore_types = [
 generate_types = {
     '.psd': {
         'type': 'Photoshop Image',
-        'output': 'png',
+        'output': 'jpg',
         'render': 'Renders'
     },
     '.psb': {
         'type': 'Photoshop Image',
-        'output': 'png',
+        'output': 'jpg',
         'render': 'Renders'
     }
 }
@@ -242,6 +244,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             print 'New File Processing...'
             print filename
             print 'Published by %s' % user
+            print 'At: %s' % datetime.now()
 
             # Get the path details from the filename
             path = os.path.dirname(filename)
@@ -455,6 +458,11 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                                                  asset=find_asset)
                             logger.debug('is_sent RETURNS: %s' % is_sent)
 
+                            # TODO: The following two commented lines are needed to call set_related_version. Needs to
+                            #  be reconfigured.
+                            # logger.debug('Setting related version...')
+                            # set_related_version(proj_id=proj_id, origin_path=filename, path=send_today_path)
+
             logger.info('Finished processing the file')
             logger.info('=' * 100)
             q.task_done()
@@ -481,6 +489,8 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
     :return:
     """
     # TODO: The processing of PSDs needs to be able to handle alphas when creating JPGs
+    #       Furthermore, MOV and MP4 videos are currently trying to upload themselves as thumbnails, and it's fucking
+    #       the system up.  Need to properly process video thumbnails.
     if filename:
         # Find where to save the file from the template
         res_template_path = resolve_template_path(pub_area, template)
@@ -502,7 +512,8 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         # Process the image.
         logger.info('Processing Photoshop file...')
         try:
-            file_to_publish = psd.PSDImage.open(filename)
+            file_to_publish = Image.open(filename)
+            file_to_publish = file_to_publish.convert("RGB")
             file_to_publish.compose().save(render_path)
         except Exception, e:
             logger.error('Photoshop File could not generate an image! %s' % e)
@@ -946,25 +957,16 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
         }
         sg.update('PublishedFile', publish_id, publish_update)
         logger.info('%s has been published successfully!' % base_name)
-        # TODO: The following two commented lines are needed to call set_related_version. Needs to be reconfigured.
-        # set_related_version(item, path=publish_path)
-        # return True
 
 
-def set_related_version(item, path=None):
+def set_related_version(proj_id=None, origin_path=None, path=None):
+    # path is the final destination path: publish/maya/maya_file.mb
     if path:
-        file_name = os.path.basename(path)
+        file_name = os.path.basename(origin_path)
         logger.debug('Associated Version: %s' % file_name)
-        # TODO: this will need to be adjusted to get rid of the item.properties. 2 paths in here. from and final.
-        main_file_name = os.path.basename(item.properties['path'])
+
+        main_file_name = os.path.basename(path)
         logger.debug('Main Version: %s' % main_file_name)
-
-        # TODO: remove item.context and replace it with the entity information I have from elsewhere.
-        logger.debug('CONTEXT Entity: %s' % item.context.entity)
-        # TODO: replace this with the actual project ID I have elsewhere.  Might need to get passed to the thing.
-        proj_id = item.context.project['id']
-
-        tk = sg.sgtk_from_entity('Project', proj_id)
 
         filters = [
             ['project', 'is', {'type': 'Project', 'id': proj_id}],
