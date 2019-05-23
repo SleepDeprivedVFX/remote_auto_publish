@@ -538,8 +538,10 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         # Process the image.
         logger.info('Processing Photoshop file...')
         try:
-            file_to_publish = psd.PSDImage.open(filename)
-            file_to_publish.compose().save(render_path)
+            file_to_publish = psd.PSDImage.load(filename)
+            file_to_PIL = file_to_publish.as_PIL()
+            converted_file = file_to_PIL.convert(mode="RGB")
+            converted_file.save(render_path)
         except Exception, e:
             logger.error('Photoshop File could not generate an image! %s' % e)
             pass
@@ -547,7 +549,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         # Upload a version
         upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
 
-        logger.info(('.' * 35) + 'END PROCESS PHOTOSHOP IMAGE' + ('.' * 35))
+        logger.debug(('.' * 35) + 'END PROCESS PHOTOSHOP IMAGE' + ('.' * 35))
         return render_path
     return None
 
@@ -561,7 +563,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
     :param proj_id:
     :return:
     """
-    logger.info(('-' * 35) + 'ULOAD TO SHOTGUN' + ('-' * 35))
+    logger.info(('-' * 35) + 'UPLOAD TO SHOTGUN' + ('-' * 35))
     file_name = os.path.basename(filename)
     file_path = filename
     if user:
@@ -586,7 +588,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
             sg.upload_thumbnail('Version', version_id, file_path)
         sg.upload('Version', version_id, file_path, field_name='sg_uploaded_movie', display_name=file_name)
         logger.info('New Version Created!')
-        logger.info(('.' * 35) + 'END UPLOAD TO SHOTGUN' + ('.' * 35))
+        logger.debug(('.' * 35) + 'END UPLOAD TO SHOTGUN' + ('.' * 35))
         return True
     except Exception, e:
         logger.error('The new version could not be created: %s' % e)
@@ -655,7 +657,7 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
         filename = filename.replace('\\\\\\\\', '//', 1)
         try:
             shutil.move(filename, send_today_path)
-            logger.info(('.' * 35) + 'END SEND TODAY' + ('.' * 35))
+            logger.debug(('.' * 35) + 'END SEND TODAY' + ('.' * 35))
             return True
         except Exception, e:
             logger.error('Can not copy the file! %s' % e)
@@ -685,7 +687,7 @@ def get_sg_translator(sg_task=None, fields=[]):
                                                 }
     """
 
-    logger.info(('^' * 35) + 'get_sg_translator' + ('^' * 35))
+    logger.debug(('^' * 35) + 'get_sg_translator' + ('^' * 35))
     translation = {}
     if sg_task:
         task_name = sg_task.split('.')[0]
@@ -708,7 +710,7 @@ def get_sg_translator(sg_task=None, fields=[]):
         else:
             translation = {'task': 'General', 'short': 'gnrl', 'group': None, 'people': None, 'delivery_code': None}
 
-    logger.info(('.' * 35) + 'end get_sg_translator' + ('.' * 35))
+    logger.debug(('.' * 35) + 'end get_sg_translator' + ('.' * 35))
     return translation
 
 
@@ -720,7 +722,7 @@ def version_tool(path=None, version_up=False, padding=3):
     :param padding: (int) Number padding
     :return: new_num (str) a padded string version number.
     """
-    logger.info(('+' * 35) + 'version_tool' + ('+' * 35))
+    logger.debug(('+' * 35) + 'version_tool' + ('+' * 35))
     logger.debug('Version Tool Activated!!')
     new_num = '001'
     if path:
@@ -743,7 +745,7 @@ def version_tool(path=None, version_up=False, padding=3):
             new_num = '001'
     logger.debug('Returning from Version Tools: %s' % new_num)
 
-    logger.info(('.' * 35) + 'END version_tool' + ('.' * 35))
+    logger.debug(('.' * 35) + 'END version_tool' + ('.' * 35))
     return new_num
 
 
@@ -758,7 +760,7 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
     :return: (str) Proper file name
     """
 
-    logger.info(('#' * 35) + 'create_client_name' + ('#' * 35))
+    logger.debug(('#' * 35) + 'create_client_name' + ('#' * 35))
     logger.debug('create_client_name PATH: %s' % path)
     logger.debug('create_client_name FILENAME: %s' % filename)
     new_name = None
@@ -943,7 +945,7 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
         logger.error('It looks like the Project Naming Convention is incorrectly set. See the Admins. %s' % e)
         return False
 
-    logger.info(('.' * 35) + 'END create_client_name' + ('.' * 35))
+    logger.debug(('.' * 35) + 'END create_client_name' + ('.' * 35))
     return new_name
 
 
@@ -959,7 +961,7 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
     :return:
     """
 
-    logger.info(('@' * 35) + 'PUBLISH TO SHOTGUN' + ('@' * 35))
+    logger.info(('~' * 35) + 'PUBLISH TO SHOTGUN' + ('~' * 35))
     global task_name
     if publish_file:
         # Copy the file to the publish area.  This will be the file published.
@@ -1013,13 +1015,13 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
             sg.update('PublishedFile', publish_id, publish_update)
             logger.info('%s has been published successfully!' % base_name)
 
-            logger.info(('.' * 35) + 'END PUBLISH TO SHOTGUN' + ('.' * 35))
+            logger.debug(('.' * 35) + 'END PUBLISH TO SHOTGUN' + ('.' * 35))
         else:
             logger.error('FAIL!!!  No PublishedFileType could be found for %s' % base_name)
 
 
 def set_related_version(proj_id=None, origin_path=None, path=None):
-    logger.info(('=' * 35) + 'set_related_version' + ('=' * 35))
+    logger.debug(('=' * 35) + 'set_related_version' + ('=' * 35))
     # path is the final destination path: publish/maya/maya_file.mb
     if path:
         file_name = os.path.basename(origin_path)
@@ -1041,7 +1043,7 @@ def set_related_version(proj_id=None, origin_path=None, path=None):
             sg.update('Version', version['id'], data={'sg_name_option': file_name})
             logger.info('Version updated with Send Today Submission')
 
-        logger.info(('.' * 35) + 'END set_related_version' + ('.' * 35))
+        logger.debug(('.' * 35) + 'END set_related_version' + ('.' * 35))
 
 
 def send_user_message(user=None, ip=None, msg=None):
@@ -1057,7 +1059,7 @@ def get_set_task(asset=None, proj_id=None, user=None):
     :param proj_id: (int) Project ID number
     :return: (int) task: Task ID number
     """
-    logger.info(('=' * 35) + 'get_set_task' + ('=' * 35))
+    logger.debug(('=' * 35) + 'get_set_task' + ('=' * 35))
     # TODO: Add task assignments!  I'll need the user info, and I'll need a function that collects human user data
     global task_step
     task = None
@@ -1095,7 +1097,7 @@ def get_set_task(asset=None, proj_id=None, user=None):
             logger.info('New Task Created!')
             task = new_task['id']
 
-    logger.info(('.' * 35) + 'END get_set_task' + ('.' * 35))
+    logger.debug(('.' * 35) + 'END get_set_task' + ('.' * 35))
     return task
 
 
@@ -1107,7 +1109,7 @@ def process_template_path(template=None, asset=None, version=0):
     :param version: (int) the version number
     :return: (str) res_path: the resolved path name
     """
-    logger.info(('*' * 35) + 'process_template_path' + ('*' * 35))
+    logger.debug(('*' * 35) + 'process_template_path' + ('*' * 35))
     global task_name
     res_path = None
     if template:
@@ -1120,7 +1122,7 @@ def process_template_path(template=None, asset=None, version=0):
         res_path = template.format(Asset=asset_name, task_name=task_name, sg_asset_type=asset_type,
                                    version='%03d' % version)
         logger.debug('RESOLVED PATH: %s' % res_path)
-    logger.info(('.' * 35) + 'END process_template_path' + ('.' * 35))
+    logger.debug(('.' * 35) + 'END process_template_path' + ('.' * 35))
     return res_path
 
 
@@ -1135,7 +1137,7 @@ def resolve_template_path(template_key, template):
     :param template:
     :return:
     """
-    logger.info(('&' * 35) + 'resolve_template_path' + ('&' * 35))
+    logger.debug(('&' * 35) + 'resolve_template_path' + ('&' * 35))
     if template_key and template:
         try:
             read = template['paths'][template_key]['definition']
@@ -1154,7 +1156,7 @@ def resolve_template_path(template_key, template):
                 return template_path
         template_path = read
         logger.debug('resolved path: %s' % template_path)
-        logger.info(('.' * 35) + 'END resolve_template_path' + ('.' * 35))
+        logger.debug(('.' * 35) + 'END resolve_template_path' + ('.' * 35))
         return template_path
 
 
@@ -1166,7 +1168,7 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
     :param path:
     :return: ass - The asset details
     """
-    logger.info(('~' * 35) + 'get_asset_details_from_path' + ('~' * 35))
+    logger.debug(('~' * 35) + 'get_asset_details_from_path' + ('~' * 35))
     logger.info('Searching for Assets in %s...' % path)
     ass = {}
     if project and path:
@@ -1200,7 +1202,7 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
                     ass['type'] = asset['sg_asset_type']
                     logger.info('%s found in %s' % (ass['name'], path))
                     return ass
-    logger.info(('.' * 35) + 'END get_asset_details_from_path' + ('.' * 35))
+    logger.debug(('.' * 35) + 'END get_asset_details_from_path' + ('.' * 35))
     return
 
 
@@ -1210,7 +1212,7 @@ def get_details_from_path(path):
     :param path:
     :return: prj - Project details
     """
-    logger.info(('$' * 35) + 'get_details_from_path' + ('$' * 35))
+    logger.debug(('$' * 35) + 'get_details_from_path' + ('$' * 35))
     prj = {}
     if path:
         logger.info('Attempting to get project details from the path...')
@@ -1223,7 +1225,7 @@ def get_details_from_path(path):
                     prj['id'] = proj['id']
                     logger.debug('Project %s found.' % project)
                     break
-    logger.info(('.' * 35) + 'END get_details_from_path' + ('.' * 35))
+    logger.debug(('.' * 35) + 'END get_details_from_path' + ('.' * 35))
     return prj
 
 
@@ -1234,7 +1236,7 @@ def get_configuration(proj_id):
     :param proj_id:
     :return: config_path
     """
-    logger.info(('%' * 35) + 'get_configuration' + ('%' * 35))
+    logger.debug(('%' * 35) + 'get_configuration' + ('%' * 35))
     if proj_id:
         filters = [
             ['project', 'is', {'type': 'Project', 'id': proj_id}],
@@ -1248,7 +1250,7 @@ def get_configuration(proj_id):
             config_path = get_config['windows_path']
             config_path = config_path.replace('\\', '/')
 
-            logger.info(('.' * 35) + 'END get_configuration' + ('.' * 35))
+            logger.debug(('.' * 35) + 'END get_configuration' + ('.' * 35))
             return config_path
     return
 
@@ -1258,7 +1260,7 @@ def get_active_shotgun_projects():
     Creates a list of all active Shotgun Projects to search through
     :return:
     """
-    logger.info(('+' * 35) + 'get_active_shotgun_projects' + ('+' * 35))
+    logger.debug(('+' * 35) + 'get_active_shotgun_projects' + ('+' * 35))
     filters = [
         {
             'filter_operator': 'or',
@@ -1279,7 +1281,7 @@ def get_active_shotgun_projects():
     except Exception, e:
         logger.error('The following error occurred: %s' % e)
         projects_list = []
-    logger.info(('.' * 35) + 'END get_active_shotgun_projects' + ('.' * 35))
+    logger.debug(('.' * 35) + 'END get_active_shotgun_projects' + ('.' * 35))
     return projects_list
 
 
@@ -1329,7 +1331,7 @@ def file_queue():
                     size2 = os.stat(full_filename).st_size
                     time.sleep(2)
             except WindowsError, e:
-                logger.error(e)
+                logger.debug(e)
                 break
 
 
