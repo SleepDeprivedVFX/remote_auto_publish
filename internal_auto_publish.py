@@ -143,13 +143,15 @@ upload_types = [
     '.png',
     '.mov',
     '.mp4',
-    '.tga'
+    '.tga',
+    '.mpg'
 ]
 video_types = [
     '.mov',
     '.mp4',
     '.mpeg',
-    '.avi'
+    '.avi',
+    '.mpg'
 ]
 templates = {
     'Photoshop Image': {
@@ -536,8 +538,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         # Process the image.
         logger.info('Processing Photoshop file...')
         try:
-            file_to_publish = Image.open(filename)
-            file_to_publish = file_to_publish.convert("RGB")
+            file_to_publish = psd.PSDImage.open(filename)
             file_to_publish.compose().save(render_path)
         except Exception, e:
             logger.error('Photoshop File could not generate an image! %s' % e)
@@ -580,6 +581,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
         logger.debug('new_version RETURNS: %s' % new_version)
         version_id = new_version['id']
         ext = os.path.splitext(file_path)[1]
+        ext = ext.lower()
         if ext not in video_types:
             sg.upload_thumbnail('Version', version_id, file_path)
         sg.upload('Version', version_id, file_path, field_name='sg_uploaded_movie', display_name=file_name)
@@ -1423,58 +1425,59 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
 
                             # Start double check that the file is valid and begin packing it up for processing.
                             project_details = get_details_from_path(path)
-                            proj_name = project_details['name']
-                            proj_id = project_details['id']
+                            if project_details:
+                                proj_name = project_details['name']
+                                proj_id = project_details['id']
 
-                            # Assuming a project id was returned, process the results
-                            if proj_id:
-                                # Get the configuration from the project ID
-                                find_config = get_configuration(proj_id)
-                                logger.debug('find_config RETURNS: %s' % find_config)
+                                # Assuming a project id was returned, process the results
+                                if proj_id:
+                                    # Get the configuration from the project ID
+                                    find_config = get_configuration(proj_id)
+                                    logger.debug('find_config RETURNS: %s' % find_config)
 
-                                # If a configuration is found, build paths to the appropriate files
-                                if find_config:
-                                    templates_path = find_config + relative_config_path
-                                    template_file = os.path.join(templates_path, 'templates.yml')
-                                    root_file = os.path.join(templates_path, 'roots.yml')
-                                    template_file = template_file.replace('/', '\\')
-                                    root_file = root_file.replace('/', '\\')
+                                    # If a configuration is found, build paths to the appropriate files
+                                    if find_config:
+                                        templates_path = find_config + relative_config_path
+                                        template_file = os.path.join(templates_path, 'templates.yml')
+                                        root_file = os.path.join(templates_path, 'roots.yml')
+                                        template_file = template_file.replace('/', '\\')
+                                        root_file = root_file.replace('/', '\\')
 
-                                    # Open the configuration files...
-                                    try:
-                                        logger.info('Opening config files...')
-                                        f = open(template_file, 'r')
-                                        r = open(root_file, 'r')
-                                    except Exception, err:
-                                        # If unable to open the configuration files, try another 10 times.
-                                        tries = 1
-                                        while tries < 10:
-                                            logger.error('Opening files took a shit.  Trying again...')
-                                            time.sleep(2)
-                                            try:
-                                                logger.warning('Open attempt #%i' % tries)
-                                                f = open(template_file, 'r')
-                                                r = open(root_file, 'r')
-                                                break
-                                            except Exception, e:
-                                                tries += 1
-                                                logging.error('File Open failed again. Trying again... ERROR: %s' % e)
-                                        raise 'Total failure! %s' % err
+                                        # Open the configuration files...
+                                        try:
+                                            logger.info('Opening config files...')
+                                            f = open(template_file, 'r')
+                                            r = open(root_file, 'r')
+                                        except Exception, err:
+                                            # If unable to open the configuration files, try another 10 times.
+                                            tries = 1
+                                            while tries < 10:
+                                                logger.error('Opening files took a shit.  Trying again...')
+                                                time.sleep(2)
+                                                try:
+                                                    logger.warning('Open attempt #%i' % tries)
+                                                    f = open(template_file, 'r')
+                                                    r = open(root_file, 'r')
+                                                    break
+                                                except Exception, e:
+                                                    tries += 1
+                                                    logging.error('File Open failed again. Trying again... ERROR: %s' % e)
+                                            raise 'Total failure! %s' % err
 
-                                    # Path the tempate fields into something more usable.
-                                    template = yaml.load(f)
-                                    roots = yaml.load(r)
+                                        # Path the tempate fields into something more usable.
+                                        template = yaml.load(f)
+                                        roots = yaml.load(r)
 
-                                    get_root_path = roots['primary']['windows_path']
-                                    root_drive = str(get_root_path).rsplit('\\', 1)[0]
-                                    full_filename = '%s%s' % (root_drive, path)
+                                        get_root_path = roots['primary']['windows_path']
+                                        root_drive = str(get_root_path).rsplit('\\', 1)[0]
+                                        full_filename = '%s%s' % (root_drive, path)
 
-                                    # Package data into a dict for passing to the queue
-                                    package = {'filename': full_filename, 'template': template, 'roots': roots,
-                                               'proj_id': proj_id, 'proj_name': proj_name, 'user': user, 'ip': ip}
-                                    # Add the package to the queue for processing.
-                                    q.put(package)
-                                    logger.debug('%s added to queue...' % full_filename)
+                                        # Package data into a dict for passing to the queue
+                                        package = {'filename': full_filename, 'template': template, 'roots': roots,
+                                                   'proj_id': proj_id, 'proj_name': proj_name, 'user': user, 'ip': ip}
+                                        # Add the package to the queue for processing.
+                                        q.put(package)
+                                        logger.debug('%s added to queue...' % full_filename)
                     elif re.findall(ref_path_to_watch, path):
                         logger.info('Reference path detected!')
                         logger.debug('%s | %s | %s | %s' % (user, path, file_size, ip))
