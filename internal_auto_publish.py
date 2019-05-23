@@ -17,6 +17,7 @@ import queue
 import threading
 from datetime import datetime
 import SocketServer
+import subprocess
 
 # Build Shotgun Connection
 sg_url = 'https://radiowaves.shotgunstudio.com'
@@ -30,6 +31,7 @@ HOST, PORT = '0.0.0.0', 514
 # Watch Folder Filters
 publish_path_to_watch = "/Jobs/\w+/publish/\w+"
 ref_path_to_watch = '/Jobs/\w+/reference/auto/\w+'
+publish_root_folder = '/Jobs/'
 
 # Output window startup messages
 print '-' * 100
@@ -143,6 +145,12 @@ upload_types = [
     '.mp4',
     '.tga'
 ]
+video_types = [
+    '.mov',
+    '.mp4',
+    '.mpeg',
+    '.avi'
+]
 templates = {
     'Photoshop Image': {
         'work_area': 'asset_work_area_photoshop',
@@ -174,7 +182,7 @@ templates = {
         'publish_area': 'asset_publish_area_mudbox',
         'publish_template': 'asset_publish_mudbox'
     },
-    'Keyshot Pacakge': {
+    'Keyshot Package': {
         'work_area': 'asset_work_area_keyshot',
         'work_template': 'asset_work_keyshot_bip',
         'publish_area': 'asset_publish_area_keyshot',
@@ -217,7 +225,7 @@ q = queue.Queue()
 # -----------------------------------------------------------------------------------------------------------------
 # Start Processing...
 # -----------------------------------------------------------------------------------------------------------------
-def process_file(filename=None, template=None, roots=None, proj_id=None, proj_name=None, user=None):
+def process_file(filename=None, template=None, roots=None, proj_id=None, proj_name=None, user=None, ip=None):
     """
     This processes the new file and decides if it is a simple image, or a more complex file and then figures out what
      it should do with it from there.
@@ -241,6 +249,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
         if filename and os.path.exists(filename):
             logger.info('-' * 120)
             logger.info('NEW FILE PROCESSING...')
+            logger.info('!' * 100)
             print 'New File Processing...'
             print filename
             print 'Published by %s' % user
@@ -252,7 +261,20 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             # Filename without path
             base_file = os.path.basename(filename)
             # Relative path outside the dropbox structure
-            split_pattern = re.findall(publish_path_to_watch, path)[0]
+            split_pattern = re.findall(publish_path_to_watch, path)
+            if split_pattern:
+                split_pattern = split_pattern[0]
+            else:
+                logger.warning('This file is not in a proper asset structure!  Can not process.')
+                print 'This file is not in the proper asset structure!  Cannot process!'
+                print '=' * 100
+
+                # Send a pop up message to the user!
+                msg = 'DRAG -N- DROP PUBLISHER ALERT!\n\n' \
+                      'You can not publish files from the root "Publish" folder. It MUST be put into a pre-existing ' \
+                      'ASSET folder. If there is no existing folder, see your supervisor or coordinator.'
+                send_user_message(user=user, ip=ip, msg=msg)
+                return False
             rel_path = path.split(split_pattern)[1]
             if not rel_path:
                 rel_path = path
@@ -471,6 +493,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
     except Exception, e:
         print 'Skipping!  The following error occurred: %s' % e
         logger.error('Skipping!  The following error occurred: %s' % e)
+        logger.info('%s' % e)
         q.task_done()
 
 
@@ -491,6 +514,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
     # TODO: The processing of PSDs needs to be able to handle alphas when creating JPGs
     #       Furthermore, MOV and MP4 videos are currently trying to upload themselves as thumbnails, and it's fucking
     #       the system up.  Need to properly process video thumbnails.
+    logger.info(('-' * 35) + 'PROCESS PHOTOSHOP IMAGE' + ('-' * 35))
     if filename:
         # Find where to save the file from the template
         res_template_path = resolve_template_path(pub_area, template)
@@ -521,6 +545,8 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
 
         # Upload a version
         upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
+
+        logger.info(('.' * 35) + 'END PROCESS PHOTOSHOP IMAGE' + ('.' * 35))
         return render_path
     return None
 
@@ -534,6 +560,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
     :param proj_id:
     :return:
     """
+    logger.info(('-' * 35) + 'ULOAD TO SHOTGUN' + ('-' * 35))
     file_name = os.path.basename(filename)
     file_path = filename
     if user:
@@ -552,9 +579,12 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
         new_version = sg.create('Version', version_data)
         logger.debug('new_version RETURNS: %s' % new_version)
         version_id = new_version['id']
-        sg.upload_thumbnail('Version', version_id, file_path)
+        ext = os.path.splitext(file_path)[1]
+        if ext not in video_types:
+            sg.upload_thumbnail('Version', version_id, file_path)
         sg.upload('Version', version_id, file_path, field_name='sg_uploaded_movie', display_name=file_name)
         logger.info('New Version Created!')
+        logger.info(('.' * 35) + 'END UPLOAD TO SHOTGUN' + ('.' * 35))
         return True
     except Exception, e:
         logger.error('The new version could not be created: %s' % e)
@@ -571,7 +601,9 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
     :param asset: (dict) Asset details, name, id num...
     :return: (Bool) True or false.
     """
+    logger.info(('-' * 35) + 'SEND TODAY' + ('-' * 35))
     logger.info('Getting the Send Today folder from the template...')
+    filename = filename.replace('\\', '/')
     logger.debug('INCOMING FILENAME: %s' % filename)
     logger.debug('INCOMING PATH: %s' % path)
 
@@ -593,6 +625,7 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
     # set dats
     date_test = str(datetime.date(datetime.now()))
     today_path = os.path.join(path, date_test)
+    logger.debug('TODAY PATH: %s' % today_path)
     # today_path = os.path.join(today_path, 'REMOTE')
     if not os.path.exists(today_path):
         os.makedirs(today_path)
@@ -613,9 +646,14 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
                 new_version = version_tool(send_today_path, version_up=True)
                 logger.debug('New version created: %s' % new_version)
                 send_today_path = send_today_path.replace(current_version, new_version)
+                # send_today_path = send_today_path.replace('\\', '/')
         logger.debug('send_today_path: %s' % send_today_path)
+
+        send_today_path = send_today_path.replace('\\\\\\\\', '//', 1)
+        filename = filename.replace('\\\\\\\\', '//', 1)
         try:
             shutil.move(filename, send_today_path)
+            logger.info(('.' * 35) + 'END SEND TODAY' + ('.' * 35))
             return True
         except Exception, e:
             logger.error('Can not copy the file! %s' % e)
@@ -644,6 +682,8 @@ def get_sg_translator(sg_task=None, fields=[]):
                                                 people: sg_people_override
                                                 }
     """
+
+    logger.info(('^' * 35) + 'get_sg_translator' + ('^' * 35))
     translation = {}
     if sg_task:
         task_name = sg_task.split('.')[0]
@@ -665,6 +705,8 @@ def get_sg_translator(sg_task=None, fields=[]):
                            'delivery_code': delivery_code}
         else:
             translation = {'task': 'General', 'short': 'gnrl', 'group': None, 'people': None, 'delivery_code': None}
+
+    logger.info(('.' * 35) + 'end get_sg_translator' + ('.' * 35))
     return translation
 
 
@@ -676,6 +718,7 @@ def version_tool(path=None, version_up=False, padding=3):
     :param padding: (int) Number padding
     :return: new_num (str) a padded string version number.
     """
+    logger.info(('+' * 35) + 'version_tool' + ('+' * 35))
     logger.debug('Version Tool Activated!!')
     new_num = '001'
     if path:
@@ -697,6 +740,8 @@ def version_tool(path=None, version_up=False, padding=3):
         else:
             new_num = '001'
     logger.debug('Returning from Version Tools: %s' % new_num)
+
+    logger.info(('.' * 35) + 'END version_tool' + ('.' * 35))
     return new_num
 
 
@@ -710,6 +755,8 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
     :param version: The version number
     :return: (str) Proper file name
     """
+
+    logger.info(('#' * 35) + 'create_client_name' + ('#' * 35))
     logger.debug('create_client_name PATH: %s' % path)
     logger.debug('create_client_name FILENAME: %s' % filename)
     new_name = None
@@ -893,6 +940,8 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
     except Exception, e:
         logger.error('It looks like the Project Naming Convention is incorrectly set. See the Admins. %s' % e)
         return False
+
+    logger.info(('.' * 35) + 'END create_client_name' + ('.' * 35))
     return new_name
 
 
@@ -907,6 +956,8 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
     :param next_version: (int) version number
     :return:
     """
+
+    logger.info(('@' * 35) + 'PUBLISH TO SHOTGUN' + ('@' * 35))
     global task_name
     if publish_file:
         # Copy the file to the publish area.  This will be the file published.
@@ -927,6 +978,7 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
         count_digits = len(digits_only)
         version = int(digits_only)
         ext = os.path.splitext(base_name)[1]
+        ext = ext.lower()
 
         # Get the publish type.
         get_publish_type = publish_types[ext]
@@ -937,29 +989,35 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
 
         find_type = sg.find_one('PublishedFileType', filters, fields)
 
-        # Register the publish
-        data = {
-            'description': 'A remote file was detected in Dropbox and has been published into the pipeline.',
-            'project': {'type': 'Project', 'id': proj_id},
-            'code': base_name,
-            'entity': {'type': 'Asset', 'id': asset_id},
-            'name': task_name,
-            'task': {'type': 'Task', 'id': task_id},
-            'path_cache': publish_path,
-            'version_number': version,
-            'published_file_type': find_type
-        }
-        new_publish = sg.create('PublishedFile', data)
-        logger.debug('NEW PUBLISH: %s' % new_publish)
-        publish_id = new_publish['id']
-        publish_update = {
-            'path': {'local_path': publish_path.replace('/', '\\')}
-        }
-        sg.update('PublishedFile', publish_id, publish_update)
-        logger.info('%s has been published successfully!' % base_name)
+        if find_type:
+            # Register the publish
+            data = {
+                'description': 'A remote file was detected in Dropbox and has been published into the pipeline.',
+                'project': {'type': 'Project', 'id': proj_id},
+                'code': base_name,
+                'entity': {'type': 'Asset', 'id': asset_id},
+                'name': task_name,
+                'task': {'type': 'Task', 'id': task_id},
+                'path_cache': publish_path,
+                'version_number': version,
+                'published_file_type': find_type
+            }
+            new_publish = sg.create('PublishedFile', data)
+            logger.debug('NEW PUBLISH: %s' % new_publish)
+            publish_id = new_publish['id']
+            publish_update = {
+                'path': {'local_path': publish_path.replace('/', '\\')}
+            }
+            sg.update('PublishedFile', publish_id, publish_update)
+            logger.info('%s has been published successfully!' % base_name)
+
+            logger.info(('.' * 35) + 'END PUBLISH TO SHOTGUN' + ('.' * 35))
+        else:
+            logger.error('FAIL!!!  No PublishedFileType could be found for %s' % base_name)
 
 
 def set_related_version(proj_id=None, origin_path=None, path=None):
+    logger.info(('=' * 35) + 'set_related_version' + ('=' * 35))
     # path is the final destination path: publish/maya/maya_file.mb
     if path:
         file_name = os.path.basename(origin_path)
@@ -981,6 +1039,13 @@ def set_related_version(proj_id=None, origin_path=None, path=None):
             sg.update('Version', version['id'], data={'sg_name_option': file_name})
             logger.info('Version updated with Send Today Submission')
 
+        logger.info(('.' * 35) + 'END set_related_version' + ('.' * 35))
+
+
+def send_user_message(user=None, ip=None, msg=None):
+    if user and ip:
+        subprocess.call("msg /time:90 /server:%s %s %s" % (ip, user, msg))
+
 
 def get_set_task(asset=None, proj_id=None, user=None):
     """
@@ -990,6 +1055,7 @@ def get_set_task(asset=None, proj_id=None, user=None):
     :param proj_id: (int) Project ID number
     :return: (int) task: Task ID number
     """
+    logger.info(('=' * 35) + 'get_set_task' + ('=' * 35))
     # TODO: Add task assignments!  I'll need the user info, and I'll need a function that collects human user data
     global task_step
     task = None
@@ -1026,6 +1092,8 @@ def get_set_task(asset=None, proj_id=None, user=None):
             new_task = sg.create('Task', task_data)
             logger.info('New Task Created!')
             task = new_task['id']
+
+    logger.info(('.' * 35) + 'END get_set_task' + ('.' * 35))
     return task
 
 
@@ -1037,6 +1105,7 @@ def process_template_path(template=None, asset=None, version=0):
     :param version: (int) the version number
     :return: (str) res_path: the resolved path name
     """
+    logger.info(('*' * 35) + 'process_template_path' + ('*' * 35))
     global task_name
     res_path = None
     if template:
@@ -1049,6 +1118,7 @@ def process_template_path(template=None, asset=None, version=0):
         res_path = template.format(Asset=asset_name, task_name=task_name, sg_asset_type=asset_type,
                                    version='%03d' % version)
         logger.debug('RESOLVED PATH: %s' % res_path)
+    logger.info(('.' * 35) + 'END process_template_path' + ('.' * 35))
     return res_path
 
 
@@ -1063,6 +1133,7 @@ def resolve_template_path(template_key, template):
     :param template:
     :return:
     """
+    logger.info(('&' * 35) + 'resolve_template_path' + ('&' * 35))
     if template_key and template:
         try:
             read = template['paths'][template_key]['definition']
@@ -1081,6 +1152,7 @@ def resolve_template_path(template_key, template):
                 return template_path
         template_path = read
         logger.debug('resolved path: %s' % template_path)
+        logger.info(('.' * 35) + 'END resolve_template_path' + ('.' * 35))
         return template_path
 
 
@@ -1092,6 +1164,7 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
     :param path:
     :return: ass - The asset details
     """
+    logger.info(('~' * 35) + 'get_asset_details_from_path' + ('~' * 35))
     logger.info('Searching for Assets in %s...' % path)
     ass = {}
     if project and path:
@@ -1125,6 +1198,7 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
                     ass['type'] = asset['sg_asset_type']
                     logger.info('%s found in %s' % (ass['name'], path))
                     return ass
+    logger.info(('.' * 35) + 'END get_asset_details_from_path' + ('.' * 35))
     return
 
 
@@ -1134,6 +1208,7 @@ def get_details_from_path(path):
     :param path:
     :return: prj - Project details
     """
+    logger.info(('$' * 35) + 'get_details_from_path' + ('$' * 35))
     prj = {}
     if path:
         logger.info('Attempting to get project details from the path...')
@@ -1146,6 +1221,7 @@ def get_details_from_path(path):
                     prj['id'] = proj['id']
                     logger.debug('Project %s found.' % project)
                     break
+    logger.info(('.' * 35) + 'END get_details_from_path' + ('.' * 35))
     return prj
 
 
@@ -1156,6 +1232,7 @@ def get_configuration(proj_id):
     :param proj_id:
     :return: config_path
     """
+    logger.info(('%' * 35) + 'get_configuration' + ('%' * 35))
     if proj_id:
         filters = [
             ['project', 'is', {'type': 'Project', 'id': proj_id}],
@@ -1168,6 +1245,8 @@ def get_configuration(proj_id):
         if get_config:
             config_path = get_config['windows_path']
             config_path = config_path.replace('\\', '/')
+
+            logger.info(('.' * 35) + 'END get_configuration' + ('.' * 35))
             return config_path
     return
 
@@ -1177,6 +1256,7 @@ def get_active_shotgun_projects():
     Creates a list of all active Shotgun Projects to search through
     :return:
     """
+    logger.info(('+' * 35) + 'get_active_shotgun_projects' + ('+' * 35))
     filters = [
         {
             'filter_operator': 'or',
@@ -1197,6 +1277,7 @@ def get_active_shotgun_projects():
     except Exception, e:
         logger.error('The following error occurred: %s' % e)
         projects_list = []
+    logger.info(('.' * 35) + 'END get_active_shotgun_projects' + ('.' * 35))
     return projects_list
 
 
@@ -1219,6 +1300,7 @@ def file_queue():
         roots = package['roots']
         proj_id = package['proj_id']
         proj_name = package['proj_name']
+        ip = package['ip']
         user = package['user']
         logger.debug('Queued file: %s' % full_filename)
 
@@ -1237,7 +1319,8 @@ def file_queue():
                     """
                     copying = False
                     process_file(filename=full_filename, template=template, roots=roots, proj_id=proj_id,
-                                 proj_name=proj_name, user=user)
+                                 proj_name=proj_name, user=user, ip=ip)
+                    logger.debug('~' * 45)
                     break
                 else:
                     # Copying not finished, wait to seconds and try again...
@@ -1319,10 +1402,10 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
             ip = None
 
         if event == 'write' or 'move':
-            logger.debug('Event Triggered: %s' % event)
+            # logger.debug('Event Triggered: %s' % event)
             if event_type == 'File':
                 # logger.debug('Event Type is FILE')
-                if path.startswith('/Jobs/'):
+                if path.startswith(publish_root_folder):
                     # logger.debug('JOBS is in the path')
 
                     if event == 'move':
@@ -1388,7 +1471,7 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
 
                                     # Package data into a dict for passing to the queue
                                     package = {'filename': full_filename, 'template': template, 'roots': roots,
-                                               'proj_id': proj_id, 'proj_name': proj_name, 'user': user}
+                                               'proj_id': proj_id, 'proj_name': proj_name, 'user': user, 'ip': ip}
                                     # Add the package to the queue for processing.
                                     q.put(package)
                                     logger.debug('%s added to queue...' % full_filename)
