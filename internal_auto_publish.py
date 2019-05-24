@@ -11,7 +11,6 @@ import logging.handlers
 import shutil
 import yaml
 import psd_tools as psd
-from PIL import Image
 import shotgun_api3
 import queue
 import threading
@@ -254,8 +253,11 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             logger.info('!' * 100)
             print 'New File Processing...'
             print filename
+            logger.info(filename)
             print 'Published by %s' % user
+            logger.info('Published by %s' % user)
             print 'At: %s' % datetime.now()
+            logger.info('At: %s' % datetime.now())
 
             # Get the path details from the filename
             path = os.path.dirname(filename)
@@ -439,9 +441,12 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                                         logger.debug('RESOLVED send_today_template: %s' % resolved_send_today_template)
                                         send_today_path = os.path.join(root_template_path, resolved_send_today_template)
                                         logger.debug('SEND TODAY PATH: %s' % send_today_path)
-                                        send_today(filename=image, path=send_today_path, proj_id=proj_id,
-                                                   asset=find_asset)
-                                        # TODO: Perhaps here is where I should put the call to set_related_version
+                                        is_sent = send_today(filename=image, path=send_today_path, proj_id=proj_id,
+                                                             asset=find_asset)
+                                        logger.debug('is_sent RETURNS: %s' % is_sent)
+                                    else:
+                                        is_sent = False
+
                                     logger.info('Image file has been created from PSD.')
                                 except IOError, e:
                                     logger.error('Unable to process the %s for the following reasons: %s' % (ext, e))
@@ -454,8 +459,14 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                         next_version = version + 1
                         try:
                             logger.info('Attempting to publish...')
-                            publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
-                                               proj_id=proj_id, task_id=task, next_version=next_version)
+                            publish_path = publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path,
+                                                              asset_id=asset_id, proj_id=proj_id, task_id=task,
+                                                              next_version=next_version)
+                            logger.debug('PUBLISH_PATH: %s' % publish_path)
+                            if is_sent and publish_path:
+                                # Call to set the related version
+                                logger.debug('Setting related version...')
+                                set_related_version(proj_id=proj_id, origin_path=publish_path, path=is_sent)
                         except Exception, e:
                             logger.error('Publish failed for the following! %s' % e)
                             pass
@@ -475,17 +486,15 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                                                  user=user)
                         logger.debug('SEND: %s' % send)
                         if send:
-                            # Run the Send Today portion of our show.
-                            # This will need to get the send folder from the template, and make sure there is a date
-                            # folder.
                             is_sent = send_today(filename=filename, path=send_today_path, proj_id=proj_id,
                                                  asset=find_asset)
                             logger.debug('is_sent RETURNS: %s' % is_sent)
+                        else:
+                            is_sent = False
 
-                            # TODO: The following two commented lines are needed to call set_related_version. Needs to
-                            #  be reconfigured.
-                            # logger.debug('Setting related version...')
-                            # set_related_version(proj_id=proj_id, origin_path=filename, path=send_today_path)
+                        if is_sent:
+                            logger.debug('Setting related version...')
+                            set_related_version(proj_id=proj_id, origin_path=filename, path=is_sent)
 
             logger.info('Finished processing the file')
             logger.info('=' * 100)
@@ -513,9 +522,6 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
     :param root:
     :return:
     """
-    # TODO: The processing of PSDs needs to be able to handle alphas when creating JPGs
-    #       Furthermore, MOV and MP4 videos are currently trying to upload themselves as thumbnails, and it's fucking
-    #       the system up.  Need to properly process video thumbnails.
     logger.info(('-' * 35) + 'PROCESS PHOTOSHOP IMAGE' + ('-' * 35))
     if filename:
         # Find where to save the file from the template
@@ -538,8 +544,8 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         # Process the image.
         logger.info('Processing Photoshop file...')
         try:
-            file_to_publish = psd.PSDImage.load(filename)
-            file_to_PIL = file_to_publish.as_PIL()
+            file_to_publish = psd.PSDImage.open(filename)
+            file_to_PIL = file_to_publish.compose()
             converted_file = file_to_PIL.convert(mode="RGB")
             converted_file.save(render_path)
         except Exception, e:
@@ -651,14 +657,14 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
                 logger.debug('New version created: %s' % new_version)
                 send_today_path = send_today_path.replace(current_version, new_version)
                 # send_today_path = send_today_path.replace('\\', '/')
-        logger.debug('send_today_path: %s' % send_today_path)
 
-        send_today_path = send_today_path.replace('\\\\\\\\', '//', 1)
-        filename = filename.replace('\\\\\\\\', '//', 1)
+        send_today_path = send_today_path.replace('\\', '/')
+        filename = filename.replace('\\', '/')
+        logger.debug('send_today_path: %s' % send_today_path)
         try:
             shutil.move(filename, send_today_path)
             logger.debug(('.' * 35) + 'END SEND TODAY' + ('.' * 35))
-            return True
+            return send_today_path
         except Exception, e:
             logger.error('Can not copy the file! %s' % e)
             return False
@@ -740,7 +746,7 @@ def version_tool(path=None, version_up=False, padding=3):
                 logger.debug('version up: %s' % new_num)
             logger.debug('new_version: %s' % new_num)
             new_num = str(new_num).zfill(padding)
-            logger.info('NEW_NUM: %s' % new_num)
+            logger.debug('NEW_NUM: %s' % new_num)
         else:
             new_num = '001'
     logger.debug('Returning from Version Tools: %s' % new_num)
@@ -853,8 +859,12 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
         # Read the naming convention:
         if naming_convention:
             existing_tags = re.findall(r'{\w*}', naming_convention)
+
+            if ':' not in naming_convention:
+                # if a frame padding number isn't found, this will add one to the end
+                naming_convention += ':3'
+
             if ':' in naming_convention:
-                # TODO: I probably need to write an ELSE for this IF
                 nc = naming_convention.split(':')
                 naming_convention = nc[0]
                 padding = nc[1]
@@ -963,6 +973,7 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
 
     logger.info(('~' * 35) + 'PUBLISH TO SHOTGUN' + ('~' * 35))
     global task_name
+    uploaded = None
     if publish_file:
         # Copy the file to the publish area.  This will be the file published.
         try:
@@ -1015,24 +1026,33 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
             sg.update('PublishedFile', publish_id, publish_update)
             logger.info('%s has been published successfully!' % base_name)
 
+            uploaded = publish_path.replace('/', '\\')
+
             logger.debug(('.' * 35) + 'END PUBLISH TO SHOTGUN' + ('.' * 35))
         else:
             logger.error('FAIL!!!  No PublishedFileType could be found for %s' % base_name)
+    return uploaded
 
 
 def set_related_version(proj_id=None, origin_path=None, path=None):
     logger.debug(('=' * 35) + 'set_related_version' + ('=' * 35))
+    logger.debug('project ID: %s' % proj_id)
+    logger.debug('origin_path: %s' % origin_path)
+    logger.debug('path: %s' % path)
     # path is the final destination path: publish/maya/maya_file.mb
     if path:
         file_name = os.path.basename(origin_path)
         logger.debug('Associated Version: %s' % file_name)
+
+        if file_name.endswith('.psd'):
+            file_name = file_name.replace('.psd', '.jpg')
 
         main_file_name = os.path.basename(path)
         logger.debug('Main Version: %s' % main_file_name)
 
         filters = [
             ['project', 'is', {'type': 'Project', 'id': proj_id}],
-            ['code', 'is', main_file_name]
+            ['code', 'is', file_name]
         ]
         fields = [
             'created_at'
@@ -1040,9 +1060,11 @@ def set_related_version(proj_id=None, origin_path=None, path=None):
         version = sg.find_one('Version', filters, fields, order=[{'field_name': 'created_at', 'direction': 'desc'}])
         logger.debug('Versions returns: %s' % version)
         if version:
-            sg.update('Version', version['id'], data={'sg_name_option': file_name})
+            sg.update('Version', version['id'], data={'sg_name_option': main_file_name})
             logger.info('Version updated with Send Today Submission')
-
+        else:
+            logger.debug('SHIT')
+            logger.debug(file_name)
         logger.debug(('.' * 35) + 'END set_related_version' + ('.' * 35))
 
 
