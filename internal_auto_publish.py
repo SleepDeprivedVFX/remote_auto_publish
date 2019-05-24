@@ -3,6 +3,7 @@ The Internal Auto Publisher (IAP) is a server listener that gets data from the s
 """
 
 import os
+import sys
 from glob import glob
 import re
 import time
@@ -17,20 +18,40 @@ import threading
 from datetime import datetime
 import SocketServer
 import subprocess
+import ConfigParser
+
+# __author__ = 'Adam Benson'
+# __version__ = '1.0.0'
+
+sys_path = sys.path
+config_file = 'auto_publisher_config.cfg'
+try:
+    print 'Finding configuration file...'
+    config_path = [f for f in sys_path if os.path.isfile(f + '/' + config_file)][0] + '/' + config_file
+    config_path = config_path.replace('\\', '/')
+    print 'Configuration found!'
+except IndexError, e:
+    raise e
+
+configuration = ConfigParser.ConfigParser()
+print 'Reading the configuration file...'
+configuration.read(config_path)
+
+cfg_sg_url = configuration.get('Shotgun', 'shotgun_url')
+cfg_sg_key = configuration.get('Shotgun', 'shotgun_key')
+cfg_sg_name = configuration.get('Shotgun', 'shotgun_name')
 
 # Build Shotgun Connection
-sg_url = 'https://radiowaves.shotgunstudio.com'
-sg_name = 'InternalAutoPublisher'
-sg_key = 'urNiaiobqzxpwxtpfpq~nie7l'
-sg = shotgun_api3.Shotgun(sg_url, sg_name, sg_key)
+sg = shotgun_api3.Shotgun(cfg_sg_url, cfg_sg_name, cfg_sg_key)
 
 # Server Logs Connections
-HOST, PORT = '0.0.0.0', 514
+HOST = configuration.get('IAP', 'host')
+PORT = int(configuration.get('IAP', 'port'))
 
 # Watch Folder Filters
-publish_path_to_watch = "/Jobs/\w+/publish/\w+"
-ref_path_to_watch = '/Jobs/\w+/reference/auto/\w+'
-publish_root_folder = '/Jobs/'
+publish_path_to_watch = configuration.get('IAP', 'publish_path')
+ref_path_to_watch = configuration.get('IAP', 'reference_path')
+publish_root_folder = configuration.get('IAP', 'publish_root')
 
 # Output window startup messages
 print '-' * 100
@@ -40,12 +61,13 @@ print '+' * 100
 '''
 TODO:
 1. Setup reference system
-2. Need to add auto task assignments for artists who drag and drop into an asset publisher.
 '''
 
 # Create Log file
-log_level = logging.INFO
-# log_level = logging.DEBUG
+if configuration.get('Logging', 'debug_logging'):
+    log_level = logging.DEBUG
+else:
+    log_level = logging.INFO
 
 
 def _setFilePathOnLogger(logger, path):
@@ -75,15 +97,16 @@ def _removeHandlersFromLogger(logger, handlerTypes=None):
             logger.removeHandler(handler)
 
 
-logfile = "C:/shotgun/remote_auto_publish/logs/internalAutoPublish.%s.log" % datetime.date(datetime.now())
+logfile = "%s/internalAutoPublish.%s.log" % (configuration.get('Logging', 'log_file_path'),
+                                             datetime.date(datetime.now()))
 
-logger = logging.getLogger('remote_auto_publish')
+logger = logging.getLogger('internal_auto_publish')
 logger.setLevel(log_level)
 _setFilePathOnLogger(logger, logfile)
 
-logger.info('Starting the Internal Auto Publisher...')
-print 'Starting the Internal Auto Publisher...'
 print 'Logging system setup.'
+logger.info('Starting the Internal Auto Publisher...')
+print 'Starting the Internal Auto Publish   er...'
 
 # --------------------------------------------------------------------------------------------------------------
 # Global Variables
@@ -95,10 +118,14 @@ print 'Logging system setup.'
 # this, and there are no immediate plans to change that.  That being said, there is some minor architecture in place
 # to handle a more complex, task-based system if one is ever needed.
 # Thus, the one task_name:
-task_name = 'design.auto'
-task_step = 23
-relative_config_path = '/config/core'
-task_name_format = '{Asset}_{task_name}_*{ext}'
+
+# Default task name
+task_name = configuration.get('IAP', 'default_task_name')
+# Design task step ID
+task_step = configuration.get('IAP', 'task_step_id')
+# Schema path used for getting the base configuration files
+relative_config_path = configuration.get('IAP', 'relative_config_path')
+task_name_format = configuration.get('IAP', 'task_name_format')
 
 publish_types = {
     '.psd': 'Photoshop Image',
@@ -1105,7 +1132,8 @@ def get_set_task(asset=None, proj_id=None, user=None):
                     task_id = tsk['id']
                     task_step = tsk['step']['id']
                     task = task_id
-                    # TODO: Add task assignment here
+
+                    # Add task assignments
                     assign_user_to_task(user=user, task_id=task_id)
                     break
         if not task:
@@ -1119,7 +1147,8 @@ def get_set_task(asset=None, proj_id=None, user=None):
             new_task = sg.create('Task', task_data)
             logger.info('New Task Created!')
             task = new_task['id']
-            # TODO: Add task assignments here.
+
+            # Add task assignments
             assign_user_to_task(user=user, task_id=task_id)
 
     logger.debug(('.' * 35) + 'END get_set_task' + ('.' * 35))
