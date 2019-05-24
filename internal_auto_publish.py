@@ -64,7 +64,9 @@ TODO:
 '''
 
 # Create Log file
-if configuration.get('Logging', 'debug_logging'):
+debug = configuration.get('Logging', 'debug_logging')
+
+if debug == 'True':
     log_level = logging.DEBUG
 else:
     log_level = logging.INFO
@@ -106,7 +108,7 @@ _setFilePathOnLogger(logger, logfile)
 
 print 'Logging system setup.'
 logger.info('Starting the Internal Auto Publisher...')
-print 'Starting the Internal Auto Publish   er...'
+print 'Starting the Internal Auto Publisher...'
 
 # --------------------------------------------------------------------------------------------------------------
 # Global Variables
@@ -122,7 +124,7 @@ print 'Starting the Internal Auto Publish   er...'
 # Default task name
 task_name = configuration.get('IAP', 'default_task_name')
 # Design task step ID
-task_step = configuration.get('IAP', 'task_step_id')
+task_step = int(configuration.get('IAP', 'task_step_id'))
 # Schema path used for getting the base configuration files
 relative_config_path = configuration.get('IAP', 'relative_config_path')
 task_name_format = configuration.get('IAP', 'task_name_format')
@@ -1273,17 +1275,10 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
             logger.debug('Assets exist!  Finding our guy...')
             for asset in find_assets:
                 logger.debug('Testing %s IN %s...' % (asset['code'], path))
-                # TODO: The following 'if asset['code'] in path:' suffers from the following scenario:
-                #       'Jack' and 'Village_where_Jack_Lives' both have the word 'Jack' in them.  Thus, the system finds
-                #       the correct word, but in the wrong Asset.  I think what I'll have to do is split this further
-                #       if asset['code'] in path:
-                #           split_path = path.split('/')  # Splitting it at the slashes.
-                #           for this in split_path:
-                #               if this == 'Jack':
-                #                   Do some shit.
-                #       The problem with this is that 'Jack' could also be the name of the project, so the pattern will
-                #       have to be respected as well.
-                if asset['code'] in path:
+
+                probable_asset_in_path = path.split('/')[-1]
+
+                if asset['code'] == probable_asset_in_path:
                     ass['name'] = asset['code']
                     ass['id'] = asset['id']
                     ass['type'] = asset['sg_asset_type']
