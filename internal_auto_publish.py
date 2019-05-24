@@ -49,9 +49,9 @@ HOST = configuration.get('IAP', 'host')
 PORT = int(configuration.get('IAP', 'port'))
 
 # Watch Folder Filters
-publish_path_to_watch = configuration.get('IAP', 'publish_path')
-ref_path_to_watch = configuration.get('IAP', 'reference_path')
-publish_root_folder = configuration.get('IAP', 'publish_root')
+publish_path_to_watch = configuration.get('Publisher', 'publish_path')
+ref_path_to_watch = configuration.get('Referencer', 'reference_path')
+publish_root_folder = configuration.get('Publisher', 'publish_root')
 
 # Output window startup messages
 print '-' * 100
@@ -122,12 +122,12 @@ print 'Starting the Internal Auto Publisher...'
 # Thus, the one task_name:
 
 # Default task name
-task_name = configuration.get('IAP', 'default_task_name')
+task_name = configuration.get('Publisher', 'default_task_name')
 # Design task step ID
-task_step = int(configuration.get('IAP', 'task_step_id'))
+task_step = int(configuration.get('Publisher', 'task_step_id'))
 # Schema path used for getting the base configuration files
 relative_config_path = configuration.get('IAP', 'relative_config_path')
-task_name_format = configuration.get('IAP', 'task_name_format')
+task_name_format = configuration.get('Publisher', 'task_name_format')
 
 publish_types = {
     '.psd': 'Photoshop Image',
