@@ -1082,7 +1082,6 @@ def get_set_task(asset=None, proj_id=None, user=None):
     :return: (int) task: Task ID number
     """
     logger.debug(('=' * 35) + 'get_set_task' + ('=' * 35))
-    # TODO: Add task assignments!  I'll need the user info, and I'll need a function that collects human user data
     global task_step
     task = None
     if asset:
@@ -1106,6 +1105,8 @@ def get_set_task(asset=None, proj_id=None, user=None):
                     task_id = tsk['id']
                     task_step = tsk['step']['id']
                     task = task_id
+                    # TODO: Add task assignment here
+                    assign_user_to_task(user=user, task_id=task_id)
                     break
         if not task:
             logger.info('No task found.  Creating a new task...')
@@ -1118,9 +1119,44 @@ def get_set_task(asset=None, proj_id=None, user=None):
             new_task = sg.create('Task', task_data)
             logger.info('New Task Created!')
             task = new_task['id']
+            # TODO: Add task assignments here.
+            assign_user_to_task(user=user, task_id=task_id)
 
     logger.debug(('.' * 35) + 'END get_set_task' + ('.' * 35))
     return task
+
+
+def assign_user_to_task(user=None, task_id=None):
+    """
+    The following is how I did this in the task_historian.
+    data = {
+        'sg_assignment_history': [{'type': 'HumanUser', 'id': uid}]
+    }
+    sg.update('Task', task_id, data, multi_entity_update_modes={'sg_assignment_history': 'add'})
+    :param user:
+    :param task_id:
+    :return:
+    """
+    logger.info('Checking user assignments')
+    if user and task_id:
+        filters = [
+            ['login', 'is', user]
+        ]
+        fields = [
+            'id'
+        ]
+        get_user = sg.find_one('HumanUser', filters, fields)
+        logger.info('get_user: %s' % get_user)
+        if get_user:
+            user_id = get_user['id']
+            logger.info('user_id: %s' % user_id)
+            if user_id:
+                data = {
+                    'task_assignees': [{'type': 'HumanUser', 'id': user_id}],
+                    'sg_status_list': 'ip'
+                }
+                sg.update('Task', task_id, data, multi_entity_update_modes={'task_assignees': 'add'})
+                logger.info('Task assignment complete.')
 
 
 def process_template_path(template=None, asset=None, version=0):
@@ -1259,22 +1295,26 @@ def get_configuration(proj_id):
     :return: config_path
     """
     logger.debug(('%' * 35) + 'get_configuration' + ('%' * 35))
-    if proj_id:
-        filters = [
-            ['project', 'is', {'type': 'Project', 'id': proj_id}],
-            ['code', 'is', 'Primary']
-        ]
-        fields = [
-            'windows_path'
-        ]
-        get_config = sg.find_one('PipelineConfiguration', filters, fields)
-        if get_config:
-            config_path = get_config['windows_path']
-            config_path = config_path.replace('\\', '/')
+    try:
+        if proj_id:
+            filters = [
+                ['project', 'is', {'type': 'Project', 'id': proj_id}],
+                ['code', 'is', 'Primary']
+            ]
+            fields = [
+                'windows_path'
+            ]
+            get_config = sg.find_one('PipelineConfiguration', filters, fields)
+            if get_config:
+                config_path = get_config['windows_path']
+                config_path = config_path.replace('\\', '/')
 
-            logger.debug(('.' * 35) + 'END get_configuration' + ('.' * 35))
-            return config_path
-    return
+                logger.debug(('.' * 35) + 'END get_configuration' + ('.' * 35))
+                return config_path
+        return
+    except Exception, e:
+        logger.error('Some shit when down! %s' % e)
+        return False
 
 
 def get_active_shotgun_projects():
