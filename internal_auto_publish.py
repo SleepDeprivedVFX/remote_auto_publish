@@ -52,6 +52,13 @@ PORT = int(configuration.get('IAP', 'port'))
 publish_path_to_watch = configuration.get('Publisher', 'publish_path')
 ref_path_to_watch = configuration.get('Referencer', 'reference_path')
 publish_root_folder = configuration.get('Publisher', 'publish_root')
+archive_project = configuration.get('Archive', 'archive_project')
+archive_id = configuration.get('Archive', 'archive_proj_id')
+archive_path = configuration.get('Archive', 'archive_path')
+archive_dest = configuration.get('Archive', 'archive_destination')
+archive_orig = configuration.get('Archive', 'archive_origin')
+archive_path_to_watch = '%s%s/\w+/\w+' % (archive_path, archive_orig)
+server_root = configuration.get('IAP', 'server_root')
 
 # Output window startup messages
 print '-' * 100
@@ -250,6 +257,9 @@ templates = {
 # -----------------------------------------------------------------------------------------------------------------
 logger.debug('Creating the Queue...')
 q = queue.Queue()
+
+logger.debug('Creating the Archival Queue...')
+aq = queue.Queue()
 
 
 # -----------------------------------------------------------------------------------------------------------------
@@ -589,7 +599,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
     return None
 
 
-def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, user=None):
+def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, user=None, archive=False):
     """
     A simple tool to create Shotgun versions and upload them
     :param filename:
@@ -605,14 +615,19 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
         description = '%s published this file using the Internal Auto Publish utility' % user
     else:
         description = 'Someone published this file using the Internal Auto Publish utility'
+    if archive:
+        status = 'fin'
+    else:
+        status = 'rev'
     version_data = {
         'description': description,
         'project': {'type': 'Project', 'id': proj_id},
-        'sg_status_list': 'rev',
+        'sg_status_list': status,
         'code': file_name,
-        'entity': {'type': 'Asset', 'id': asset_id},
-        'sg_task': {'type': 'Task', 'id': task_id}
+        'entity': {'type': 'Asset', 'id': asset_id}
     }
+    if task_id:
+        version_data['sg_task'] = {'type': 'Task', 'id': task_id}
     try:
         new_version = sg.create('Version', version_data)
         logger.debug('new_version RETURNS: %s' % new_version)
@@ -963,8 +978,8 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
                                 year_tag = '%Y'
                             else:
                                 year_tag = '%y'
-                            logger.info('YEAR: %s' % year)
-                            logger.info('YEAR_TAG: %s' % str(year_tag))
+                            logger.debug('YEAR: %s' % year)
+                            logger.debug('YEAR_TAG: %s' % str(year_tag))
                             date_tag = base_tag.replace(str(year), str(year_tag))
                             date_tag = date_tag.replace('MM', '%m')
                             date_tag = date_tag.replace('DD', '%d')
@@ -986,6 +1001,53 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
 
     logger.debug(('.' * 35) + 'END create_client_name' + ('.' * 35))
     return new_name
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Archive File Processing
+# ---------------------------------------------------------------------------------------------------------------------
+def archive_file(full_filename=None, user=None, ip=None):
+    if full_filename:
+        try:
+            logger.info('Processing archive file...')
+            print 'Processing archive file...'
+            origin_path = os.path.dirname(full_filename)
+            filename = os.path.basename(full_filename)
+
+            # Move the file into its final resting place
+            destination_path = origin_path.replace(archive_orig, archive_dest)
+            print 'Destination path: %s' % destination_path
+            destination_file = os.path.join(destination_path, filename)
+            print 'Destination file: %s' % destination_file
+            print 'Moving the file...'
+            shutil.move(full_filename, destination_file)
+
+            # get the asset name from the path
+            asset_name = destination_path.rsplit('/', 1)[-1]
+            print 'Asset Name: %s' % asset_name
+
+            filters = [
+                ['project', 'is', {'type': 'Project', 'id': int(archive_id)}],
+                ['code', 'is', asset_name]
+            ]
+            fields = [
+                'id'
+            ]
+            asset = sg.find_one('Asset', filters, fields)
+            if asset:
+                id = asset['id']
+
+                # Upload it to Shotgun
+                upload_to_shotgun(filename=destination_file, asset_id=id, proj_id=int(archive_id), user=user, archive=True)
+                logger.info('Archive published to Shotgun!')
+                logger.info('=' * 100)
+                print 'Archive uploaded to Shotgun!'
+                print '=' * 100
+            aq.task_done()
+        except Exception, e:
+            print 'Skipping!  The following error occurred: %s' % e
+            logger.error('Skipping!  The following error occurred: %s' % e)
+            aq.task_done()
 
 
 def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj_id=None, task_id=None, next_version=1):
@@ -1372,7 +1434,7 @@ def get_active_shotgun_projects():
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Run Queue
+# Run Queues
 # ---------------------------------------------------------------------------------------------------------------------
 def file_queue():
     """
@@ -1381,7 +1443,6 @@ def file_queue():
     """
     logger.debug('Queue Running...')
     print 'Queue Running...'
-    # print 'Queue running...'
     while True:
         # Get the package from the Queue and parse it out.
         package = q.get(block=True)
@@ -1404,9 +1465,7 @@ def file_queue():
                 size = os.stat(full_filename).st_size
                 if size == size2:
                     time.sleep(2)
-                    """
-                    Here is where we have to start ingecting some "file STILL exists" logic... at least I think.
-                    """
+
                     copying = False
                     process_file(filename=full_filename, template=template, roots=roots, proj_id=proj_id,
                                  proj_name=proj_name, user=user, ip=ip)
@@ -1421,6 +1480,40 @@ def file_queue():
                 break
 
 
+def archive_queue():
+    """
+    This queue is specifially for running archival processes and should run apart from the main queue.
+    :return:
+    """
+    logger.debug('Archive queue running...')
+    print 'Archive Queue running...'
+    while True:
+        package = aq.get(block=True)
+        full_filename = package['filename']
+        user = package['user']
+        ip = package['ip']
+        logger.debug('Archive Queued file: %s' % full_filename)
+
+        copying = True
+        size2 = -1
+        # Start copying...
+        while copying:
+            try:
+                size = os.stat(full_filename).st_size
+                if size == size2:
+                    time.sleep(2)
+                    copying = False
+                    archive_file(full_filename=full_filename, user=user, ip=ip)
+                    logger.debug('~' * 45)
+                    break
+                else:
+                    size2 = os.stat(full_filename).st_size
+                    time.sleep(2)
+            except WindowsError, e:
+                logger.debug(e)
+                break
+
+
 def datetime_to_float(d):
     # Change the date-time to a decimal floating point number
     epoch = datetime.utcfromtimestamp(0)
@@ -1428,14 +1521,22 @@ def datetime_to_float(d):
     return total_seconds
 
 
-# Start the thread
+# Start the threads
 '''
-This starts the thread that runs the queue
+This starts the thread that runs the main publish queue
 '''
-logger.debug('Starting the thread...')
+logger.debug('Starting the main publish thread...')
 t = threading.Thread(target=file_queue, name='FileQueue')
 t.setDaemon(True)
 t.start()
+
+'''
+This starts the thread that runs the archival system
+'''
+logger.debug('Starting the secondary archival thread...')
+at = threading.Thread(target=archive_queue, name='ArchiveQueue')
+at.setDaemon(True)
+at.start()
 print 'Queue Threading initialized...'
 
 
@@ -1495,12 +1596,14 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
             # logger.debug('Event Triggered: %s' % event)
             if event_type == 'File':
                 # logger.debug('Event Type is FILE')
-                if path.startswith(publish_root_folder):
+                if path.startswith(publish_root_folder) and not re.findall(archive_path_to_watch, path):
                     # logger.debug('JOBS is in the path')
 
                     if event == 'move':
                         crop_path = path.split(' -> ')
                         path = crop_path[1]
+
+                    # Publish path plugin condition starts here.
                     if re.findall(publish_path_to_watch, path):
                         ignore_this = False
                         for ignore in ignore_types:
@@ -1566,12 +1669,43 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
                                         # Add the package to the queue for processing.
                                         q.put(package)
                                         logger.debug('%s added to queue...' % full_filename)
+
                     elif re.findall(ref_path_to_watch, path):
                         logger.info('Reference path detected!')
-                        logger.debug('%s | %s | %s | %s' % (user, path, file_size, ip))
+                        logger.info('%s | %s | %s | %s' % (user, path, file_size, ip))
                         project_details = get_details_from_path(path)
                         proj_name = project_details['name']
                         proj_id = project_details['id']
+                        '''
+                        Ok.  The main reference page does not show thumbnails by default, but references linked to 
+                        assets do seem to show the thumbnail... just not on the main reference page; only on the actual
+                        asset page.  Actually... the asset references do not show up in the overall reference page.
+                        Main reference page will need thumbnails added separately.
+                        
+                        There will need to be 2 processes:
+                        Asset Reference
+                        Project Reference
+                        
+                        Asset type = File(Attachment)
+                        Proj. type = Reference(CustomEntity03)
+                        '''
+                        print proj_id
+                        print proj_name
+                        things = re.findall(ref_path_to_watch, path)
+                        print things[0]
+                        logger.info('REF THINGS: %s' % things)
+
+                elif re.findall(archive_path_to_watch, path):
+                    print 'Archive found!'
+                    print path
+                    full_archive_path = '%s%s' % (server_root, path)
+                    package = {
+                        'filename': full_archive_path,
+                        'user': user,
+                        'ip': ip
+                    }
+                    aq.put(package)
+                    logger.debug('%s added to the archive queue...' % full_archive_path)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
