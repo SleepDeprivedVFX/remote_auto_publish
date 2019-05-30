@@ -540,11 +540,13 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             q.task_done()
             print 'Finished processing file.'
             print '=' * 100
+            return True
     except Exception, e:
         print 'Skipping!  The following error occurred: %s' % e
         logger.error('Skipping!  The following error occurred: %s' % e)
         logger.info('%s' % e)
         q.task_done()
+        return False
 
 
 def process_Photoshop_image(template=None, filename=None, task=None, pub_area=None, f_type=None, proj_id=None,
@@ -624,7 +626,8 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
         'project': {'type': 'Project', 'id': proj_id},
         'sg_status_list': status,
         'code': file_name,
-        'entity': {'type': 'Asset', 'id': asset_id}
+        'entity': {'type': 'Asset', 'id': asset_id},
+        'sg_path_to_frames': filename
     }
     if task_id:
         version_data['sg_task'] = {'type': 'Task', 'id': task_id}
@@ -1016,16 +1019,23 @@ def archive_file(full_filename=None, user=None, ip=None):
 
             # Move the file into its final resting place
             destination_path = origin_path.replace(archive_orig, archive_dest)
-            print 'Destination path: %s' % destination_path
+            logger.debug('DESTINATION PATH: %s' % destination_path)
+            # print 'Destination path: %s' % destination_path
             destination_file = os.path.join(destination_path, filename)
-            print 'Destination file: %s' % destination_file
-            print 'Moving the file...'
+            # print 'Destination file: %s' % destination_file
+            logger.debug('DESTINATION FILE: %s' % destination_file)
+            print 'Moving the file to %s...' % destination_path
+            logger.info('Moving the file to %s...' % destination_path)
             shutil.move(full_filename, destination_file)
+            print 'File moved!'
+            logger.info('File Moved!')
 
             # get the asset name from the path
             asset_name = destination_path.rsplit('/', 1)[-1]
-            print 'Asset Name: %s' % asset_name
+            # print 'Asset Name: %s' % asset_name
+            logger.debug('Asset Name: %s' % asset_name)
 
+            logger.info('Getting the Asset ID from the path...')
             filters = [
                 ['project', 'is', {'type': 'Project', 'id': int(archive_id)}],
                 ['code', 'is', asset_name]
@@ -1034,20 +1044,29 @@ def archive_file(full_filename=None, user=None, ip=None):
                 'id'
             ]
             asset = sg.find_one('Asset', filters, fields)
+            logger.debug('Asset returns: %s' % asset)
             if asset:
+                logger.debug('Asset found!')
                 id = asset['id']
+                logger.debug('Asset ID: %s' % id)
 
                 # Upload it to Shotgun
+                logger.info('Uploading %s to Shotgun' % filename)
+                print 'Uploading %s...' % filename
                 upload_to_shotgun(filename=destination_file, asset_id=id, proj_id=int(archive_id), user=user, archive=True)
                 logger.info('Archive published to Shotgun!')
                 logger.info('=' * 100)
                 print 'Archive uploaded to Shotgun!'
                 print '=' * 100
             aq.task_done()
+            return True
         except Exception, e:
             print 'Skipping!  The following error occurred: %s' % e
             logger.error('Skipping!  The following error occurred: %s' % e)
             aq.task_done()
+            return False
+    aq.task_done()
+    return False
 
 
 def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj_id=None, task_id=None, next_version=1):
