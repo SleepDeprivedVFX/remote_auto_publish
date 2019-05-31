@@ -606,7 +606,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
     return None
 
 
-def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, user=None, archive=False):
+def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, user=None, archive=False, tries=1):
     """
     A simple tool to create Shotgun versions and upload them
     :param filename:
@@ -660,7 +660,12 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
         return True
     except Exception, e:
         logger.error('The new version could not be created: %s' % e)
-        pass
+        if tries <= 5:
+            tries += 1
+            upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task_id, proj_id=proj_id, user=user,
+                              tries=tries)
+        else:
+            return False
     return False
 
 
