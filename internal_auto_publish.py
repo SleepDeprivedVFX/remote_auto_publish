@@ -21,7 +21,7 @@ import subprocess
 import ConfigParser
 
 # __author__ = 'Adam Benson'
-# __version__ = '1.0.0'
+# __version__ = '1.0.1'
 
 sys_path = sys.path
 config_file = 'auto_publisher_config.cfg'
@@ -469,7 +469,8 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                                     image = process_Photoshop_image(template=template, filename=new_file,
                                                                     pub_area=render_publish_area,
                                                                     task=task, f_type=output_type, proj_id=proj_id,
-                                                                    asset=find_asset, root=root_template_path)
+                                                                    asset=find_asset, root=root_template_path,
+                                                                    user=user)
                                     if image:
                                         # getting template settings
                                         send_today_template = template['paths']['send_today']
@@ -550,7 +551,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
 
 
 def process_Photoshop_image(template=None, filename=None, task=None, pub_area=None, f_type=None, proj_id=None,
-                            asset=None, root=None):
+                            asset=None, root=None, user=None):
     """
     This tool processes photoshop files in order to export out an image for uploading.
     :param template:
@@ -594,7 +595,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
             pass
 
         # Upload a version
-        upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id)
+        upload_to_shotgun(filename=render_path, asset_id=asset['id'], task_id=task, proj_id=proj_id, user=user)
 
         logger.debug(('.' * 35) + 'END PROCESS PHOTOSHOP IMAGE' + ('.' * 35))
         return render_path
@@ -631,6 +632,16 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
     }
     if task_id:
         version_data['sg_task'] = {'type': 'Task', 'id': task_id}
+    if user:
+        filters = [
+            ['login', 'is', user]
+        ]
+        fields = [
+            'id'
+        ]
+        get_user = sg.find_one('HumanUser', filters, fields)
+        user_id = get_user['id']
+        version_data['user'] = {'type': 'HumanUser', 'id': user_id}
     try:
         new_version = sg.create('Version', version_data)
         logger.debug('new_version RETURNS: %s' % new_version)
@@ -1053,7 +1064,8 @@ def archive_file(full_filename=None, user=None, ip=None):
                 # Upload it to Shotgun
                 logger.info('Uploading %s to Shotgun' % filename)
                 print 'Uploading %s...' % filename
-                upload_to_shotgun(filename=destination_file, asset_id=id, proj_id=int(archive_id), user=user, archive=True)
+                upload_to_shotgun(filename=destination_file, asset_id=id, proj_id=int(archive_id), user=user,
+                                  archive=True)
                 logger.info('Archive published to Shotgun!')
                 logger.info('=' * 100)
                 print 'Archive uploaded to Shotgun!'
