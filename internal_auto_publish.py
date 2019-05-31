@@ -142,6 +142,7 @@ publish_types = {
     '.mb': 'Maya Scene',
     '.ma': 'Maya Scene',
     '.ztl': 'ZBrush',
+    '.zzz': 'ZBrush',
     '.mud': 'Mudbox',
     '.bip': 'Keyshot Package',
     '.kip': 'Keyshot File'
@@ -541,6 +542,9 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             q.task_done()
             print 'Finished processing file.'
             print '=' * 100
+            return True
+        else:
+            q.task_done()
             return True
     except Exception, e:
         print 'Skipping!  The following error occurred: %s' % e
