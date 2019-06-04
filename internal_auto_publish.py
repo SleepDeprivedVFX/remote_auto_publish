@@ -61,7 +61,8 @@ archive_dest = configuration.get('Archive', 'archive_destination')
 archive_orig = configuration.get('Archive', 'archive_origin')
 archive_path_to_watch = '%s%s/\w+/\w+' % (archive_path, archive_orig)
 server_root = configuration.get('IAP', 'server_root')
-message_link = configuration.get('Slack', 'message_link')
+auth_code = configuration.get('Slack', 'auth_code')
+slack_url = configuration.get('Slack', 'slack_url')
 
 # Output window startup messages
 print '-' * 100
@@ -149,11 +150,6 @@ publish_types = {
 ignore_types = [
     '.DS_Store',
     '.db'
-]
-
-bad_dates = [
-    'InternalAutoPublisher 1.0.1',
-    'remoteAutoPublisher 2.0.0'
 ]
 
 '''
@@ -1131,190 +1127,6 @@ def archive_file(full_filename=None, user=None, ip=None):
     return False
 
 
-def upload_asset_reference(asset_id=None, path=None, name=None, user=None):
-    if asset_id and path and user and name:
-        new_ref = sg.upload('Asset', asset_id, path, field_name='sg_references', display_name=name)
-        data = {
-            'description': 'Reference created by %s using the IAP' % user
-        }
-        sg.update('Attachment', new_ref, data,
-                  multi_entity_update_modes={'attachment_reference_links': 'add'})
-        return True
-    return False
-
-
-def upload_global_reference():
-    pass
-
-
-def get_supervisors():
-    """
-    This gets the Coordinators and Supervisors with which to send hipchats to.
-    :return: admins (dict) {name: email}
-    """
-    logger.info('Collecting Support team members from the groups...')
-    admins = {}
-    groups = []
-    for group in slack_groups:
-        groups.append(['code', 'is', group])
-    filters = [
-        {
-            'filter_operator': 'any',
-            'filters': groups
-        }
-    ]
-    fields = [
-        'users',
-        'code'
-    ]
-    group_members = sg.find('Group', filters, fields)
-    logger.debug('GROUP %s' % group_members)
-    for group in group_members:
-        users = group['users']
-        if users:
-            for user in users:
-                person = user['name']
-                person_id = user['id']
-                data = get_sg_user(sg, logger, event, args, userid=person_id)
-                if data:
-                    email = data[person_id]['email']
-                    admins[person] = email
-                    logger.debug('%s\'s email %s added' % (person, email))
-    return admins
-
-
-def get_artists():
-    """
-    This collects the artists assigned to the task/shot/asset/version
-    :param sg:
-    :param logger:
-    :param event:
-    :param args:
-    :return:
-    """
-    try:
-        entity_id = 'Asset'
-        entity_type = event['entity']['type']
-        logger.info('Getting %s assignees...' % entity_type)
-        filters = [
-            ['id', 'is', entity_id]
-        ]
-        if entity_type == 'Version':
-            fields = [
-                'user'
-            ]
-            tag = 'user'
-        else:
-            fields = [
-                'task_assignees'
-            ]
-            tag = 'task_assignees'
-        get_assignees = sg.find_one(entity_type, filters, fields)
-        logger.info('get_assignees RETURNS: %s' % get_assignees)
-        logger.debug('this is: %s' % type(get_assignees))
-        if type(get_assignees) == list:
-            assignees = get_assignees[tag]
-            logger.debug('assignees returns: %s' % assignees)
-            email_list = {}
-            for ass in assignees:
-                person = ass['name']
-                person_id = ass['id']
-                data = get_sg_user(userid=person_id)
-                email = data[person_id]['email']
-                email_list[person] = email
-        else:
-            if tag in get_assignees.keys():
-                assignees = get_assignees[tag]
-                logger.debug('assignees returns: %s' % assignees)
-                email_list = {}
-
-                if assignees:
-                    for assignee in assignees:
-                        if isinstance(assignee, dict):
-                            if 'name' in assignee.keys():
-                                person = assignee['name']
-                                person_id = assignee['id']
-                                data = get_sg_user(sg, logger, event, args, userid=person_id)
-                                email = data[person_id]['email']
-                                email_list[person] = email
-                            else:
-                                logger.debug('No users are assigned to this task!')
-                        else:
-                            logger.debug('No users are assigned to this task!')
-                            return False
-            else:
-                logger.debug('No users are assigned to this task!')
-                return False
-
-        # Add response groups
-        groups = []
-        for group in response_groups:
-            groups.append(['code', 'is', group])
-        filters = [
-            {
-                'filter_operator': 'any',
-                'filters': groups
-            }
-        ]
-        fields = [
-            'users',
-            'code'
-        ]
-        group_members = sg.find('Group', filters, fields)
-        logger.debug('GROUP %s' % group_members)
-        for group in group_members:
-            users = group['users']
-            if users:
-                for user in users:
-                    person = user['name']
-                    person_id = user['id']
-                    data = get_sg_user(sg, logger, event, args, userid=person_id)
-                    if data:
-                        email = data[person_id]['email']
-                        email_list[person] = email
-                        logger.debug('%s\'s email %s added' % (person, email))
-
-        return email_list
-    except TypeError:
-        return None
-
-
-def get_sg_user(userid=None, project_id=None):
-    """
-    Get a specific Shotgun User's details from any basic input.
-    Only the first detected value will be searched.  If all 3 values are added, only the ID will be searched.
-    :param userid: (int) Shotgun User ID number
-    :param name:   (str) First and Last Name
-    :param email:  (str) email@asc-vfx.com
-    :return: user: (dict) Basic details
-    """
-    logger.info('Collecting user data to find email...')
-    user = {}
-    if userid:
-        filters = [['sg_status_list', 'is', 'act'], ['id', 'is', userid]]
-        fields = [
-            'email',
-            'projects',
-        ]
-        find_user = sg.find_one('HumanUser', filters, fields)
-        logger.debug('find_user returns: %s' % find_user)
-        if find_user:
-            user_id = find_user['id']
-            sg_email = find_user['email']
-            projects = find_user['projects']
-            for proj in projects:
-                if proj['id'] == project_id:
-                    user[user_id] = {'email': sg_email}
-                    logger.debug('User email found!  %s' % sg_email)
-                    break
-        if not user:
-            logger.info('This user is not part of the project!')
-            return None
-    else:
-        logger.warning('No data passed to get_sg_user()!  Nothing processed!')
-    return user
-
-
 def get_slack_user(email=None, auth_code=None, url=None, tries=0):
     logger.info('Getting slack user ID...')
     user_id = None
@@ -1366,74 +1178,88 @@ def get_slack_user(email=None, auth_code=None, url=None, tries=0):
     return user_id
 
 
-def send_slack_message(slack_url=None, message=None, auth_code=None, color='green', user=None,
-                       asset_name=None, asset_id=None, proj_name=None, proj_id=None, filename=None):
-    if color == 'green':
-        color = '#00aa00'
-    elif color == 'red':
-        color = '#aa0000'
-    elif color == 'blue':
-        color = '#0000aa'
-    else:
-        color = '#aacc00'
+def get_asset_users(asset_id=None):
+    users = {}
+    if asset_id:
+        # Get all the tasks
+        filters = [
+            ['entity', 'is', {'type': 'Asset', 'id': asset_id}]
+        ]
+        fields = [
+            'task_assignees'
+        ]
+        search_tasks = sg.find('Task', filters, fields)
+        for task in search_tasks:
+            if task['task_assignees']:
+                assignees = task['task_assignees']
+                for assignee in assignees:
+                    if assignee['name'] not in users.keys():
+                        filters = [
+                            ['id', 'is', assignee['id']]
+                        ]
+                        fields = [
+                            'email'
+                        ]
+                        find_email = sg.find_one('HumanUser', filters, fields)
+                        if find_email:
+                            users[assignee['name']] = {'email': find_email['email'], 'id': assignee['id']}
+    return users
 
-    logger.info('Robo-Coordinator is on the job...')
 
-    try:
-        get_user = get_slack_user(email=email, auth_code=auth_code, url=slack_url)
-    except Exception:
-        time.sleep(1000)
-        get_user = get_slack_user(email=email, auth_code=auth_code, url=slack_url)
-
-    who = user
-    if who not in bad_dates:
-        entity_type = 'Asset'
-        entity_name = asset_name
-        entity_id = asset_id
-        project = proj_name
-        project_id = proj_id
-        status = message
-
-        link = '%s/%s/%i' % (message_link, entity_type, entity_id)
-
-        data = {
-            'type': 'message',
-            'channel': get_user,
-            'text': '*%s* has marked _%s_ as *%s*' % (who, entity_name, status),
-            'attachments': [
-                {
-                    'fallback': 'New Reference Alert',
-                    'title': status,
-                    'text': '*New Reference: %s*' % filename,
-                    'color': color,
-                    'fields': [
-                        {
-                            'title': 'Project',
-                            'value': '_%s_' % project
-                        },
-                        {
-                            'title': 'Quick Link',
-                            'value': '%s' % link
-                        }
-                    ]
-                }
-            ],
-            'as_user': True,
-            'username': 'Robo-Coordinator'
-        }
-
-        if data:
-            headers = {
-                'Authorization': 'Bearer %s' % auth_code,
-                'Content-type': 'application/json'
+def send_slack_message(user_id=None, asset_name=None, asset_id=None, username=None, filename=None, project=None):
+    data = {
+        'type': 'message',
+        'channel': user_id,
+        'text': '*%s* has created a new reference for *%s*' % (username, asset_name),
+        'attachments': [
+            {
+                'fallback': 'New References',
+                'title': 'New %s Reference' % asset_name,
+                'text': 'file:%s' % filename,
+                'color': '#00aa00',
+                'fields': [
+                    {
+                        'title': 'Project',
+                        'value': '_%s_' % project
+                    }
+                ]
             }
-            data = json.dumps(data)
-            try:
-                person = requests.post('%schat.postMessage' % slack_url, headers=headers, data=data)
-                logger.debug('Message Sent: %s' % person.json())
-                logger.info('Message sent to %s' % email)
-            except Exception, error:
-                logger.error('Something went wrong sending the message!  %s' % error)
+        ],
+        'as_user': True,
+        'username': 'Robo-Coordinator'
+    }
+
+    if data:
+        headers = {
+            'Authorization': 'Bearer %s' % auth_code,
+            'Content-type': 'application/json'
+        }
+        data = json.dumps(data)
+        try:
+            person = requests.post('%schat.postMessage' % slack_url, headers=headers, data=data)
+            logger.debug('Message Sent: %s' % person.json())
+            print 'Message sent to %s' % username
+            logger.info('Message sent to %s' % username)
+        except Exception, error:
+            logger.error('Something went wrong sending the message!  %s' % error)
+
+
+def upload_asset_reference(asset_id=None, path=None, name=None, user=None):
+    if asset_id and path and user and name:
+        new_ref = sg.upload('Asset', asset_id, path, field_name='sg_references', display_name=name)
+        data = {
+            'description': 'Reference created by %s using the IAP' % user,
+            'sg_status_list': 'na',
+            'attachment_reference_links': [{'type': 'Asset', 'id': asset_id}]
+        }
+        sg.update('Attachment', new_ref, data,
+                  multi_entity_update_modes={'attachment_reference_links': 'add'})
+        return True
+    return False
+
+
+def upload_global_reference():
+    pass
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -1499,10 +1325,7 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                         if ext in reference_types:
                             logger.info('Known reference type discovered!')
                             print 'Known reference type discovered!'
-                            # TODO: Ok, so this is where I need to start actually processing the reference for an
-                            #       asset.
-                            #       Need to get the template path to the asset reference folder and copy it there.
-                            #       Need to upload the reference and the global reference & add thumbnails.
+
                             asset_template_type = templates['Asset Reference']
                             asset_template = resolve_template_path(asset_template_type['work_area'], template)
                             logger.debug('Asset Template: %s' % asset_template)
@@ -1535,8 +1358,18 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                             new_ref = upload_asset_reference(asset_id=asset_id, path=asset_reference_path,
                                                              name=file_name, user=user)
                             if new_ref:
-                                pass
-
+                                get_users = get_asset_users(asset_id=asset_id)
+                                if get_users:
+                                    for artist, details in get_users.items():
+                                        slack_user = get_slack_user(email=details['email'], auth_code=auth_code,
+                                                                    url=slack_url)
+                                        if slack_user:
+                                            send_slack_message(user_id=slack_user, asset_name=asset_name,
+                                                               asset_id=asset_id, username=artist,
+                                                               filename=asset_reference_path, project=proj_name)
+                            print 'New reference created!'
+                            logger.info('New reference created!')
+                            print '=' * 120
                 else:
                     # TODO: This is where the global reference may need to get called.
                     #       This will only do the global reference and thumbnail.
