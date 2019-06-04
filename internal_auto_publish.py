@@ -19,6 +19,7 @@ from datetime import datetime
 import SocketServer
 import subprocess
 import ConfigParser
+import requests
 
 # __author__ = 'Adam Benson'
 # __version__ = '1.0.1'
@@ -65,10 +66,6 @@ print '-' * 100
 print 'INTERNAL AUTO PUBLISH UTILITY'
 print '+' * 100
 
-'''
-TODO:
-1. Setup reference system
-'''
 
 # Create Log file
 debug = configuration.get('Logging', 'debug_logging')
@@ -189,6 +186,28 @@ video_types = [
     '.avi',
     '.mpg'
 ]
+reference_types = [
+    '.jpg',
+    '.jpeg',
+    '.tif',
+    '.tiff',
+    '.png',
+    '.mov',
+    '.mp4',
+    '.tga',
+    '.mpg',
+    '.pdf',
+    '.xls',
+    '.xlsx',
+    '.csv',
+    '.doc',
+    '.docx',
+    '.txt',
+    '.rtf',
+    '.htm',
+    '.html',
+    '.psd'
+]
 templates = {
     'Photoshop Image': {
         'work_area': 'asset_work_area_photoshop',
@@ -249,6 +268,18 @@ templates = {
         'work_template': None,
         'publish_area': None,
         'publish_template': None
+    },
+    'Root Reference': {
+        'work_area': 'root_reference',
+        'work_template': None,
+        'publish_area': None,
+        'publish_template': None
+    },
+    'Asset Reference': {
+        'work_area': 'asset_reference_area',
+        'work_template': None,
+        'publish_area': None,
+        'publish_template': None
     }
 }
 
@@ -261,6 +292,9 @@ q = queue.Queue()
 
 logger.debug('Creating the Archival Queue...')
 aq = queue.Queue()
+
+logger.debug('Creating the Reference Queue...')
+rq = queue.Queue()
 
 
 # -----------------------------------------------------------------------------------------------------------------
@@ -1090,6 +1124,137 @@ def archive_file(full_filename=None, user=None, ip=None):
     return False
 
 
+def upload_asset_reference(asset_id=None, path=None, name=None, user=None):
+    if asset_id and path and user and name:
+        new_ref = sg.upload('Asset', asset_id, path, field_name='sg_references', display_name=name)
+        data = {
+            'description': 'Reference created by %s using the IAP' % user
+        }
+        sg.update('Attachment', new_ref, data,
+                  multi_entity_update_modes={'attachment_reference_links': 'add'})
+        return True
+    return False
+
+
+def upload_global_reference():
+    pass
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Process References
+# ---------------------------------------------------------------------------------------------------------------------
+def process_reference(filename=None, template=None, roots=None, proj_id=None, proj_name=None, user=None, ip=None):
+
+    try:
+        if filename and os.path.exists(filename):
+            logger.info('^' * 120)
+            logger.info('NEW REFERENCE BEING MADE...')
+            logger.info('#' * 120)
+            print 'New Reference Processing...'
+            print filename
+            logger.info(filename)
+            print 'Published by %s' % user
+            logger.info('Published by %s' % user)
+            print 'At: %s' % datetime.now()
+            logger.info('At: %s' % datetime.now())
+
+            # Get the path details from the filename
+            path = os.path.dirname(filename)
+            logger.debug('PATH: %s' % path)
+            # Filename without path
+            base_file = os.path.basename(filename)
+            base_dir = os.path.dirname(filename)
+
+            f = os.path.splitext(base_file)
+            # File extension
+            ext = str(f[1]).lower()
+            # Filename without path or extension.
+            file_name = f[0]
+
+            if proj_id:
+                # ensure the slashes are pointing forward
+                base_dir = base_dir.replace('\\', '/')
+                split_pattern = re.findall(ref_path_to_watch, path)
+                if split_pattern:
+                    split_pattern = split_pattern[0]
+
+                    print 'SPLIT PATTERN: %s' % split_pattern
+                    rel_path = path.split(split_pattern)[1]
+                    print 'REL PATH: %s' % rel_path
+                    if not rel_path:
+                        rel_path = path
+                    logger.debug('Relative path: %s' % rel_path)
+
+                    find_asset = get_asset_details_from_path(proj_name, proj_id, rel_path)
+
+                    asset_name = find_asset['name']
+                    asset_id = find_asset['id']
+                    asset_type = find_asset['type']
+
+                    # If an asset is found, continue processing.
+                    if asset_id:
+                        logger.info('The Asset is found in the system! %s: %s' % (asset_id, asset_name))
+                        logger.debug('Asset type: %s' % asset_type)
+
+                        # Find the Shotgun configuration root path
+                        find_config = get_configuration(proj_id)
+                        logger.debug('Configuration found: %s' % find_config)
+
+                        if ext in reference_types:
+                            logger.info('Known reference type discovered!')
+                            print 'Known reference type discovered!'
+                            # TODO: Ok, so this is where I need to start actually processing the reference for an
+                            #       asset.
+                            #       Need to get the template path to the asset reference folder and copy it there.
+                            #       Need to upload the reference and the global reference & add thumbnails.
+                            asset_template_type = templates['Asset Reference']
+                            asset_template = resolve_template_path(asset_template_type['work_area'], template)
+                            logger.debug('Asset Template: %s' % asset_template)
+
+                            project_root = roots['primary']['windows_path']
+
+                            root_template_path = os.path.join(project_root, proj_name)
+                            reference_template_path = os.path.join(root_template_path, asset_template)
+                            reference_template_path = reference_template_path.replace('\\', '/')
+
+                            reference_asset_path = process_template_path(template=reference_template_path,
+                                                                         asset=find_asset)
+                            logger.debug('Reference asset path: %s' % reference_asset_path)
+
+                            if not os.path.exists(reference_asset_path):
+                                logger.info('Creating asset path: %s' % reference_asset_path)
+                                os.makedirs(reference_asset_path)
+
+                            # Set destination path name
+                            asset_reference_path = os.path.join(reference_asset_path, base_file)
+                            print 'Moving asset to: %s' % asset_reference_path
+
+                            # move the reference into place.
+                            try:
+                                shutil.move(filename, asset_reference_path)
+                            except Exception, e:
+                                logger.error('Can\'t move the file %s' % filename)
+
+                            # Upload the reference to shotgun.
+                            new_ref = upload_asset_reference(asset_id=asset_id, path=asset_reference_path,
+                                                             name=file_name, user=user)
+                            if new_ref:
+                                pass
+
+                else:
+                    # TODO: This is where the global reference may need to get called.
+                    #       This will only do the global reference and thumbnail.
+                    print 'GLOBAL REFERENCe: %s' % file_name
+
+        rq.task_done()
+    except Exception, e:
+        print 'Skipping!  The following error occurred: %s' % e
+        logger.error('Skipping!  The following error occurred: %s' % e)
+        logger.info('%s' % e)
+        rq.task_done()
+        return False
+
+
 def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj_id=None, task_id=None, next_version=1):
     """
 
@@ -1525,7 +1690,7 @@ def archive_queue():
     This queue is specifially for running archival processes and should run apart from the main queue.
     :return:
     """
-    logger.debug('Archive queue running...')
+    logger.info('Archive queue running...')
     print 'Archive Queue running...'
     while True:
         package = aq.get(block=True)
@@ -1547,6 +1712,49 @@ def archive_queue():
                     logger.debug('~' * 45)
                     break
                 else:
+                    size2 = os.stat(full_filename).st_size
+                    time.sleep(2)
+            except WindowsError, e:
+                logger.debug(e)
+                break
+
+
+def reference_queue():
+    """
+    This queue is specifically for running the reference system.
+    :return:
+    """
+    logger.info('Reference queue running...')
+    print 'Reference Queue Running...'
+    while True:
+        package = rq.get(block=True)
+        full_filename = package['filename']
+        template = package['template']
+        roots = package['roots']
+        proj_id = package['proj_id']
+        proj_name = package['proj_name']
+        ip = package['ip']
+        user = package['user']
+        logger.debug('Queued reference: %s' % full_filename)
+
+        # Set the copying status to true, so it begins waiting for a copy to finish
+        copying = True
+        size2 = -1
+        # Start Copying...
+        while copying:
+            # Check the file size and compare it with the previous file size.  If the same, copying is done.
+            try:
+                size = os.stat(full_filename).st_size
+                if size == size2:
+                    time.sleep(2)
+
+                    copying = False
+                    process_reference(filename=full_filename, template=template, roots=roots, proj_id=proj_id,
+                                      proj_name=proj_name, user=user, ip=ip)
+                    logger.debug('~' * 45)
+                    break
+                else:
+                    # Copying not finished, wait to seconds and try again...
                     size2 = os.stat(full_filename).st_size
                     time.sleep(2)
             except WindowsError, e:
@@ -1577,6 +1785,14 @@ logger.debug('Starting the secondary archival thread...')
 at = threading.Thread(target=archive_queue, name='ArchiveQueue')
 at.setDaemon(True)
 at.start()
+
+'''
+This starts the thread that runs the reference system
+'''
+logger.debug('Starting the reference thread...')
+rt = threading.Thread(target=reference_queue, name='ReferenceQueue')
+rt.setDaemon(True)
+rt.start()
 print 'Queue Threading initialized...'
 
 
@@ -1707,34 +1923,83 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
                                         package = {'filename': full_filename, 'template': template, 'roots': roots,
                                                    'proj_id': proj_id, 'proj_name': proj_name, 'user': user, 'ip': ip}
                                         # Add the package to the queue for processing.
-                                        q.put(package)
+                                        q.put(package, block=True)
                                         logger.debug('%s added to queue...' % full_filename)
 
                     elif re.findall(ref_path_to_watch, path):
-                        logger.info('Reference path detected!')
-                        logger.info('%s | %s | %s | %s' % (user, path, file_size, ip))
-                        project_details = get_details_from_path(path)
-                        proj_name = project_details['name']
-                        proj_id = project_details['id']
-                        '''
-                        Ok.  The main reference page does not show thumbnails by default, but references linked to 
-                        assets do seem to show the thumbnail... just not on the main reference page; only on the actual
-                        asset page.  Actually... the asset references do not show up in the overall reference page.
-                        Main reference page will need thumbnails added separately.
-                        
-                        There will need to be 2 processes:
-                        Asset Reference
-                        Project Reference
-                        
-                        Asset type = File(Attachment)
-                        Proj. type = Reference(CustomEntity03)
-                        '''
-                        print proj_id
-                        print proj_name
-                        things = re.findall(ref_path_to_watch, path)
-                        print things[0]
-                        logger.info('REF THINGS: %s' % things)
+                        ignore_this = False
+                        for ignore in ignore_types:
+                            if ignore in path:
+                                ignore_this = True
+                                break
+                        if not ignore_this:
+                            logger.info('Reference path detected!')
+                            logger.info('%s | %s | %s | %s' % (user, path, file_size, ip))
+                            project_details = get_details_from_path(path)
+                            if project_details:
+                                proj_name = project_details['name']
+                                proj_id = project_details['id']
+                                '''
+                                Ok.  The main reference page does not show thumbnails by default, but references linked to 
+                                assets do seem to show the thumbnail... just not on the main reference page; only on the actual
+                                asset page.  Actually... the asset references do not show up in the overall reference page.
+                                Main reference page will need thumbnails added separately.
+                                
+                                There will need to be 2 processes:
+                                Asset Reference
+                                Project Reference
+                                
+                                Asset type = File(Attachment)
+                                Proj. type = Reference(CustomEntity03)
+                                '''
+                                # Assuming a project id was returned, process the results
+                                if proj_id:
+                                    # Get the configuration from the project ID
+                                    find_config = get_configuration(proj_id)
+                                    logger.debug('find_config RETURNS: %s' % find_config)
 
+                                    # If a configuration is found, build paths to the appropriate files
+                                    if find_config:
+                                        templates_path = find_config + relative_config_path
+                                        template_file = os.path.join(templates_path, 'templates.yml')
+                                        root_file = os.path.join(templates_path, 'roots.yml')
+                                        template_file = template_file.replace('/', '\\')
+                                        root_file = root_file.replace('/', '\\')
+
+                                        # Open the configuration files...
+                                        try:
+                                            logger.info('Opening config files...')
+                                            f = open(template_file, 'r')
+                                            r = open(root_file, 'r')
+                                        except Exception, err:
+                                            # If unable to open the configuration files, try another 10 times.
+                                            tries = 1
+                                            while tries < 10:
+                                                logger.error('Opening files took a shit.  Trying again...')
+                                                time.sleep(2)
+                                                try:
+                                                    logger.warning('Open attempt #%i' % tries)
+                                                    f = open(template_file, 'r')
+                                                    r = open(root_file, 'r')
+                                                    break
+                                                except Exception, e:
+                                                    tries += 1
+                                                    logging.error('File Open failed again. Trying again... ERROR: %s' % e)
+                                            raise 'Total failure! %s' % err
+
+                                        # Path the tempate fields into something more usable.
+                                        template = yaml.load(f)
+                                        roots = yaml.load(r)
+
+                                        get_root_path = roots['primary']['windows_path']
+                                        root_drive = str(get_root_path).rsplit('\\', 1)[0]
+                                        full_filename = '%s%s' % (root_drive, path)
+
+                                        # Package data into a dict for passing to the queue
+                                        package = {'filename': full_filename, 'template': template, 'roots': roots,
+                                                   'proj_id': proj_id, 'proj_name': proj_name, 'user': user, 'ip': ip}
+                                        rq.put(package, block=True)
+                                        logger.debug('%s added to the Reference queue...' % full_filename)
                 elif re.findall(archive_path_to_watch, path):
                     print 'Archive found!'
                     print path
@@ -1744,7 +2009,7 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
                         'user': user,
                         'ip': ip
                     }
-                    aq.put(package)
+                    aq.put(package, block=True)
                     logger.debug('%s added to the archive queue...' % full_archive_path)
 
 
