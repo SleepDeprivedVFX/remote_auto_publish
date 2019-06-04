@@ -20,6 +20,7 @@ import SocketServer
 import subprocess
 import ConfigParser
 import requests
+import json
 
 # __author__ = 'Adam Benson'
 # __version__ = '1.0.1'
@@ -60,6 +61,7 @@ archive_dest = configuration.get('Archive', 'archive_destination')
 archive_orig = configuration.get('Archive', 'archive_origin')
 archive_path_to_watch = '%s%s/\w+/\w+' % (archive_path, archive_orig)
 server_root = configuration.get('IAP', 'server_root')
+message_link = configuration.get('Slack', 'message_link')
 
 # Output window startup messages
 print '-' * 100
@@ -147,6 +149,11 @@ publish_types = {
 ignore_types = [
     '.DS_Store',
     '.db'
+]
+
+bad_dates = [
+    'InternalAutoPublisher 1.0.1',
+    'remoteAutoPublisher 2.0.0'
 ]
 
 '''
@@ -1138,6 +1145,295 @@ def upload_asset_reference(asset_id=None, path=None, name=None, user=None):
 
 def upload_global_reference():
     pass
+
+
+def get_supervisors():
+    """
+    This gets the Coordinators and Supervisors with which to send hipchats to.
+    :return: admins (dict) {name: email}
+    """
+    logger.info('Collecting Support team members from the groups...')
+    admins = {}
+    groups = []
+    for group in slack_groups:
+        groups.append(['code', 'is', group])
+    filters = [
+        {
+            'filter_operator': 'any',
+            'filters': groups
+        }
+    ]
+    fields = [
+        'users',
+        'code'
+    ]
+    group_members = sg.find('Group', filters, fields)
+    logger.debug('GROUP %s' % group_members)
+    for group in group_members:
+        users = group['users']
+        if users:
+            for user in users:
+                person = user['name']
+                person_id = user['id']
+                data = get_sg_user(sg, logger, event, args, userid=person_id)
+                if data:
+                    email = data[person_id]['email']
+                    admins[person] = email
+                    logger.debug('%s\'s email %s added' % (person, email))
+    return admins
+
+
+def get_artists():
+    """
+    This collects the artists assigned to the task/shot/asset/version
+    :param sg:
+    :param logger:
+    :param event:
+    :param args:
+    :return:
+    """
+    try:
+        entity_id = 'Asset'
+        entity_type = event['entity']['type']
+        logger.info('Getting %s assignees...' % entity_type)
+        filters = [
+            ['id', 'is', entity_id]
+        ]
+        if entity_type == 'Version':
+            fields = [
+                'user'
+            ]
+            tag = 'user'
+        else:
+            fields = [
+                'task_assignees'
+            ]
+            tag = 'task_assignees'
+        get_assignees = sg.find_one(entity_type, filters, fields)
+        logger.info('get_assignees RETURNS: %s' % get_assignees)
+        logger.debug('this is: %s' % type(get_assignees))
+        if type(get_assignees) == list:
+            assignees = get_assignees[tag]
+            logger.debug('assignees returns: %s' % assignees)
+            email_list = {}
+            for ass in assignees:
+                person = ass['name']
+                person_id = ass['id']
+                data = get_sg_user(userid=person_id)
+                email = data[person_id]['email']
+                email_list[person] = email
+        else:
+            if tag in get_assignees.keys():
+                assignees = get_assignees[tag]
+                logger.debug('assignees returns: %s' % assignees)
+                email_list = {}
+
+                if assignees:
+                    for assignee in assignees:
+                        if isinstance(assignee, dict):
+                            if 'name' in assignee.keys():
+                                person = assignee['name']
+                                person_id = assignee['id']
+                                data = get_sg_user(sg, logger, event, args, userid=person_id)
+                                email = data[person_id]['email']
+                                email_list[person] = email
+                            else:
+                                logger.debug('No users are assigned to this task!')
+                        else:
+                            logger.debug('No users are assigned to this task!')
+                            return False
+            else:
+                logger.debug('No users are assigned to this task!')
+                return False
+
+        # Add response groups
+        groups = []
+        for group in response_groups:
+            groups.append(['code', 'is', group])
+        filters = [
+            {
+                'filter_operator': 'any',
+                'filters': groups
+            }
+        ]
+        fields = [
+            'users',
+            'code'
+        ]
+        group_members = sg.find('Group', filters, fields)
+        logger.debug('GROUP %s' % group_members)
+        for group in group_members:
+            users = group['users']
+            if users:
+                for user in users:
+                    person = user['name']
+                    person_id = user['id']
+                    data = get_sg_user(sg, logger, event, args, userid=person_id)
+                    if data:
+                        email = data[person_id]['email']
+                        email_list[person] = email
+                        logger.debug('%s\'s email %s added' % (person, email))
+
+        return email_list
+    except TypeError:
+        return None
+
+
+def get_sg_user(userid=None, project_id=None):
+    """
+    Get a specific Shotgun User's details from any basic input.
+    Only the first detected value will be searched.  If all 3 values are added, only the ID will be searched.
+    :param userid: (int) Shotgun User ID number
+    :param name:   (str) First and Last Name
+    :param email:  (str) email@asc-vfx.com
+    :return: user: (dict) Basic details
+    """
+    logger.info('Collecting user data to find email...')
+    user = {}
+    if userid:
+        filters = [['sg_status_list', 'is', 'act'], ['id', 'is', userid]]
+        fields = [
+            'email',
+            'projects',
+        ]
+        find_user = sg.find_one('HumanUser', filters, fields)
+        logger.debug('find_user returns: %s' % find_user)
+        if find_user:
+            user_id = find_user['id']
+            sg_email = find_user['email']
+            projects = find_user['projects']
+            for proj in projects:
+                if proj['id'] == project_id:
+                    user[user_id] = {'email': sg_email}
+                    logger.debug('User email found!  %s' % sg_email)
+                    break
+        if not user:
+            logger.info('This user is not part of the project!')
+            return None
+    else:
+        logger.warning('No data passed to get_sg_user()!  Nothing processed!')
+    return user
+
+
+def get_slack_user(email=None, auth_code=None, url=None, tries=0):
+    logger.info('Getting slack user ID...')
+    user_id = None
+    if email:
+        headers = {
+            'Authorization': 'Bearer %s' % auth_code,
+            'Content-type': 'application/json'
+        }
+        try:
+            slack_users = requests.get('%susers.list' % url, headers=headers)
+            logger.debug('Checking slack request... %s' % slack_users.json())
+            if slack_users.json()['ok'] == True:
+                all_users = slack_users.json()['members']
+                user_id = None
+                for user in all_users:
+                    profile = user['profile']
+                    if 'email' in profile.keys():
+                        user_email = profile['email']
+                        if user_email == email:
+                            user_id = user['id']
+                            logger.debug('Slack user ID found! %s' % user_id)
+                            break
+            else:
+                logger.info('Waiting 10 seconds to allow for Slack rate limits...')
+                time.sleep(10)
+                logger.info('Trying again...')
+                user_id = get_slack_user(email=email, auth_code=auth_code, url=url)
+
+        except KeyError, e:
+            logger.error('Key not found! %s  Trying again...' % e)
+            try:
+                t = tries + 1
+                time.sleep(30)
+                if t > 5:
+                    raise Exception("Too many tries!  Skipping...")
+                user_id = get_slack_user(email=email, auth_code=auth_code, url=url, tries=t)
+            except Exception, e:
+                logger.error('There is no saving this thing: %s' % e)
+                return None
+        except Exception, e:
+            try:
+                t = tries + 1
+                if t > 10:
+                    logger.error("Too many tries!  Skipping...")
+                user_id = get_slack_user(email=email, auth_code=auth_code, url=url, tries=t)
+            except Exception, e:
+                logger.error('There is no saving this thing!: %s' % e)
+                return None
+    return user_id
+
+
+def send_slack_message(slack_url=None, message=None, auth_code=None, color='green', user=None,
+                       asset_name=None, asset_id=None, proj_name=None, proj_id=None, filename=None):
+    if color == 'green':
+        color = '#00aa00'
+    elif color == 'red':
+        color = '#aa0000'
+    elif color == 'blue':
+        color = '#0000aa'
+    else:
+        color = '#aacc00'
+
+    logger.info('Robo-Coordinator is on the job...')
+
+    try:
+        get_user = get_slack_user(email=email, auth_code=auth_code, url=slack_url)
+    except Exception:
+        time.sleep(1000)
+        get_user = get_slack_user(email=email, auth_code=auth_code, url=slack_url)
+
+    who = user
+    if who not in bad_dates:
+        entity_type = 'Asset'
+        entity_name = asset_name
+        entity_id = asset_id
+        project = proj_name
+        project_id = proj_id
+        status = message
+
+        link = '%s/%s/%i' % (message_link, entity_type, entity_id)
+
+        data = {
+            'type': 'message',
+            'channel': get_user,
+            'text': '*%s* has marked _%s_ as *%s*' % (who, entity_name, status),
+            'attachments': [
+                {
+                    'fallback': 'New Reference Alert',
+                    'title': status,
+                    'text': '*New Reference: %s*' % filename,
+                    'color': color,
+                    'fields': [
+                        {
+                            'title': 'Project',
+                            'value': '_%s_' % project
+                        },
+                        {
+                            'title': 'Quick Link',
+                            'value': '%s' % link
+                        }
+                    ]
+                }
+            ],
+            'as_user': True,
+            'username': 'Robo-Coordinator'
+        }
+
+        if data:
+            headers = {
+                'Authorization': 'Bearer %s' % auth_code,
+                'Content-type': 'application/json'
+            }
+            data = json.dumps(data)
+            try:
+                person = requests.post('%schat.postMessage' % slack_url, headers=headers, data=data)
+                logger.debug('Message Sent: %s' % person.json())
+                logger.info('Message sent to %s' % email)
+            except Exception, error:
+                logger.error('Something went wrong sending the message!  %s' % error)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
