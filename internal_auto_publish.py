@@ -1182,6 +1182,35 @@ def get_slack_user(email=None, auth_code=None, url=None, tries=0):
     return user_id
 
 
+def get_project_users(proj_id=None):
+    emails = {}
+    if proj_id:
+        logger.info('Looking up global project users...')
+        filters = [
+            ['id', 'is', proj_id]
+        ]
+        fields = [
+            'users'
+        ]
+        find_people = sg.find_one('Project', filters, fields)
+
+        if find_people:
+            users = find_people['users']
+            logger.info('People found!')
+            for user in users:
+                filters = [
+                    ['id', 'is', user['id']]
+                ]
+                fields = [
+                    'email',
+                    'name'
+                ]
+                get_email = sg.find_one('HumanUser', filters, fields)
+                if get_email['email']:
+                    emails[get_email['name']] = get_email['email']
+    return emails
+
+
 def get_asset_users(asset_id=None):
     users = {}
     if asset_id:
@@ -1210,11 +1239,11 @@ def get_asset_users(asset_id=None):
     return users
 
 
-def send_slack_message(user_id=None, asset_name=None, asset_id=None, username=None, filename=None, project=None):
+def send_slack_message(user_id=None, asset_name=None, user=None, username=None, filename=None, project=None):
     data = {
         'type': 'message',
         'channel': user_id,
-        'text': '*%s* has created a new reference for *%s*' % (username, asset_name),
+        'text': '*%s* has created a new reference for *%s*' % (user, asset_name),
         'attachments': [
             {
                 'fallback': 'New References',
@@ -1395,7 +1424,7 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                                                                     url=slack_url)
                                         if slack_user:
                                             send_slack_message(user_id=slack_user, asset_name=asset_name,
-                                                               asset_id=asset_id, username=artist,
+                                                               username=artist, user=user,
                                                                filename=asset_reference_path, project=proj_name)
                             print 'New reference created!'
                             logger.info('New reference created!')
@@ -1444,8 +1473,14 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                         if new_ref:
                             logger.info('Global reference uploaded successfully!')
                             print 'Global reference uploaded successfully'
-                            # TODO: Add a message system for everyone on the project
+                            project_emails = get_project_users(proj_id)
+                            if project_emails:
+                                for name, email in project_emails.items():
+                                    slack_user = get_slack_user(email=email, auth_code=auth_code, url=slack_url)
 
+                                    if slack_user:
+                                        send_slack_message(user_id=slack_user, asset_name=proj_name, username=name,
+                                                           filename=reference_path, project=proj_name, user=user)
                             print 'Done!'
                             print '=' * 120
 
@@ -1621,7 +1656,7 @@ def get_set_task(asset=None, proj_id=None, user=None):
             task = new_task['id']
 
             # Add task assignments
-            assign_user_to_task(user=user, task_id=task_id)
+            assign_user_to_task(user=user, task_id=task)
 
     logger.debug(('.' * 35) + 'END get_set_task' + ('.' * 35))
     return task
