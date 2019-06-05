@@ -63,6 +63,10 @@ archive_path_to_watch = '%s%s/\w+/\w+' % (archive_path, archive_orig)
 server_root = configuration.get('IAP', 'server_root')
 auth_code = configuration.get('Slack', 'auth_code')
 slack_url = configuration.get('Slack', 'slack_url')
+global_ref_entity = configuration.get('Referencer', 'global_ref_entity')
+ref_docs_folder = configuration.get('Referencer', 'ref_docs_folder')
+ref_imgs_folder = configuration.get('Referencer', 'ref_imgs_folder')
+ref_vids_folder = configuration.get('Referencer', 'ref_vids_folder')
 
 # Output window startup messages
 print '-' * 100
@@ -1246,6 +1250,8 @@ def send_slack_message(user_id=None, asset_name=None, asset_id=None, username=No
 
 def upload_asset_reference(asset_id=None, path=None, name=None, user=None):
     if asset_id and path and user and name:
+        logger.info('Uploading the reference...')
+        print 'Uploading the reference...'
         new_ref = sg.upload('Asset', asset_id, path, field_name='sg_references', display_name=name)
         data = {
             'description': 'Reference created by %s using the IAP' % user,
@@ -1254,12 +1260,36 @@ def upload_asset_reference(asset_id=None, path=None, name=None, user=None):
         }
         sg.update('Attachment', new_ref, data,
                   multi_entity_update_modes={'attachment_reference_links': 'add'})
+        print 'Done!'
+        logger.info('Done!')
         return True
     return False
 
 
-def upload_global_reference():
-    pass
+def upload_global_reference(path=None, proj_id=None, user=None):
+    if path and proj_id:
+        logger.info('Uploading a global reference...')
+        print 'Uploading a global reference...'
+        filename = os.path.basename(path)
+        fn = os.path.splitext(filename)
+        name = fn[0]
+        ext = fn[1]
+        data = {
+            'project': {'type': 'Project', 'id': proj_id},
+            'code': name,
+            'description': '%s has created a global reference using the IAP' % user
+        }
+        reference = sg.create(global_ref_entity, data)
+        sg.upload(global_ref_entity, reference['id'], path, field_name='sg_link', display_name=filename)
+        logger.info('Global reference uploaded')
+        logger.debug('Checking for image file types')
+        if ext in upload_types and ext not in video_types:
+            logger.info('Uploading thumbnail...')
+            sg.upload_thumbnail(global_ref_entity, reference['id'], path)
+        logger.info('Global reference upload complete!')
+        print 'Global reference upload complete!'
+        return True
+    return False
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -1371,9 +1401,53 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                             logger.info('New reference created!')
                             print '=' * 120
                 else:
-                    # TODO: This is where the global reference may need to get called.
-                    #       This will only do the global reference and thumbnail.
                     print 'GLOBAL REFERENCe: %s' % file_name
+                    # Find the Shotgun configuration root path
+                    find_config = get_configuration(proj_id)
+                    logger.debug('Configuration found: %s' % find_config)
+
+                    if ext in reference_types:
+                        logger.info('Known reference type discovered!')
+
+                        root_template = templates['Root Reference']
+                        res_root_template = resolve_template_path(root_template['work_area'], template)
+                        logger.debug('Global reference template: %s' % res_root_template)
+
+                        project_root = roots['primary']['windows_path']
+
+                        root_template_path = os.path.join(project_root, proj_name)
+                        reference_root_path = os.path.join(root_template_path, res_root_template)
+                        reference_root_path = reference_root_path.replace('\\', '/')
+                        logger.debug('Reference Root Path: %s' % reference_root_path)
+
+                        if ext in upload_types and ext not in video_types:
+                            # Put the reference in the "artwork" folder
+                            reference_path = os.path.join(reference_root_path, ref_imgs_folder)
+                            reference_path = os.path.join(reference_path, base_file)
+                            logger.info('Updated file path: %s' % reference_path)
+                        elif ext in video_types:
+                            # put the reference in the "footage" folder
+                            reference_path = os.path.join(reference_root_path, ref_vids_folder)
+                            reference_path = os.path.join(reference_path, base_file)
+                            logger.info('Updated file path: %s' % reference_path)
+                        else:
+                            # Put the reference in thd "docs" folder
+                            reference_path = os.path.join(reference_root_path, ref_docs_folder)
+                            reference_path = os.path.join(reference_path, base_file)
+                            logger.info('Updated file path: %s' % reference_path)
+                        logger.info('Moving the file...')
+                        try:
+                            shutil.move(filename, reference_path)
+                        except Exception, e:
+                            logger.error('Can\'t move the file %s' % filename)
+                        new_ref = upload_global_reference(path=reference_path, proj_id=proj_id, user=user)
+                        if new_ref:
+                            logger.info('Global reference uploaded successfully!')
+                            print 'Global reference uploaded successfully'
+                            # TODO: Add a message system for everyone on the project
+
+                            print 'Done!'
+                            print '=' * 120
 
         rq.task_done()
     except Exception, e:
