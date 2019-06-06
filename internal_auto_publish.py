@@ -455,8 +455,12 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                         logger.debug('VERSION: %s' % version)
 
                         # resolve the working template into an actual file path that can be written out.
-                        res_path_work_template = process_template_path(template=work_template_path, asset=find_asset,
-                                                                       version=version)
+                        if ext == '.mb' or '.ma':
+                            res_path_work_template = process_template_path(template=work_template_path, asset=find_asset,
+                                                                           version=version, ext=ext)
+                        else:
+                            res_path_work_template = process_template_path(template=work_template_path, asset=find_asset,
+                                                                           version=version)
                         res_path_work_template = res_path_work_template.replace('\\', '/')
                         logger.debug('res_path_work_template: %s' % res_path_work_template)
 
@@ -535,8 +539,12 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                                     pass
 
                         # Publish the file
-                        res_publish_path = process_template_path(template=publish_template_path, asset=find_asset,
-                                                                 version=version)
+                        if ext == '.ma' or '.mb':
+                            res_publish_path = process_template_path(template=publish_template_path, asset=find_asset,
+                                                                     version=version, ext=ext)
+                        else:
+                            res_publish_path = process_template_path(template=publish_template_path, asset=find_asset,
+                                                                     version=version)
                         logger.debug('Publish Path: %s' % res_publish_path)
                         next_version = version + 1
                         try:
@@ -1695,7 +1703,7 @@ def assign_user_to_task(user=None, task_id=None):
                 logger.info('Task assignment complete.')
 
 
-def process_template_path(template=None, asset=None, version=0):
+def process_template_path(template=None, asset=None, ext=None, version=0):
     """
     This converts the publish template into an actual path
     :param template: (str) The template being converted
@@ -1704,6 +1712,8 @@ def process_template_path(template=None, asset=None, version=0):
     :return: (str) res_path: the resolved path name
     """
     logger.debug(('*' * 35) + 'process_template_path' + ('*' * 35))
+    logger.debug('TEMPLATE HAS: %s' % template)
+    logger.debug('ASSET HAS: %s' % asset)
     global task_name
     res_path = None
     if template:
@@ -1713,8 +1723,12 @@ def process_template_path(template=None, asset=None, version=0):
         else:
             asset_name = None
             asset_type = None
-        res_path = template.format(Asset=asset_name, task_name=task_name, sg_asset_type=asset_type,
-                                   version='%03d' % version)
+        if ext:
+            res_path = template.format(Asset=asset_name, task_name=task_name, sg_asset_type=asset_type,
+                                       version='%03d' % version, maya_extension=ext.strip('.'))
+        else:
+            res_path = template.format(Asset=asset_name, task_name=task_name, sg_asset_type=asset_type,
+                                       version='%03d' % version)
         logger.debug('RESOLVED PATH: %s' % res_path)
     logger.debug(('.' * 35) + 'END process_template_path' + ('.' * 35))
     return res_path
