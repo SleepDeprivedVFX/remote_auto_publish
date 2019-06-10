@@ -67,6 +67,7 @@ global_ref_entity = configuration.get('Referencer', 'global_ref_entity')
 ref_docs_folder = configuration.get('Referencer', 'ref_docs_folder')
 ref_imgs_folder = configuration.get('Referencer', 'ref_imgs_folder')
 ref_vids_folder = configuration.get('Referencer', 'ref_vids_folder')
+api_user_id = configuration.get('IAP', 'api_user_id')
 
 # Output window startup messages
 print '-' * 100
@@ -149,11 +150,14 @@ publish_types = {
     '.zzz': 'ZBrush',
     '.mud': 'Mudbox',
     '.bip': 'Keyshot Package',
-    '.kip': 'Keyshot File'
+    '.kpg': 'Keyshot File'
 }
 ignore_types = [
     '.DS_Store',
-    '.db'
+    '.db',
+    '.smbdeleteAAA0dca4.4',
+    '.smbdeleteAAA0dca4',
+    '.smbdelete'
 ]
 
 '''
@@ -693,8 +697,11 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
             'id'
         ]
         get_user = sg.find_one('HumanUser', filters, fields)
-        user_id = get_user['id']
-        version_data['user'] = {'type': 'HumanUser', 'id': user_id}
+        if get_user:
+            user_id = get_user['id']
+            version_data['user'] = {'type': 'HumanUser', 'id': user_id}
+        else:
+            version_data['user'] = {'type': 'ApiUser', 'id': api_user_id}
     try:
         new_version = sg.create('Version', version_data)
         logger.debug('new_version RETURNS: %s' % new_version)
@@ -1788,7 +1795,11 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
             'id',
             'sg_asset_type'
         ]
-        find_assets = sg.find('Asset', filters, fields)
+        try:
+            find_assets = sg.find('Asset', filters, fields)
+        except AttributeError, e:
+            find_assets = None
+            logger.error('This shit went bad. Probably from a mac "computer". Returned the following: %s' % e)
         logger.debug('Shotgun Returns: %s' % find_assets)
         if find_assets:
             logger.debug('Assets exist!  Finding our guy...')
@@ -1804,7 +1815,7 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
                     logger.info('%s found in %s' % (ass['name'], path))
                     return ass
     logger.debug(('.' * 35) + 'END get_asset_details_from_path' + ('.' * 35))
-    return
+    return ass
 
 
 def get_details_from_path(path):
