@@ -1664,7 +1664,8 @@ def get_set_task(asset=None, proj_id=None, user=None):
                 'project': {'type': 'Project', 'id': proj_id},
                 'content': task_name,
                 'entity': {'type': 'Asset', 'id': asset_id},
-                'step': {'type': 'Step', 'id': task_step}
+                'step': {'type': 'Step', 'id': task_step},
+                'sg_status_list': 'ip'
             }
             new_task = sg.create('Task', task_data)
             logger.info('New Task Created!')
