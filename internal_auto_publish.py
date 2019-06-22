@@ -188,14 +188,16 @@ upload_types = [
     '.mov',
     '.mp4',
     '.tga',
-    '.mpg'
+    '.mpg',
+    '.pdf'
 ]
 video_types = [
     '.mov',
     '.mp4',
     '.mpeg',
     '.avi',
-    '.mpg'
+    '.mpg',
+    '.pdf'
 ]
 reference_types = [
     '.jpg',
@@ -676,7 +678,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
     else:
         description = 'Someone published this file using the Internal Auto Publish utility'
     if archive:
-        status = 'fin'
+        status = 'sent'
     else:
         status = 'rev'
     version_data = {
@@ -701,7 +703,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
             user_id = get_user['id']
             version_data['user'] = {'type': 'HumanUser', 'id': user_id}
         else:
-            version_data['user'] = {'type': 'ApiUser', 'id': api_user_id}
+            version_data['user'] = {'type': 'ApiUser', 'id': int(api_user_id)}
     try:
         new_version = sg.create('Version', version_data)
         logger.debug('new_version RETURNS: %s' % new_version)
@@ -1833,11 +1835,12 @@ def get_details_from_path(path):
         if projects:
             for proj in projects:
                 project = proj['tank_name']
-                if project in path:
-                    prj['name'] = project
-                    prj['id'] = proj['id']
-                    logger.debug('Project %s found.' % project)
-                    break
+                if project:
+                    if project in path:
+                        prj['name'] = project
+                        prj['id'] = proj['id']
+                        logger.debug('Project %s found.' % project)
+                        break
     logger.debug(('.' * 35) + 'END get_details_from_path' + ('.' * 35))
     return prj
 
