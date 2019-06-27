@@ -219,7 +219,14 @@ reference_types = [
     '.rtf',
     '.htm',
     '.html',
-    '.psd'
+    '.psd',
+    '.obj',
+    '.fbx',
+    '.dpx',
+    '.exr',
+    '.ma',
+    '.mb',
+    '.nk'
 ]
 templates = {
     'Photoshop Image': {
@@ -290,6 +297,12 @@ templates = {
     },
     'Asset Reference': {
         'work_area': 'asset_reference_area',
+        'work_template': None,
+        'publish_area': None,
+        'publish_template': None
+    },
+    'Asset Renders': {
+        'work_area': 'asset_render_area',
         'work_template': None,
         'publish_area': None,
         'publish_template': None
@@ -399,7 +412,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                     find_config = get_configuration(proj_id)
                     logger.debug('Configuration found: %s' % find_config)
 
-                    if ext in publish_types:
+                    if ext.lower() in publish_types:
                         # Find out from the ext which configuration to get from the template.
                         logger.debug('This is a publish level file...')
                         publish_type = publish_types[ext]
@@ -578,6 +591,23 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                         send_today_path = os.path.join(root_template_path, resolved_send_today_template)
                         logger.debug('SEND TODAY PATH: %s' % send_today_path)
                         logger.info('Uploading for review %s' % file_name)
+
+                        # Setup render paths
+                        asset_render_template_name = templates['Asset Renders']
+                        asset_render_template = resolve_template_path(asset_render_template_name['work_area'], template)
+                        logger.debug('Template Asset Render Path: %s' % asset_render_template)
+                        asset_render_path = os.path.join(root_template_path, asset_render_template)
+                        resolved_asset_render_path = process_template_path(template=asset_render_path, asset=find_asset)
+                        logger.debug('RESOLVED Asset Render Path: %s' % resolved_asset_render_path)
+                        asset_render_file = os.path.join(resolved_asset_render_path, base_file)
+
+                        # Try to copy the file to the render path
+                        try:
+                            shutil.copy2(filename, asset_render_file)
+                        except Exception, e:
+                            logger.error('Could not copy the file to render path: %s' % e)
+
+                        # Upload the file to shotgun
                         send = upload_to_shotgun(filename=filename, asset_id=asset_id, task_id=task, proj_id=proj_id,
                                                  user=user)
                         logger.debug('SEND: %s' % send)
