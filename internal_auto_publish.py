@@ -2148,13 +2148,14 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
         if event == 'write' or 'move':
             # logger.debug('Event Triggered: %s' % event)
             if event_type == 'File':
+                # Adjust path if a move type is detected.
+                if event == 'move':
+                    crop_path = path.split(' -> ')
+                    path = crop_path[1]
+
                 # logger.debug('Event Type is FILE')
                 if path.startswith(publish_root_folder) and not re.findall(archive_path_to_watch, path):
                     # logger.debug('JOBS is in the path')
-
-                    if event == 'move':
-                        crop_path = path.split(' -> ')
-                        path = crop_path[1]
 
                     # Publish path plugin condition starts here.
                     if re.findall(publish_path_to_watch, path):
