@@ -1122,6 +1122,7 @@ def archive_file(full_filename=None, user=None, ip=None):
         try:
             logger.info('Processing archive file...')
             print 'Processing archive file...'
+            print 'Submitted by: %s' % user
             origin_path = os.path.dirname(full_filename)
             filename = os.path.basename(full_filename)
 
