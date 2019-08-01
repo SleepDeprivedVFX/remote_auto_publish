@@ -226,7 +226,8 @@ reference_types = [
     '.exr',
     '.ma',
     '.mb',
-    '.nk'
+    '.nk',
+    '.ztl'
 ]
 templates = {
     'Photoshop Image': {
