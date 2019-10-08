@@ -22,6 +22,8 @@ import ConfigParser
 import requests
 import json
 
+import time_lord_connect as tlc
+
 # __author__ = 'Adam Benson'
 # __version__ = '1.0.1'
 
@@ -73,6 +75,16 @@ api_user_id = configuration.get('IAP', 'api_user_id')
 print '-' * 100
 print 'INTERNAL AUTO PUBLISH UTILITY'
 print '+' * 100
+
+
+'''
+TIME LORD UPDATE
+The latest changes are going to be a test of utilizing some existing Time Lord tech and integrating it into the IAP just
+a little bit.
+There are a few things that I do need to figure out.
+1. How to start and/or retroactively start a timesheet based on the drag and drop
+2. How to test against the timesheets that are currently in line, and thus update the Time Lord UI.
+'''
 
 
 # Create Log file
@@ -150,6 +162,7 @@ publish_types = {
     '.zzz': 'ZBrush',
     '.mud': 'Mudbox',
     '.bip': 'Keyshot Package',
+    '.ksp': 'Keyshot Package',
     '.kpg': 'Keyshot File'
 }
 ignore_types = [
@@ -627,6 +640,28 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             logger.info('=' * 100)
             q.task_done()
             print 'Finished processing file.'
+
+            # Start Time Lord integration.
+            logger.info('Processing Timesheet....')
+            # Build the context for the timesheet.
+            context = {
+                'Project': {
+                    'id': proj_id,
+                    'name': proj_name
+                },
+                'Task': {
+                    'id': task,
+                    'name': task_name
+                }
+            }
+
+            logger.info('Sending to Time Lord...')
+            try:
+                tlc.time_lord(user=user, context=context)
+            except Exception, err:
+                print 'Time Lord fucked up: %s' % err
+                logger.error('Time Lord failed to process the file: %s' % err)
+            logger.info('Time Lord processed.')
             print '=' * 100
             return True
         else:
