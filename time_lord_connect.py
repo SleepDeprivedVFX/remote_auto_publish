@@ -20,7 +20,6 @@ class time_lord(object):
     def __init__(self, user=None, context=None, log=None):
         # Setup logging system
         self.logger = log
-        print self.logger
         self.logger.info('Time Lord Connection Logger Started...')
 
         # Get the configuration file
