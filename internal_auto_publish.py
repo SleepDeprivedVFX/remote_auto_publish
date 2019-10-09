@@ -657,7 +657,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
 
             logger.info('Sending to Time Lord...')
             try:
-                tlc.time_lord(user=user, context=context)
+                tlc.time_lord(user=user, context=context, log=logger)
             except Exception, err:
                 print 'Time Lord fucked up: %s' % err
                 logger.error('Time Lord failed to process the file: %s' % err)
