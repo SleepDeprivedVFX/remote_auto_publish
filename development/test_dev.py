@@ -3,6 +3,9 @@
 import logging
 import SocketServer
 import re
+from datetime import datetime
+
+print datetime.date(datetime.now())
 
 LOG_FILE = 'C:/shotgun/remote_auto_publish/logs/server_test.log'
 HOST, PORT = '0.0.0.0', 514

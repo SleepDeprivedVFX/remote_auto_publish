@@ -37,3 +37,139 @@
 2019-05-08 19:10:04,145 - DEBUG:1242 - file: asc_hauntedhouse
 2019-05-08 19:10:04,145 - DEBUG:1244 - FULL_FILENAME BELOW THIS
 2019-05-08 19:10:04,147 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\curiosities\\CurioDay', u'C:/Users/events/Dropbox/ASC_REMOTE\\curiosities', u'C:/Users/events/Dropbox/ASC_REMOTE\\asc_hauntedhouse']
+2019-05-09 10:42:02,062 - INFO:95 - Starting the Remote Auto Publisher...
+2019-05-09 10:42:02,062 - DEBUG:218 - Creating the Queue...
+2019-05-09 10:42:02,063 - DEBUG:1164 - Starting the thread...
+2019-05-09 10:42:02,063 - DEBUG:1124 - Queue Running...
+2019-05-09 12:45:37,329 - DEBUG:1227 - TIMER CHECK: 7415.26600003
+2019-05-09 12:45:37,329 - DEBUG:1235 - TIMER RESET!
+2019-05-09 12:45:37,329 - DEBUG:1236 - MAIN: Results: [(1, u'apple_alien\\Alien\\AppleAlienV25.jpg')]
+2019-05-09 12:45:37,329 - DEBUG:1241 - action: 1
+2019-05-09 12:45:37,329 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV25.jpg
+2019-05-09 12:45:37,331 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:37,332 - DEBUG:1247 - QUEUE PREP CONTENTS: []
+2019-05-09 12:45:37,332 - INFO:1260 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien\AppleAlienV25.jpg
+2019-05-09 12:45:37,332 - INFO:1056 - Attempting to get project details from the path...
+2019-05-09 12:45:37,601 - DEBUG:1112 - Active Projects Found: [{'tank_name': 'asc_northpole', 'type': 'Project', 'id': 177}, {'tank_name': 'asc_newworld', 'type': 'Project', 'id': 250}, {'tank_name': 'asc_studio', 'type': 'Project', 'id': 302}, {'tank_name': 'asc_universe', 'type': 'Project', 'id': 357}, {'tank_name': 'stresstest', 'type': 'Project', 'id': 362}, {'tank_name': 'bureau749', 'type': 'Project', 'id': 367}, {'tank_name': 'curiosities', 'type': 'Project', 'id': 437}, {'tank_name': 'wevr', 'type': 'Project', 'id': 439}, {'tank_name': 'sonsofchaos', 'type': 'Project', 'id': 444}, {'tank_name': 'oneyoufeed', 'type': 'Project', 'id': 450}, {'tank_name': 'nevermoore', 'type': 'Project', 'id': 456}, {'tank_name': 'whitespikes', 'type': 'Project', 'id': 464}, {'tank_name': 'clonedtyrone', 'type': 'Project', 'id': 465}, {'tank_name': 'apple_alien', 'type': 'Project', 'id': 466}, {'tank_name': 'bane', 'type': 'Project', 'id': 471}, {'tank_name': 'jiujitsu', 'type': 'Project', 'id': 472}, {'tank_name': 'asc_petshopboys', 'type': 'Project', 'id': 474}, {'tank_name': 'asc_tank', 'type': 'Project', 'id': 475}, {'tank_name': 'undergroundrailroad', 'type': 'Project', 'id': 477}, {'tank_name': 'magicleapaec', 'type': 'Project', 'id': 510}, {'tank_name': 'comingtoamerica2', 'type': 'Project', 'id': 511}, {'tank_name': 'asc_patches', 'type': 'Project', 'id': 512}, {'tank_name': 'unforgettablefate', 'type': 'Project', 'id': 515}, {'tank_name': 'slashback', 'type': 'Project', 'id': 516}, {'tank_name': 'bebop', 'type': 'Project', 'id': 517}, {'tank_name': 'asc_divine', 'type': 'Project', 'id': 518}, {'tank_name': 'spacejam2', 'type': 'Project', 'id': 519}, {'tank_name': 'harleyquinn', 'type': 'Project', 'id': 520}, {'tank_name': 'asc_hauntedhouse', 'type': 'Project', 'id': 521}]
+2019-05-09 12:45:37,602 - DEBUG:1064 - Project apple_alien found.
+2019-05-09 12:45:37,703 - DEBUG:1275 - find_config RETURNS: //skynet/tools/shotgun/apple_alien
+2019-05-09 12:45:37,703 - INFO:1287 - Opening config files...
+2019-05-09 12:45:38,069 - DEBUG:1315 - C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien\AppleAlienV25.jpg added to queue...
+2019-05-09 12:45:38,069 - DEBUG:1134 - Queued file: C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien\AppleAlienV25.jpg
+2019-05-09 12:45:38,069 - DEBUG:1227 - TIMER CHECK: 0.740000009537
+2019-05-09 12:45:38,069 - DEBUG:1236 - MAIN: Results: [(3, u'apple_alien\\Alien'), (3, u'apple_alien\\Alien\\AppleAlienV25.jpg'), (3, u'apple_alien\\Alien\\AppleAlienV25.jpg')]
+2019-05-09 12:45:38,069 - DEBUG:1241 - action: 3
+2019-05-09 12:45:38,069 - DEBUG:1242 - file: apple_alien\Alien
+2019-05-09 12:45:38,071 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:38,071 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg']
+2019-05-09 12:45:38,071 - DEBUG:1241 - action: 3
+2019-05-09 12:45:38,071 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV25.jpg
+2019-05-09 12:45:38,072 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:38,072 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien']
+2019-05-09 12:45:38,072 - DEBUG:1241 - action: 3
+2019-05-09 12:45:38,072 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV25.jpg
+2019-05-09 12:45:38,072 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:38,072 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien']
+2019-05-09 12:45:39,127 - DEBUG:1227 - TIMER CHECK: 1.79700016975
+2019-05-09 12:45:39,128 - DEBUG:1236 - MAIN: Results: [(1, u'apple_alien\\Alien\\AppleAlienV26.jpg')]
+2019-05-09 12:45:39,128 - DEBUG:1241 - action: 1
+2019-05-09 12:45:39,128 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV26.jpg
+2019-05-09 12:45:39,128 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:39,128 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien']
+2019-05-09 12:45:39,128 - INFO:1260 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien\AppleAlienV26.jpg
+2019-05-09 12:45:39,128 - INFO:1056 - Attempting to get project details from the path...
+2019-05-09 12:45:39,233 - DEBUG:1112 - Active Projects Found: [{'tank_name': 'asc_northpole', 'type': 'Project', 'id': 177}, {'tank_name': 'asc_newworld', 'type': 'Project', 'id': 250}, {'tank_name': 'asc_studio', 'type': 'Project', 'id': 302}, {'tank_name': 'asc_universe', 'type': 'Project', 'id': 357}, {'tank_name': 'stresstest', 'type': 'Project', 'id': 362}, {'tank_name': 'bureau749', 'type': 'Project', 'id': 367}, {'tank_name': 'curiosities', 'type': 'Project', 'id': 437}, {'tank_name': 'wevr', 'type': 'Project', 'id': 439}, {'tank_name': 'sonsofchaos', 'type': 'Project', 'id': 444}, {'tank_name': 'oneyoufeed', 'type': 'Project', 'id': 450}, {'tank_name': 'nevermoore', 'type': 'Project', 'id': 456}, {'tank_name': 'whitespikes', 'type': 'Project', 'id': 464}, {'tank_name': 'clonedtyrone', 'type': 'Project', 'id': 465}, {'tank_name': 'apple_alien', 'type': 'Project', 'id': 466}, {'tank_name': 'bane', 'type': 'Project', 'id': 471}, {'tank_name': 'jiujitsu', 'type': 'Project', 'id': 472}, {'tank_name': 'asc_petshopboys', 'type': 'Project', 'id': 474}, {'tank_name': 'asc_tank', 'type': 'Project', 'id': 475}, {'tank_name': 'undergroundrailroad', 'type': 'Project', 'id': 477}, {'tank_name': 'magicleapaec', 'type': 'Project', 'id': 510}, {'tank_name': 'comingtoamerica2', 'type': 'Project', 'id': 511}, {'tank_name': 'asc_patches', 'type': 'Project', 'id': 512}, {'tank_name': 'unforgettablefate', 'type': 'Project', 'id': 515}, {'tank_name': 'slashback', 'type': 'Project', 'id': 516}, {'tank_name': 'bebop', 'type': 'Project', 'id': 517}, {'tank_name': 'asc_divine', 'type': 'Project', 'id': 518}, {'tank_name': 'spacejam2', 'type': 'Project', 'id': 519}, {'tank_name': 'harleyquinn', 'type': 'Project', 'id': 520}, {'tank_name': 'asc_hauntedhouse', 'type': 'Project', 'id': 521}]
+2019-05-09 12:45:39,233 - DEBUG:1064 - Project apple_alien found.
+2019-05-09 12:45:39,345 - DEBUG:1275 - find_config RETURNS: //skynet/tools/shotgun/apple_alien
+2019-05-09 12:45:39,346 - INFO:1287 - Opening config files...
+2019-05-09 12:45:39,469 - DEBUG:1315 - C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien\AppleAlienV26.jpg added to queue...
+2019-05-09 12:45:39,470 - DEBUG:1227 - TIMER CHECK: 2.1400001049
+2019-05-09 12:45:39,470 - DEBUG:1236 - MAIN: Results: [(3, u'apple_alien\\Alien'), (3, u'apple_alien\\Alien\\AppleAlienV26.jpg'), (3, u'apple_alien\\Alien\\AppleAlienV26.jpg')]
+2019-05-09 12:45:39,470 - DEBUG:1241 - action: 3
+2019-05-09 12:45:39,470 - DEBUG:1242 - file: apple_alien\Alien
+2019-05-09 12:45:39,470 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:39,470 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV26.jpg']
+2019-05-09 12:45:39,470 - DEBUG:1241 - action: 3
+2019-05-09 12:45:39,470 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV26.jpg
+2019-05-09 12:45:39,470 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:39,470 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV26.jpg']
+2019-05-09 12:45:39,470 - DEBUG:1241 - action: 3
+2019-05-09 12:45:39,471 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV26.jpg
+2019-05-09 12:45:39,471 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:39,471 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV26.jpg']
+2019-05-09 12:45:40,525 - DEBUG:1227 - TIMER CHECK: 3.19500017166
+2019-05-09 12:45:40,526 - DEBUG:1236 - MAIN: Results: [(1, u'apple_alien\\Alien\\AppleAlienV27.jpg')]
+2019-05-09 12:45:40,526 - DEBUG:1241 - action: 1
+2019-05-09 12:45:40,526 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV27.jpg
+2019-05-09 12:45:40,526 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:40,526 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV26.jpg']
+2019-05-09 12:45:40,526 - INFO:1260 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien\AppleAlienV27.jpg
+2019-05-09 12:45:40,526 - INFO:1056 - Attempting to get project details from the path...
+2019-05-09 12:45:40,628 - DEBUG:1112 - Active Projects Found: [{'tank_name': 'asc_northpole', 'type': 'Project', 'id': 177}, {'tank_name': 'asc_newworld', 'type': 'Project', 'id': 250}, {'tank_name': 'asc_studio', 'type': 'Project', 'id': 302}, {'tank_name': 'asc_universe', 'type': 'Project', 'id': 357}, {'tank_name': 'stresstest', 'type': 'Project', 'id': 362}, {'tank_name': 'bureau749', 'type': 'Project', 'id': 367}, {'tank_name': 'curiosities', 'type': 'Project', 'id': 437}, {'tank_name': 'wevr', 'type': 'Project', 'id': 439}, {'tank_name': 'sonsofchaos', 'type': 'Project', 'id': 444}, {'tank_name': 'oneyoufeed', 'type': 'Project', 'id': 450}, {'tank_name': 'nevermoore', 'type': 'Project', 'id': 456}, {'tank_name': 'whitespikes', 'type': 'Project', 'id': 464}, {'tank_name': 'clonedtyrone', 'type': 'Project', 'id': 465}, {'tank_name': 'apple_alien', 'type': 'Project', 'id': 466}, {'tank_name': 'bane', 'type': 'Project', 'id': 471}, {'tank_name': 'jiujitsu', 'type': 'Project', 'id': 472}, {'tank_name': 'asc_petshopboys', 'type': 'Project', 'id': 474}, {'tank_name': 'asc_tank', 'type': 'Project', 'id': 475}, {'tank_name': 'undergroundrailroad', 'type': 'Project', 'id': 477}, {'tank_name': 'magicleapaec', 'type': 'Project', 'id': 510}, {'tank_name': 'comingtoamerica2', 'type': 'Project', 'id': 511}, {'tank_name': 'asc_patches', 'type': 'Project', 'id': 512}, {'tank_name': 'unforgettablefate', 'type': 'Project', 'id': 515}, {'tank_name': 'slashback', 'type': 'Project', 'id': 516}, {'tank_name': 'bebop', 'type': 'Project', 'id': 517}, {'tank_name': 'asc_divine', 'type': 'Project', 'id': 518}, {'tank_name': 'spacejam2', 'type': 'Project', 'id': 519}, {'tank_name': 'harleyquinn', 'type': 'Project', 'id': 520}, {'tank_name': 'asc_hauntedhouse', 'type': 'Project', 'id': 521}]
+2019-05-09 12:45:40,628 - DEBUG:1064 - Project apple_alien found.
+2019-05-09 12:45:40,727 - DEBUG:1275 - find_config RETURNS: //skynet/tools/shotgun/apple_alien
+2019-05-09 12:45:40,727 - INFO:1287 - Opening config files...
+2019-05-09 12:45:40,848 - DEBUG:1315 - C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien\AppleAlienV27.jpg added to queue...
+2019-05-09 12:45:40,848 - DEBUG:1227 - TIMER CHECK: 3.51900005341
+2019-05-09 12:45:40,848 - DEBUG:1236 - MAIN: Results: [(3, u'apple_alien\\Alien'), (3, u'apple_alien\\Alien\\AppleAlienV27.jpg'), (3, u'apple_alien\\Alien\\AppleAlienV27.jpg')]
+2019-05-09 12:45:40,848 - DEBUG:1241 - action: 3
+2019-05-09 12:45:40,848 - DEBUG:1242 - file: apple_alien\Alien
+2019-05-09 12:45:40,848 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:40,849 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV26.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV27.jpg']
+2019-05-09 12:45:40,849 - DEBUG:1241 - action: 3
+2019-05-09 12:45:40,849 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV27.jpg
+2019-05-09 12:45:40,849 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:40,851 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV26.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV27.jpg']
+2019-05-09 12:45:40,851 - DEBUG:1241 - action: 3
+2019-05-09 12:45:40,851 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV27.jpg
+2019-05-09 12:45:40,851 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:40,851 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV26.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV27.jpg']
+2019-05-09 12:45:42,072 - INFO:238 - ------------------------------------------------------------------------------------------------------------------------
+2019-05-09 12:45:42,072 - INFO:239 - NEW FILE PROCESSING...
+2019-05-09 12:45:42,072 - DEBUG:244 - PATH: C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien
+2019-05-09 12:45:42,072 - DEBUG:249 - Relative Path: \apple_alien\Alien
+2019-05-09 12:45:42,072 - DEBUG:257 - Project Details returns: project: apple_alien ID: 466
+2019-05-09 12:45:42,072 - INFO:1022 - Searching for Assets in \apple_alien\Alien...
+2019-05-09 12:45:42,164 - DEBUG:1034 - Shotgun Returns: [{'code': 'Alien', 'type': 'Asset', 'id': 3099, 'sg_asset_type': 'char'}]
+2019-05-09 12:45:42,164 - DEBUG:1036 - Assets exist!  Finding our guy...
+2019-05-09 12:45:42,164 - DEBUG:1038 - Testing Alien IN \apple_alien\Alien...
+2019-05-09 12:45:42,164 - INFO:1043 - Alien found in \apple_alien\Alien
+2019-05-09 12:45:42,164 - INFO:269 - The Asset is found in the system! 3099: Alien
+2019-05-09 12:45:42,164 - DEBUG:270 - Asset type: char
+2019-05-09 12:45:42,279 - DEBUG:936 - TASKS RETURNS: [{'content': 'design.main', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 20974}, {'content': 'design.ehsan', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 20975}, {'content': 'design.kyle', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 21045}, {'content': 'design.aaron', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 21052}, {'content': 'design.steve', 'step': {'type': 'Step', 'id': 23, 'name': 'design'}, 'type': 'Task', 'id': 21128}]
+2019-05-09 12:45:42,279 - INFO:938 - Searching for remote task...
+2019-05-09 12:45:42,279 - INFO:947 - No task found.  Creating a new task...
+2019-05-09 12:45:42,345 - DEBUG:1227 - TIMER CHECK: 5.0150001049
+2019-05-09 12:45:42,345 - DEBUG:1236 - MAIN: Results: [(1, u'apple_alien\\Alien\\AppleAlienV28.jpg')]
+2019-05-09 12:45:42,345 - DEBUG:1241 - action: 1
+2019-05-09 12:45:42,345 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV28.jpg
+2019-05-09 12:45:42,345 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:45:42,345 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV25.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV26.jpg', u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien\\AppleAlienV27.jpg']
+2019-05-09 12:45:42,345 - INFO:1260 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien\AppleAlienV28.jpg
+2019-05-09 12:45:42,345 - INFO:1056 - Attempting to get project details from the path...
+2019-05-09 12:46:42,805 - DEBUG:1112 - Active Projects Found: [{'tank_name': 'asc_northpole', 'type': 'Project', 'id': 177}, {'tank_name': 'asc_newworld', 'type': 'Project', 'id': 250}, {'tank_name': 'asc_studio', 'type': 'Project', 'id': 302}, {'tank_name': 'asc_universe', 'type': 'Project', 'id': 357}, {'tank_name': 'stresstest', 'type': 'Project', 'id': 362}, {'tank_name': 'bureau749', 'type': 'Project', 'id': 367}, {'tank_name': 'curiosities', 'type': 'Project', 'id': 437}, {'tank_name': 'wevr', 'type': 'Project', 'id': 439}, {'tank_name': 'sonsofchaos', 'type': 'Project', 'id': 444}, {'tank_name': 'oneyoufeed', 'type': 'Project', 'id': 450}, {'tank_name': 'nevermoore', 'type': 'Project', 'id': 456}, {'tank_name': 'whitespikes', 'type': 'Project', 'id': 464}, {'tank_name': 'clonedtyrone', 'type': 'Project', 'id': 465}, {'tank_name': 'apple_alien', 'type': 'Project', 'id': 466}, {'tank_name': 'bane', 'type': 'Project', 'id': 471}, {'tank_name': 'jiujitsu', 'type': 'Project', 'id': 472}, {'tank_name': 'asc_petshopboys', 'type': 'Project', 'id': 474}, {'tank_name': 'asc_tank', 'type': 'Project', 'id': 475}, {'tank_name': 'undergroundrailroad', 'type': 'Project', 'id': 477}, {'tank_name': 'magicleapaec', 'type': 'Project', 'id': 510}, {'tank_name': 'comingtoamerica2', 'type': 'Project', 'id': 511}, {'tank_name': 'asc_patches', 'type': 'Project', 'id': 512}, {'tank_name': 'unforgettablefate', 'type': 'Project', 'id': 515}, {'tank_name': 'slashback', 'type': 'Project', 'id': 516}, {'tank_name': 'bebop', 'type': 'Project', 'id': 517}, {'tank_name': 'asc_divine', 'type': 'Project', 'id': 518}, {'tank_name': 'spacejam2', 'type': 'Project', 'id': 519}, {'tank_name': 'harleyquinn', 'type': 'Project', 'id': 520}, {'tank_name': 'asc_hauntedhouse', 'type': 'Project', 'id': 521}]
+2019-05-09 12:46:42,805 - DEBUG:1064 - Project apple_alien found.
+2019-05-09 12:46:43,168 - DEBUG:1275 - find_config RETURNS: //skynet/tools/shotgun/apple_alien
+2019-05-09 12:46:43,168 - INFO:1287 - Opening config files...
+2019-05-09 12:46:43,289 - INFO:955 - New Task Created!
+2019-05-09 12:46:43,290 - DEBUG:273 - Task ID returned: 21349
+2019-05-09 12:46:43,302 - DEBUG:1315 - C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien\AppleAlienV28.jpg added to queue...
+2019-05-09 12:46:43,302 - DEBUG:1227 - TIMER CHECK: 65.9720001221
+2019-05-09 12:46:43,302 - DEBUG:1235 - TIMER RESET!
+2019-05-09 12:46:43,302 - DEBUG:1236 - MAIN: Results: [(3, u'apple_alien\\Alien'), (3, u'apple_alien\\Alien\\AppleAlienV28.jpg'), (3, u'apple_alien\\Alien\\AppleAlienV28.jpg'), (1, u'apple_alien\\Alien\\AppleAlienV29.jpg'), (3, u'apple_alien\\Alien'), (3, u'apple_alien\\Alien\\AppleAlienV29.jpg'), (3, u'apple_alien\\Alien\\AppleAlienV29.jpg')]
+2019-05-09 12:46:43,302 - DEBUG:1241 - action: 3
+2019-05-09 12:46:43,302 - DEBUG:1242 - file: apple_alien\Alien
+2019-05-09 12:46:43,302 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:46:43,302 - DEBUG:1247 - QUEUE PREP CONTENTS: []
+2019-05-09 12:46:43,303 - DEBUG:1241 - action: 3
+2019-05-09 12:46:43,303 - DEBUG:1242 - file: apple_alien\Alien\AppleAlienV28.jpg
+2019-05-09 12:46:43,303 - DEBUG:1244 - FULL_FILENAME BELOW THIS
+2019-05-09 12:46:43,303 - DEBUG:1247 - QUEUE PREP CONTENTS: [u'C:/Users/events/Dropbox/ASC_REMOTE\\apple_alien\\Alien']
+2019-05-09 12:46:43,305 - INFO:1260 - New file detected. C:/Users/events/Dropbox/ASC_REMOTE\apple_alien\Alien\AppleAlienV28.jpg
+2019-05-09 12:46:43,305 - INFO:1056 - Attempting to get project details from the path...
+2019-05-09 12:46:43,621 - DEBUG:1112 - Active Projects Found: [{'tank_name': 'asc_northpole', 'type': 'Project', 'id': 177}, {'tank_name': 'asc_newworld', 'type': 'Project', 'id': 250}, {'tank_name': 'asc_studio', 'type': 'Project', 'id': 302}, {'tank_name': 'asc_universe', 'type': 'Project', 'id': 357}, {'tank_name': 'stresstest', 'type': 'Project', 'id': 362}, {'tank_name': 'bureau749', 'type': 'Project', 'id': 367}, {'tank_name': 'curiosities', 'type': 'Project', 'id': 437}, {'tank_name': 'wevr', 'type': 'Project', 'id': 439}, {'tank_name': 'sonsofchaos', 'type': 'Project', 'id': 444}, {'tank_name': 'oneyoufeed', 'type': 'Project', 'id': 450}, {'tank_name': 'nevermoore', 'type': 'Project', 'id': 456}, {'tank_name': 'whitespikes', 'type': 'Project', 'id': 464}, {'tank_name': 'clonedtyrone', 'type': 'Project', 'id': 465}, {'tank_name': 'apple_alien', 'type': 'Project', 'id': 466}, {'tank_name': 'bane', 'type': 'Project', 'id': 471}, {'tank_name': 'jiujitsu', 'type': 'Project', 'id': 472}, {'tank_name': 'asc_petshopboys', 'type': 'Project', 'id': 474}, {'tank_name': 'asc_tank', 'type': 'Project', 'id': 475}, {'tank_name': 'undergroundrailroad', 'type': 'Project', 'id': 477}, {'tank_name': 'magicleapaec', 'type': 'Project', 'id': 510}, {'tank_name': 'comingtoamerica2', 'type': 'Project', 'id': 511}, {'tank_name': 'asc_patches', 'type': 'Project', 'id': 512}, {'tank_name': 'unforgettablefate', 'type': 'Project', 'id': 515}, {'tank_name': 'slashback', 'type': 'Project', 'id': 516}, {'tank_name': 'bebop', 'type': 'Project', 'id': 517}, {'tank_name': 'asc_divine', 'type': 'Project', 'id': 518}, {'tank_name': 'spacejam2', 'type': 'Project', 'id': 519}, {'tank_name': 'harleyquinn', 'type': 'Project', 'id': 520}, {'tank_name': 'asc_hauntedhouse', 'type': 'Project', 'id': 521}]
+2019-05-09 12:46:43,621 - DEBUG:1064 - Project apple_alien found.
+2019-05-09 17:44:23,868 - INFO:95 - Starting the Remote Auto Publisher...
+2019-05-09 17:44:23,868 - DEBUG:218 - Creating the Queue...
+2019-05-09 17:44:23,869 - DEBUG:1164 - Starting the thread...
+2019-05-09 17:44:23,869 - DEBUG:1124 - Queue Running...

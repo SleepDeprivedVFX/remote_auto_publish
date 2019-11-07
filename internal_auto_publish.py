@@ -160,6 +160,7 @@ publish_types = {
     '.ma': 'Maya Scene',
     '.ztl': 'ZBrush',
     '.zzz': 'ZBrush',
+    '.zpr': 'ZBrush',
     '.mud': 'Mudbox',
     '.bip': 'Keyshot Package',
     '.ksp': 'Keyshot Package',
@@ -240,7 +241,8 @@ reference_types = [
     '.ma',
     '.mb',
     '.nk',
-    '.ztl'
+    '.ztl',
+    '.zpr'
 ]
 templates = {
     'Photoshop Image': {
