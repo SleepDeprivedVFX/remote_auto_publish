@@ -43,7 +43,7 @@ ACTIONS = {
 FILE_LIST_DIRECTORY = 0x0001
 
 # Dropbox Folder
-path_to_watch = "C:/Users/events/Dropbox/ASC_REMOTE"
+path_to_watch = "C:/Users/events/ASC Dropbox/Transfer/ASC_REMOTE"
 hDir = win32file.CreateFile(
     path_to_watch,
     FILE_LIST_DIRECTORY,

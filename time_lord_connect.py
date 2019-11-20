@@ -76,7 +76,8 @@ class time_lord(object):
                 if last_start_dt.time() < end_of_day:
                     end_time = end_of_day
                 else:
-                    end_time = last_start_dt.time() + timedelta(minutes=1)
+                    add_time = last_start_dt + timedelta(minutes=1)
+                    end_time = add_time.time()
 
                 end_date = last_start_dt.date()
                 wrong_date_datetime_end = parser.parse('%s %s' % (end_date, end_time))
