@@ -155,6 +155,7 @@ task_name_format = configuration.get('Publisher', 'task_name_format')
 
 publish_types = {
     '.psd': 'Photoshop Image',
+    '.psb': 'Photoshop Image',
     '.nk': 'Nuke Script',
     '.mb': 'Maya Scene',
     '.ma': 'Maya Scene',
