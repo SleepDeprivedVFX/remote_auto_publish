@@ -196,6 +196,7 @@ generate_types = {
 }
 upload_types = [
     '.jpg',
+    '.gif',
     '.jpeg',
     '.tif',
     '.tiff',
@@ -243,7 +244,8 @@ reference_types = [
     '.mb',
     '.nk',
     '.ztl',
-    '.zpr'
+    '.zpr',
+    '.gif'
 ]
 templates = {
     'Photoshop Image': {
