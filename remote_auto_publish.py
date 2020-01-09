@@ -1055,14 +1055,20 @@ def get_details_from_path(path):
     if path:
         logger.info('Attempting to get project details from the path...')
         projects = get_active_shotgun_projects()
+        logger.debug('PROJECTS: %s' % projects)
         if projects:
             for proj in projects:
-                project = proj['tank_name']
-                if project in path:
-                    prj['name'] = project
-                    prj['id'] = proj['id']
-                    logger.debug('Project %s found.' % project)
-                    break
+                try:
+                    project = proj['tank_name']
+                    logger.debug('tank_name: %s' % proj['tank_name'])
+                    logger.debug('path     : %s' % path)
+                    if project in path:
+                        prj['name'] = project
+                        prj['id'] = proj['id']
+                        logger.debug('Project %s found.' % project)
+                        break
+                except:
+                    continue
     return prj
 
 
@@ -1267,6 +1273,7 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                         project_details = get_details_from_path(rel_path)
                         proj_name = project_details['name']
                         proj_id = project_details['id']
+                        logger.debug('Proj_name: %s proj_id: %s' % (proj_name, proj_id))
 
                         # Assuming a project id was returned, process the results
                         if proj_id:
