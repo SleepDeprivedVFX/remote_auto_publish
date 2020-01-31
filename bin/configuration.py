@@ -2,6 +2,9 @@
 This will basically just streamline the configuration and cleanup the main code a bit
 """
 
+__author__ = 'Adam Benson - AdamBenson.vfx@gmail.com'
+__version__ = '0.4.11'
+
 import ConfigParser
 import sys
 import os
