@@ -5,7 +5,7 @@ The intent is that the IAP can send signals to this utility and update and creat
 """
 
 __author__ = 'Adam Benson - AdamBenson.vfx@gmail.com'
-__version__ = '0.4.11'
+__version__ = '0.4.14'
 
 from datetime import datetime
 from datetime import timedelta
@@ -55,9 +55,14 @@ class time_lord(object):
         # Start testing the Timesheets.
         if not self.latest_timesheet or self.latest_timesheet['sg_task_end']:
             # No Timesheet exists, or the user is clocked out.
-            self.logger.info('%s not clocked in, creating new timesheet.' % self.user['name'])
-            new_ts = self.tl_time.create_new_timesheet(user=self.user, context=context, start_time=datetime.now())
-            self.logger.debug('New timesheet created: %s' % new_ts)
+            now = datetime.now().time()
+            early_eod = self.config['early_end']
+            today = datetime.now().date()
+            eod = datetime.strptime('%s %s' % (today, early_eod), '%Y-%m-%d %H:%M').time()
+            if eod > now:
+                self.logger.info('%s not clocked in, creating new timesheet.' % self.user['name'])
+                new_ts = self.tl_time.create_new_timesheet(user=self.user, context=context, start_time=datetime.now())
+                self.logger.debug('New timesheet created: %s' % new_ts)
         elif self.latest_timesheet and not self.latest_timesheet['sg_task_end']:
             # Get the last start time.
             self.logger.debug('%s is clocked in. Getting start time...' % self.user['name'])
