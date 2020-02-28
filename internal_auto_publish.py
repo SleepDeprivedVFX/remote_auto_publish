@@ -29,16 +29,27 @@ import time_lord_connect as tlc
 
 sys_path = sys.path
 config_file = 'auto_publisher_config.cfg'
+
+# NOTE: There is a horrible stupidity with Mapped Paths that is failing to work in our system.
+#       I hate putting Hard Coded paths in here, but in this case I'm running into a situation where (at least for
+#       speed sake) I have little choice.
+#       I will be putting in a condition here that will have a main, and alternative paths that can be used to
+#       correct this issue.
+tools_mapped_path = 't:'
+tools_UNC_path = '//skynet/tools'
+jobs_mapped_path = 'j:'
+jobs_UNC_path = '//skynet/jobs'
+
 try:
-    print 'Finding configuration file...'
+    print('Finding configuration file...')
     config_path = [f for f in sys_path if os.path.isfile(f + '/' + config_file)][0] + '/' + config_file
     config_path = config_path.replace('\\', '/')
-    print 'Configuration found!'
+    print('Configuration found!')
 except IndexError, e:
     raise e
 
 configuration = ConfigParser.ConfigParser()
-print 'Reading the configuration file...'
+print('Reading the configuration file...')
 configuration.read(config_path)
 
 cfg_sg_url = configuration.get('Shotgun', 'shotgun_url')
@@ -72,9 +83,9 @@ ref_vids_folder = configuration.get('Referencer', 'ref_vids_folder')
 api_user_id = configuration.get('IAP', 'api_user_id')
 
 # Output window startup messages
-print '-' * 100
-print 'INTERNAL AUTO PUBLISH UTILITY'
-print '+' * 100
+print('-' * 100)
+print('INTERNAL AUTO PUBLISH UTILITY')
+print('+' * 100)
 
 
 '''
@@ -130,9 +141,9 @@ logger = logging.getLogger('internal_auto_publish')
 logger.setLevel(log_level)
 _setFilePathOnLogger(logger, logfile)
 
-print 'Logging system setup.'
+print('Logging system setup.')
 logger.info('Starting the Internal Auto Publisher...')
-print 'Starting the Internal Auto Publisher...'
+print('Starting the Internal Auto Publisher...')
 
 # --------------------------------------------------------------------------------------------------------------
 # Global Variables
@@ -366,16 +377,20 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                 base_task = task_name.split('.')[0]
                 task_name = '%s.%s' % (base_task, user)
         # Check that data is there and that the file actually exists
+        if filename and filename.lower().startswith(jobs_mapped_path):
+            print('Mapped path detected.  Converting to UNC...')
+            filename = filename.lower().replace(jobs_mapped_path, jobs_UNC_path)
+            print('New filename: %s' % filename)
         if filename and os.path.exists(filename):
             logger.info('-' * 120)
             logger.info('NEW FILE PROCESSING...')
             logger.info('!' * 100)
-            print 'New File Processing...'
-            print filename
+            print('New File Processing...')
+            print(filename)
             logger.info(filename)
-            print 'Published by %s' % user
+            print('Published by %s' % user)
             logger.info('Published by %s' % user)
-            print 'At: %s' % datetime.now()
+            print('At: %s' % datetime.now())
             logger.info('At: %s' % datetime.now())
 
             # Get the path details from the filename
@@ -389,8 +404,8 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                 split_pattern = split_pattern[0]
             else:
                 logger.warning('This file is not in a proper asset structure!  Can not process.')
-                print 'This file is not in the proper asset structure!  Cannot process!'
-                print '=' * 100
+                print('This file is not in the proper asset structure!  Cannot process!')
+                print('=' * 100)
 
                 # Send a pop up message to the user!
                 msg = 'DRAG -N- DROP PUBLISHER ALERT!\n\n' \
@@ -644,7 +659,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             logger.info('Finished processing the file')
             logger.info('=' * 100)
             q.task_done()
-            print 'Finished processing file.'
+            print('Finished processing file.')
 
             # Start Time Lord integration.
             logger.info('Processing Timesheet....')
@@ -663,17 +678,17 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             logger.info('Sending to Time Lord...')
             try:
                 tlc.time_lord(user=user, context=context, log=logger)
-            except Exception, err:
-                print 'Time Lord fucked up: %s' % err
+            except Exception as err:
+                print('Time Lord fucked up: %s' % err)
                 logger.error('Time Lord failed to process the file: %s' % err)
             logger.info('Time Lord processed.')
-            print '=' * 100
+            print('=' * 100)
             return True
         else:
             q.task_done()
             return True
     except Exception, e:
-        print 'Skipping!  The following error occurred: %s' % e
+        print('Skipping!  The following error occurred: %s' % e)
         logger.error('Skipping!  The following error occurred: %s' % e)
         logger.info('%s' % e)
         q.task_done()
@@ -1162,8 +1177,8 @@ def archive_file(full_filename=None, user=None, ip=None):
     if full_filename:
         try:
             logger.info('Processing archive file...')
-            print 'Processing archive file...'
-            print 'Submitted by: %s' % user
+            print('Processing archive file...')
+            print('Submitted by: %s' % user)
             origin_path = os.path.dirname(full_filename)
             filename = os.path.basename(full_filename)
 
@@ -1174,10 +1189,10 @@ def archive_file(full_filename=None, user=None, ip=None):
             destination_file = os.path.join(destination_path, filename)
             # print 'Destination file: %s' % destination_file
             logger.debug('DESTINATION FILE: %s' % destination_file)
-            print 'Moving the file to %s...' % destination_path
+            print('Moving the file to %s...' % destination_path)
             logger.info('Moving the file to %s...' % destination_path)
             shutil.move(full_filename, destination_file)
-            print 'File moved!'
+            print('File moved!')
             logger.info('File Moved!')
 
             # get the asset name from the path
@@ -1202,17 +1217,17 @@ def archive_file(full_filename=None, user=None, ip=None):
 
                 # Upload it to Shotgun
                 logger.info('Uploading %s to Shotgun' % filename)
-                print 'Uploading %s...' % filename
+                print('Uploading %s...' % filename)
                 upload_to_shotgun(filename=destination_file, asset_id=id, proj_id=int(archive_id), user=user,
                                   archive=True)
                 logger.info('Archive published to Shotgun!')
                 logger.info('=' * 100)
-                print 'Archive uploaded to Shotgun!'
-                print '=' * 100
+                print('Archive uploaded to Shotgun!')
+                print('=' * 100)
             aq.task_done()
             return True
         except Exception, e:
-            print 'Skipping!  The following error occurred: %s' % e
+            print('Skipping!  The following error occurred: %s' % e)
             logger.error('Skipping!  The following error occurred: %s' % e)
             aq.task_done()
             return False
@@ -1360,7 +1375,7 @@ def send_slack_message(user_id=None, asset_name=None, user=None, username=None, 
         try:
             person = requests.post('%schat.postMessage' % slack_url, headers=headers, data=data)
             logger.debug('Message Sent: %s' % person.json())
-            print 'Message sent to %s' % username
+            print('Message sent to %s' % username)
             logger.info('Message sent to %s' % username)
         except Exception, error:
             logger.error('Something went wrong sending the message!  %s' % error)
@@ -1369,7 +1384,7 @@ def send_slack_message(user_id=None, asset_name=None, user=None, username=None, 
 def upload_asset_reference(asset_id=None, path=None, name=None, user=None):
     if asset_id and path and user and name:
         logger.info('Uploading the reference...')
-        print 'Uploading the reference...'
+        print('Uploading the reference...')
         new_ref = sg.upload('Asset', asset_id, path, field_name='sg_references', display_name=name)
         data = {
             'description': 'Reference created by %s using the IAP' % user,
@@ -1378,7 +1393,7 @@ def upload_asset_reference(asset_id=None, path=None, name=None, user=None):
         }
         sg.update('Attachment', new_ref, data,
                   multi_entity_update_modes={'attachment_reference_links': 'add'})
-        print 'Done!'
+        print('Done!')
         logger.info('Done!')
         return True
     return False
@@ -1387,7 +1402,7 @@ def upload_asset_reference(asset_id=None, path=None, name=None, user=None):
 def upload_global_reference(path=None, proj_id=None, user=None):
     if path and proj_id:
         logger.info('Uploading a global reference...')
-        print 'Uploading a global reference...'
+        print('Uploading a global reference...')
         filename = os.path.basename(path)
         fn = os.path.splitext(filename)
         name = fn[0]
@@ -1405,7 +1420,7 @@ def upload_global_reference(path=None, proj_id=None, user=None):
             logger.info('Uploading thumbnail...')
             sg.upload_thumbnail(global_ref_entity, reference['id'], path)
         logger.info('Global reference upload complete!')
-        print 'Global reference upload complete!'
+        print('Global reference upload complete!')
         return True
     return False
 
@@ -1420,12 +1435,12 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
             logger.info('^' * 120)
             logger.info('NEW REFERENCE BEING MADE...')
             logger.info('#' * 120)
-            print 'New Reference Processing...'
-            print filename
+            print('New Reference Processing...')
+            print(filename)
             logger.info(filename)
-            print 'Published by %s' % user
+            print('Published by %s' % user)
             logger.info('Published by %s' % user)
-            print 'At: %s' % datetime.now()
+            print('At: %s' % datetime.now())
             logger.info('At: %s' % datetime.now())
 
             # Get the path details from the filename
@@ -1448,9 +1463,9 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                 if split_pattern:
                     split_pattern = split_pattern[0]
 
-                    print 'SPLIT PATTERN: %s' % split_pattern
+                    print('SPLIT PATTERN: %s' % split_pattern)
                     rel_path = path.split(split_pattern)[1]
-                    print 'REL PATH: %s' % rel_path
+                    print('REL PATH: %s' % rel_path)
                     if not rel_path:
                         rel_path = path
                     logger.debug('Relative path: %s' % rel_path)
@@ -1472,7 +1487,7 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
 
                         if ext in reference_types:
                             logger.info('Known reference type discovered!')
-                            print 'Known reference type discovered!'
+                            print('Known reference type discovered!')
 
                             asset_template_type = templates['Asset Reference']
                             asset_template = resolve_template_path(asset_template_type['work_area'], template)
@@ -1494,7 +1509,7 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
 
                             # Set destination path name
                             asset_reference_path = os.path.join(reference_asset_path, base_file)
-                            print 'Moving asset to: %s' % asset_reference_path
+                            print('Moving asset to: %s' % asset_reference_path)
 
                             # move the reference into place.
                             try:
@@ -1515,11 +1530,11 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                                             send_slack_message(user_id=slack_user, asset_name=asset_name,
                                                                username=artist, user=user,
                                                                filename=asset_reference_path, project=proj_name)
-                            print 'New reference created!'
+                            print('New reference created!')
                             logger.info('New reference created!')
-                            print '=' * 120
+                            print('=' * 120)
                 else:
-                    print 'GLOBAL REFERENCe: %s' % file_name
+                    print('GLOBAL REFERENCe: %s' % file_name)
                     # Find the Shotgun configuration root path
                     find_config = get_configuration(proj_id)
                     logger.debug('Configuration found: %s' % find_config)
@@ -1561,7 +1576,7 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                         new_ref = upload_global_reference(path=reference_path, proj_id=proj_id, user=user)
                         if new_ref:
                             logger.info('Global reference uploaded successfully!')
-                            print 'Global reference uploaded successfully'
+                            print('Global reference uploaded successfully')
                             project_emails = get_project_users(proj_id)
                             if project_emails:
                                 for name, email in project_emails.items():
@@ -1570,12 +1585,12 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                                     if slack_user:
                                         send_slack_message(user_id=slack_user, asset_name=proj_name, username=name,
                                                            filename=reference_path, project=proj_name, user=user)
-                            print 'Done!'
-                            print '=' * 120
+                            print('Done!')
+                            print('=' * 120)
 
         rq.task_done()
-    except Exception, e:
-        print 'Skipping!  The following error occurred: %s' % e
+    except Exception as e:
+        print('Skipping!  The following error occurred: %s' % e)
         logger.error('Skipping!  The following error occurred: %s' % e)
         logger.info('%s' % e)
         rq.task_done()
@@ -1986,7 +2001,7 @@ def file_queue():
     :return:
     """
     logger.debug('Queue Running...')
-    print 'Queue Running...'
+    print('Queue Running...')
     while True:
         # Get the package from the Queue and parse it out.
         package = q.get(block=True)
@@ -2030,7 +2045,7 @@ def archive_queue():
     :return:
     """
     logger.info('Archive queue running...')
-    print 'Archive Queue running...'
+    print('Archive Queue running...')
     while True:
         package = aq.get(block=True)
         full_filename = package['filename']
@@ -2064,7 +2079,7 @@ def reference_queue():
     :return:
     """
     logger.info('Reference queue running...')
-    print 'Reference Queue Running...'
+    print('Reference Queue Running...')
     while True:
         package = rq.get(block=True)
         full_filename = package['filename']
@@ -2132,7 +2147,7 @@ logger.debug('Starting the reference thread...')
 rt = threading.Thread(target=reference_queue, name='ReferenceQueue')
 rt.setDaemon(True)
 rt.start()
-print 'Queue Threading initialized...'
+print('Queue Threading initialized...')
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -2146,9 +2161,9 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
             data = bytes.decode(self.request[0].strip())
         except UnicodeDecodeError, e:
             logger.error('Handle attempt failed: %s' % e)
-            print 'Handle attempt failed: %s' % e
+            print('Handle attempt failed: %s' % e)
             logger.error('Probably a bad handler message.  Skipping...')
-            print 'Probably a bad handler message.  Skipping...'
+            print('Probably a bad handler message.  Skipping...')
             return False
 
         socket = self.request[1]
@@ -2341,8 +2356,8 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
                                         rq.put(package, block=True)
                                         logger.debug('%s added to the Reference queue...' % full_filename)
                 elif re.findall(archive_path_to_watch, path):
-                    print 'Archive found!'
-                    print path
+                    print('Archive found!')
+                    print(path)
                     full_archive_path = '%s%s' % (server_root, path)
                     package = {
                         'filename': full_archive_path,
@@ -2359,11 +2374,11 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
 if __name__ == "__main__":
     try:
         server = SocketServer.UDPServer((HOST, PORT), SyslogUDPHandler)
-        print 'Internal Auto Publisher is now listening!'
-        print 'Press Ctrl + C to terminate!'
-        print '=' * 100
+        print('Internal Auto Publisher is now listening!')
+        print('Press Ctrl + C to terminate!')
+        print('=' * 100)
         server.serve_forever(poll_interval=0.5)
     except (IOError, SystemExit):
         raise
     except KeyboardInterrupt:
-        print ("Crtl+C Pressed. Shutting down.")
+        print("Crtl+C Pressed. Shutting down.")
