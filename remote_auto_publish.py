@@ -1325,7 +1325,8 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                                         except Exception, e:
                                             tries += 1
                                             logging.error('File Open failed again. Trying again... ERROR: %s' % e)
-                                    raise 'Total failure! %s' % err
+                                    # raise 'Total failure! %s' % err
+                                    logger.error('Total failure! %s' % err)
 
                                 # Path the tempate fields into something more usable.
                                 template = yaml.load(f)
