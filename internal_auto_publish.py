@@ -29,17 +29,6 @@ import time_lord_connect as tlc
 
 sys_path = sys.path
 config_file = 'auto_publisher_config.cfg'
-
-# NOTE: There is a horrible stupidity with Mapped Paths that is failing to work in our system.
-#       I hate putting Hard Coded paths in here, but in this case I'm running into a situation where (at least for
-#       speed sake) I have little choice.
-#       I will be putting in a condition here that will have a main, and alternative paths that can be used to
-#       correct this issue.
-tools_mapped_path = 't:'
-tools_UNC_path = '//skynet/tools'
-jobs_mapped_path = 'j:'
-jobs_UNC_path = '//skynet/jobs'
-
 try:
     print('Finding configuration file...')
     config_path = [f for f in sys_path if os.path.isfile(f + '/' + config_file)][0] + '/' + config_file
@@ -377,10 +366,6 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                 base_task = task_name.split('.')[0]
                 task_name = '%s.%s' % (base_task, user)
         # Check that data is there and that the file actually exists
-        if filename and filename.lower().startswith(jobs_mapped_path):
-            print('Mapped path detected.  Converting to UNC...')
-            filename = filename.lower().replace(jobs_mapped_path, jobs_UNC_path)
-            print('New filename: %s' % filename)
         if filename and os.path.exists(filename):
             logger.info('-' * 120)
             logger.info('NEW FILE PROCESSING...')

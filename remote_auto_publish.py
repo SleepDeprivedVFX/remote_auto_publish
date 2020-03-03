@@ -25,6 +25,16 @@ import queue
 import threading
 from datetime import datetime
 
+# NOTE: There is a horrible stupidity with Mapped Paths that is failing to work in our system.
+#       I hate putting Hard Coded paths in here, but in this case I'm running into a situation where (at least for
+#       speed sake) I have little choice.
+#       I will be putting in a condition here that will have a main, and alternative paths that can be used to
+#       correct this issue.
+tools_mapped_path = 't:'
+tools_UNC_path = '//skynet/tools'
+jobs_mapped_path = 'j:'
+jobs_UNC_path = '//skynet/jobs'
+
 # Build Shotgun Connection
 sg_url = 'https://radiowaves.shotgunstudio.com'
 sg_name = 'remoteAutoPublisher'
@@ -117,7 +127,8 @@ publish_types = {
     '.ztl': 'ZBrush',
     '.mud': 'Mudbox',
     '.bip': 'Keyshot Package',
-    '.kip': 'Keyshot File'
+    '.kip': 'Keyshot File',
+    '.spp': 'Substance Painter',
 }
 '''
 # generate_types will create the values if the keys are certain values.  Thus, if ext == '.psd' then '.jpg' will be made
@@ -190,6 +201,12 @@ templates = {
         'work_template': 'asset_work_keyshot',
         'publish_area': 'asset_publish_area_keyshot',
         'publish_template': 'asset_publish_keyshot'
+    },
+    'Substance Painter': {
+        'work_area': 'asset_work_area_substancepainter',
+        'work_template': 'substancepainter_asset_work',
+        'publish_area': 'asset_publish_area_substancepainter',
+        'publish_template': 'substancepainter_asset_publish'
     },
     'Renders': {
         'work_area': None,
