@@ -2,10 +2,12 @@
 This will basically just streamline the configuration and cleanup the main code a bit
 """
 
+from __future__ import absolute_import
+from __future__ import print_function
 __author__ = 'Adam Benson - AdamBenson.vfx@gmail.com'
 __version__ = '0.4.14'
 
-import ConfigParser
+import six.moves.configparser
 import sys
 import os
 
@@ -27,7 +29,7 @@ def get_configuration():
         raise e
 
     # Create the configuration connection
-    configuration = ConfigParser.ConfigParser()
+    configuration = six.moves.configparser.ConfigParser()
     print('Reading the configuration file...')
     configuration.read(config_path)
 

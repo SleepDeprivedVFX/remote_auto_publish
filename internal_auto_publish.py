@@ -24,7 +24,7 @@ import six.moves.configparser
 import requests
 import json
 
-from . import time_lord_connect as tlc
+import time_lord_connect as tlc
 
 # __author__ = 'Adam Benson'
 # __version__ = '1.0.1'
