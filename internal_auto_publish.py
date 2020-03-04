@@ -18,10 +18,8 @@ import shotgun_api3
 import queue
 import threading
 from datetime import datetime
-# import six.moves.socketserver
 import socketserver
 import subprocess
-# import six.moves.configparser
 import configparser
 import requests
 import json
