@@ -18,9 +18,11 @@ import shotgun_api3
 import queue
 import threading
 from datetime import datetime
-import six.moves.socketserver
+# import six.moves.socketserver
+import socketserver
 import subprocess
-import six.moves.configparser
+# import six.moves.configparser
+import configparser
 import requests
 import json
 
@@ -39,7 +41,7 @@ try:
 except IndexError as e:
     raise e
 
-configuration = six.moves.configparser.ConfigParser()
+configuration = configparser.ConfigParser()
 print('Reading the configuration file...')
 configuration.read(config_path)
 
@@ -167,7 +169,8 @@ publish_types = {
     '.mud': 'Mudbox',
     '.bip': 'Keyshot Package',
     '.ksp': 'Keyshot Package',
-    '.kpg': 'Keyshot File'
+    '.kpg': 'Keyshot File',
+    '.spp': 'Substance Painter'
 }
 ignore_types = [
     '.DS_Store',
@@ -327,6 +330,12 @@ templates = {
         'work_template': None,
         'publish_area': None,
         'publish_template': None
+    },
+    'Substance Painter': {
+        'work_area': 'asset_work_area_substancepainter',
+        'work_template': 'substancepainter_asset_work',
+        'publish_area': 'asset_publish_area_substancepainter',
+        'publish_template': 'substancepainter_asset_publish'
     }
 }
 
@@ -2140,7 +2149,7 @@ print('Queue Threading initialized...')
 # ---------------------------------------------------------------------------------------------------------------------
 # Socket Server Log Listener
 # ---------------------------------------------------------------------------------------------------------------------
-class SyslogUDPHandler(six.moves.socketserver.BaseRequestHandler):
+class SyslogUDPHandler(socketserver.BaseRequestHandler):
     logger.info('Enter the Sandman')
 
     def handle(self):
@@ -2360,7 +2369,7 @@ class SyslogUDPHandler(six.moves.socketserver.BaseRequestHandler):
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     try:
-        server = six.moves.socketserver.UDPServer((HOST, PORT), SyslogUDPHandler)
+        server = socketserver.UDPServer((HOST, PORT), SyslogUDPHandler)
         print('Internal Auto Publisher is now listening!')
         print('Press Ctrl + C to terminate!')
         print(('=' * 100))
