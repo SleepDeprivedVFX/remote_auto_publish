@@ -2,8 +2,10 @@
 The companions are the human users who run along with our Time Lord.
 """
 
+from __future__ import absolute_import
+from __future__ import print_function
 __author__ = 'Adam Benson - AdamBenson.vfx@gmail.com'
-__version__ = '0.4.14'
+__version__ = '0.5.0'
 
 import os
 import sys
@@ -29,7 +31,7 @@ class companions(object):
         # FIXME: This is a temp workaround for my laptop.
         if user == 'sleep':
             user = 'adamb'
-        print user
+        print(user)
         if user:
             filters = [
                 ['login', 'is', user]

@@ -2,6 +2,8 @@
 The Internal Auto Publisher (IAP) is a server listener that gets data from the server logs in order to better port
 """
 
+from __future__ import absolute_import
+from __future__ import print_function
 import os
 import sys
 from glob import glob
@@ -16,16 +18,16 @@ import shotgun_api3
 import queue
 import threading
 from datetime import datetime
-import SocketServer
+import socketserver
 import subprocess
-import ConfigParser
+import configparser
 import requests
 import json
 
 import time_lord_connect as tlc
 
-# __author__ = 'Adam Benson'
-# __version__ = '1.0.1'
+__author__ = 'Adam Benson'
+__version__ = '1.1.1'
 
 sys_path = sys.path
 config_file = 'auto_publisher_config.cfg'
@@ -34,10 +36,10 @@ try:
     config_path = [f for f in sys_path if os.path.isfile(f + '/' + config_file)][0] + '/' + config_file
     config_path = config_path.replace('\\', '/')
     print('Configuration found!')
-except IndexError, e:
+except IndexError as e:
     raise e
 
-configuration = ConfigParser.ConfigParser()
+configuration = configparser.ConfigParser()
 print('Reading the configuration file...')
 configuration.read(config_path)
 
@@ -72,9 +74,9 @@ ref_vids_folder = configuration.get('Referencer', 'ref_vids_folder')
 api_user_id = configuration.get('IAP', 'api_user_id')
 
 # Output window startup messages
-print('-' * 100)
+print(('-' * 100))
 print('INTERNAL AUTO PUBLISH UTILITY')
-print('+' * 100)
+print(('+' * 100))
 
 
 '''
@@ -165,7 +167,8 @@ publish_types = {
     '.mud': 'Mudbox',
     '.bip': 'Keyshot Package',
     '.ksp': 'Keyshot Package',
-    '.kpg': 'Keyshot File'
+    '.kpg': 'Keyshot File',
+    '.spp': 'Substance Painter'
 }
 ignore_types = [
     '.DS_Store',
@@ -325,6 +328,12 @@ templates = {
         'work_template': None,
         'publish_area': None,
         'publish_template': None
+    },
+    'Substance Painter': {
+        'work_area': 'asset_work_area_substancepainter',
+        'work_template': 'substancepainter_asset_work',
+        'publish_area': 'asset_publish_area_substancepainter',
+        'publish_template': 'substancepainter_asset_publish'
     }
 }
 
@@ -373,9 +382,9 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             print('New File Processing...')
             print(filename)
             logger.info(filename)
-            print('Published by %s' % user)
+            print(('Published by %s' % user))
             logger.info('Published by %s' % user)
-            print('At: %s' % datetime.now())
+            print(('At: %s' % datetime.now()))
             logger.info('At: %s' % datetime.now())
 
             # Get the path details from the filename
@@ -390,7 +399,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             else:
                 logger.warning('This file is not in a proper asset structure!  Can not process.')
                 print('This file is not in the proper asset structure!  Cannot process!')
-                print('=' * 100)
+                print(('=' * 100))
 
                 # Send a pop up message to the user!
                 msg = 'DRAG -N- DROP PUBLISHER ALERT!\n\n' \
@@ -508,7 +517,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                         try:
                             shutil.move(copy_file, res_path_work_template)
                             message = 'The file is moved!  Prepping for publish!'
-                        except IOError, e:
+                        except IOError as e:
                             message = ''
                             # Waiting tries...
                             attempts = 1
@@ -531,7 +540,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                         new_file = res_path_work_template
 
                         # Now check to see if the file type needs to generate other file types
-                        if ext in generate_types.keys():
+                        if ext in list(generate_types.keys()):
                             logger.debug('Generator type detected!')
                             export_type = generate_types[ext]['type']
                             output_type = generate_types[ext]['output']
@@ -572,7 +581,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                                         is_sent = False
 
                                     logger.info('Image file has been created from PSD.')
-                                except IOError, e:
+                                except IOError as e:
                                     logger.error('Unable to process the %s for the following reasons: %s' % (ext, e))
                                     pass
 
@@ -595,7 +604,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                                 # Call to set the related version
                                 logger.debug('Setting related version...')
                                 set_related_version(proj_id=proj_id, origin_path=publish_path, path=is_sent)
-                        except Exception, e:
+                        except Exception as e:
                             logger.error('Publish failed for the following! %s' % e)
                             pass
 
@@ -623,7 +632,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                         # Try to copy the file to the render path
                         try:
                             shutil.copy2(filename, asset_render_file)
-                        except Exception, e:
+                        except Exception as e:
                             logger.error('Could not copy the file to render path: %s' % e)
 
                         # Upload the file to shotgun
@@ -664,16 +673,16 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             try:
                 tlc.time_lord(user=user, context=context, log=logger)
             except Exception as err:
-                print('Time Lord fucked up: %s' % err)
+                print(('Time Lord fucked up: %s' % err))
                 logger.error('Time Lord failed to process the file: %s' % err)
             logger.info('Time Lord processed.')
-            print('=' * 100)
+            print(('=' * 100))
             return True
         else:
             q.task_done()
             return True
-    except Exception, e:
-        print('Skipping!  The following error occurred: %s' % e)
+    except Exception as e:
+        print(('Skipping!  The following error occurred: %s' % e))
         logger.error('Skipping!  The following error occurred: %s' % e)
         logger.info('%s' % e)
         q.task_done()
@@ -717,10 +726,10 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         logger.info('Processing Photoshop file...')
         try:
             file_to_publish = psd.PSDImage.open(filename)
-            file_to_PIL = file_to_publish.compose()
+            file_to_PIL = file_to_publish.composite()
             converted_file = file_to_PIL.convert(mode="RGB")
             converted_file.save(render_path)
-        except Exception, e:
+        except Exception as e:
             logger.error('Photoshop File could not generate an image! %s' % e)
             pass
 
@@ -787,7 +796,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None, 
         logger.info('New Version Created!')
         logger.debug(('.' * 35) + 'END UPLOAD TO SHOTGUN' + ('.' * 35))
         return True
-    except Exception, e:
+    except Exception as e:
         logger.error('The new version could not be created: %s' % e)
         if tries <= 5:
             tries += 1
@@ -861,7 +870,7 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
             shutil.move(filename, send_today_path)
             logger.debug(('.' * 35) + 'END SEND TODAY' + ('.' * 35))
             return send_today_path
-        except Exception, e:
+        except Exception as e:
             logger.error('Can not copy the file! %s' % e)
             return False
     else:
@@ -1065,7 +1074,7 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
                 naming_convention = nc[0]
                 padding = nc[1]
                 logger.info('PADDING: %s' % padding)
-                if 'version' in work_fields.keys():
+                if 'version' in list(work_fields.keys()):
                     # Convert numeric version to padded string
                     current_version = work_fields['version']
                     del work_fields['version']
@@ -1103,7 +1112,7 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
                             else:
                                 try:
                                     find_suffix = task_name.split('.')[1]
-                                except Exception, e:
+                                except Exception as e:
                                     find_suffix = ''
                                 short_task = '%s%s' % (translation['delivery_code'], find_suffix)
                             translations[base_tag] = short_task
@@ -1147,7 +1156,7 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
         new_name = naming_convention.format(**work_fields)
         logger.info('NEW_NAME: %s' % new_name)
         # item.display_name = new_name
-    except Exception, e:
+    except Exception as e:
         logger.error('It looks like the Project Naming Convention is incorrectly set. See the Admins. %s' % e)
         return False
 
@@ -1163,7 +1172,7 @@ def archive_file(full_filename=None, user=None, ip=None):
         try:
             logger.info('Processing archive file...')
             print('Processing archive file...')
-            print('Submitted by: %s' % user)
+            print(('Submitted by: %s' % user))
             origin_path = os.path.dirname(full_filename)
             filename = os.path.basename(full_filename)
 
@@ -1174,7 +1183,7 @@ def archive_file(full_filename=None, user=None, ip=None):
             destination_file = os.path.join(destination_path, filename)
             # print 'Destination file: %s' % destination_file
             logger.debug('DESTINATION FILE: %s' % destination_file)
-            print('Moving the file to %s...' % destination_path)
+            print(('Moving the file to %s...' % destination_path))
             logger.info('Moving the file to %s...' % destination_path)
             shutil.move(full_filename, destination_file)
             print('File moved!')
@@ -1202,17 +1211,17 @@ def archive_file(full_filename=None, user=None, ip=None):
 
                 # Upload it to Shotgun
                 logger.info('Uploading %s to Shotgun' % filename)
-                print('Uploading %s...' % filename)
+                print(('Uploading %s...' % filename))
                 upload_to_shotgun(filename=destination_file, asset_id=id, proj_id=int(archive_id), user=user,
                                   archive=True)
                 logger.info('Archive published to Shotgun!')
                 logger.info('=' * 100)
                 print('Archive uploaded to Shotgun!')
-                print('=' * 100)
+                print(('=' * 100))
             aq.task_done()
             return True
-        except Exception, e:
-            print('Skipping!  The following error occurred: %s' % e)
+        except Exception as e:
+            print(('Skipping!  The following error occurred: %s' % e))
             logger.error('Skipping!  The following error occurred: %s' % e)
             aq.task_done()
             return False
@@ -1236,7 +1245,7 @@ def get_slack_user(email=None, auth_code=None, url=None, tries=0):
                 user_id = None
                 for user in all_users:
                     profile = user['profile']
-                    if 'email' in profile.keys():
+                    if 'email' in list(profile.keys()):
                         user_email = profile['email']
                         if user_email == email:
                             user_id = user['id']
@@ -1248,7 +1257,7 @@ def get_slack_user(email=None, auth_code=None, url=None, tries=0):
                 logger.info('Trying again...')
                 user_id = get_slack_user(email=email, auth_code=auth_code, url=url)
 
-        except KeyError, e:
+        except KeyError as e:
             logger.error('Key not found! %s  Trying again...' % e)
             try:
                 t = tries + 1
@@ -1256,16 +1265,16 @@ def get_slack_user(email=None, auth_code=None, url=None, tries=0):
                 if t > 5:
                     raise Exception("Too many tries!  Skipping...")
                 user_id = get_slack_user(email=email, auth_code=auth_code, url=url, tries=t)
-            except Exception, e:
+            except Exception as e:
                 logger.error('There is no saving this thing: %s' % e)
                 return None
-        except Exception, e:
+        except Exception as e:
             try:
                 t = tries + 1
                 if t > 10:
                     logger.error("Too many tries!  Skipping...")
                 user_id = get_slack_user(email=email, auth_code=auth_code, url=url, tries=t)
-            except Exception, e:
+            except Exception as e:
                 logger.error('There is no saving this thing!: %s' % e)
                 return None
     return user_id
@@ -1315,7 +1324,7 @@ def get_asset_users(asset_id=None):
             if task['task_assignees']:
                 assignees = task['task_assignees']
                 for assignee in assignees:
-                    if assignee['name'] not in users.keys():
+                    if assignee['name'] not in list(users.keys()):
                         filters = [
                             ['id', 'is', assignee['id']]
                         ]
@@ -1360,9 +1369,9 @@ def send_slack_message(user_id=None, asset_name=None, user=None, username=None, 
         try:
             person = requests.post('%schat.postMessage' % slack_url, headers=headers, data=data)
             logger.debug('Message Sent: %s' % person.json())
-            print('Message sent to %s' % username)
+            print(('Message sent to %s' % username))
             logger.info('Message sent to %s' % username)
-        except Exception, error:
+        except Exception as error:
             logger.error('Something went wrong sending the message!  %s' % error)
 
 
@@ -1423,9 +1432,9 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
             print('New Reference Processing...')
             print(filename)
             logger.info(filename)
-            print('Published by %s' % user)
+            print(('Published by %s' % user))
             logger.info('Published by %s' % user)
-            print('At: %s' % datetime.now())
+            print(('At: %s' % datetime.now()))
             logger.info('At: %s' % datetime.now())
 
             # Get the path details from the filename
@@ -1448,9 +1457,9 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                 if split_pattern:
                     split_pattern = split_pattern[0]
 
-                    print('SPLIT PATTERN: %s' % split_pattern)
+                    print(('SPLIT PATTERN: %s' % split_pattern))
                     rel_path = path.split(split_pattern)[1]
-                    print('REL PATH: %s' % rel_path)
+                    print(('REL PATH: %s' % rel_path))
                     if not rel_path:
                         rel_path = path
                     logger.debug('Relative path: %s' % rel_path)
@@ -1494,12 +1503,12 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
 
                             # Set destination path name
                             asset_reference_path = os.path.join(reference_asset_path, base_file)
-                            print('Moving asset to: %s' % asset_reference_path)
+                            print(('Moving asset to: %s' % asset_reference_path))
 
                             # move the reference into place.
                             try:
                                 shutil.move(filename, asset_reference_path)
-                            except Exception, e:
+                            except Exception as e:
                                 logger.error('Can\'t move the file %s' % filename)
 
                             # Upload the reference to shotgun.
@@ -1517,9 +1526,9 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                                                                filename=asset_reference_path, project=proj_name)
                             print('New reference created!')
                             logger.info('New reference created!')
-                            print('=' * 120)
+                            print(('=' * 120))
                 else:
-                    print('GLOBAL REFERENCe: %s' % file_name)
+                    print(('GLOBAL REFERENCe: %s' % file_name))
                     # Find the Shotgun configuration root path
                     find_config = get_configuration(proj_id)
                     logger.debug('Configuration found: %s' % find_config)
@@ -1556,7 +1565,7 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                         logger.info('Moving the file...')
                         try:
                             shutil.move(filename, reference_path)
-                        except Exception, e:
+                        except Exception as e:
                             logger.error('Can\'t move the file %s' % filename)
                         new_ref = upload_global_reference(path=reference_path, proj_id=proj_id, user=user)
                         if new_ref:
@@ -1571,11 +1580,11 @@ def process_reference(filename=None, template=None, roots=None, proj_id=None, pr
                                         send_slack_message(user_id=slack_user, asset_name=proj_name, username=name,
                                                            filename=reference_path, project=proj_name, user=user)
                             print('Done!')
-                            print('=' * 120)
+                            print(('=' * 120))
 
         rq.task_done()
     except Exception as e:
-        print('Skipping!  The following error occurred: %s' % e)
+        print(('Skipping!  The following error occurred: %s' % e))
         logger.error('Skipping!  The following error occurred: %s' % e)
         logger.info('%s' % e)
         rq.task_done()
@@ -1605,7 +1614,7 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
             if not os.path.exists(check_path):
                 os.makedirs(check_path)
             shutil.copy2(publish_file, publish_path)
-        except Exception, e:
+        except Exception as e:
             logger.error('Copy failed for the following: %s' % e)
             pass
 
@@ -1872,7 +1881,7 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
         ]
         try:
             find_assets = sg.find('Asset', filters, fields)
-        except AttributeError, e:
+        except AttributeError as e:
             find_assets = None
             logger.error('This shit went bad. Probably from a mac "computer". Returned the following: %s' % e)
         logger.debug('Shotgun Returns: %s' % find_assets)
@@ -1942,7 +1951,7 @@ def get_configuration(proj_id):
                 logger.debug(('.' * 35) + 'END get_configuration' + ('.' * 35))
                 return config_path
         return
-    except Exception, e:
+    except Exception as e:
         logger.error('Some shit when down! %s' % e)
         return False
 
@@ -1970,7 +1979,7 @@ def get_active_shotgun_projects():
     try:
         projects_list = sg.find('Project', filters, fields)
         logger.debug('Active Projects Found: %s' % projects_list)
-    except Exception, e:
+    except Exception as e:
         logger.error('The following error occurred: %s' % e)
         projects_list = []
     logger.debug(('.' * 35) + 'END get_active_shotgun_projects' + ('.' * 35))
@@ -2019,7 +2028,7 @@ def file_queue():
                     # Copying not finished, wait to seconds and try again...
                     size2 = os.stat(full_filename).st_size
                     time.sleep(2)
-            except WindowsError, e:
+            except WindowsError as e:
                 logger.debug(e)
                 break
 
@@ -2053,7 +2062,7 @@ def archive_queue():
                 else:
                     size2 = os.stat(full_filename).st_size
                     time.sleep(2)
-            except WindowsError, e:
+            except WindowsError as e:
                 logger.debug(e)
                 break
 
@@ -2096,7 +2105,7 @@ def reference_queue():
                     # Copying not finished, wait to seconds and try again...
                     size2 = os.stat(full_filename).st_size
                     time.sleep(2)
-            except WindowsError, e:
+            except WindowsError as e:
                 logger.debug(e)
                 break
 
@@ -2138,15 +2147,15 @@ print('Queue Threading initialized...')
 # ---------------------------------------------------------------------------------------------------------------------
 # Socket Server Log Listener
 # ---------------------------------------------------------------------------------------------------------------------
-class SyslogUDPHandler(SocketServer.BaseRequestHandler):
+class SyslogUDPHandler(socketserver.BaseRequestHandler):
     logger.info('Enter the Sandman')
 
     def handle(self):
         try:
             data = bytes.decode(self.request[0].strip())
-        except UnicodeDecodeError, e:
+        except UnicodeDecodeError as e:
             logger.error('Handle attempt failed: %s' % e)
-            print('Handle attempt failed: %s' % e)
+            print(('Handle attempt failed: %s' % e))
             logger.error('Probably a bad handler message.  Skipping...')
             print('Probably a bad handler message.  Skipping...')
             return False
@@ -2235,7 +2244,7 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
                                             logger.info('Opening config files...')
                                             f = open(template_file, 'r')
                                             r = open(root_file, 'r')
-                                        except Exception, err:
+                                        except Exception as err:
                                             # If unable to open the configuration files, try another 10 times.
                                             tries = 1
                                             while tries < 10:
@@ -2246,7 +2255,7 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
                                                     f = open(template_file, 'r')
                                                     r = open(root_file, 'r')
                                                     break
-                                                except Exception, e:
+                                                except Exception as e:
                                                     tries += 1
                                                     logging.error('File Open failed again. Trying again... ERROR: %s' % e)
                                             raise 'Total failure! %s' % err
@@ -2311,7 +2320,7 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
                                             logger.info('Opening config files...')
                                             f = open(template_file, 'r')
                                             r = open(root_file, 'r')
-                                        except Exception, err:
+                                        except Exception as err:
                                             # If unable to open the configuration files, try another 10 times.
                                             tries = 1
                                             while tries < 10:
@@ -2322,7 +2331,7 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
                                                     f = open(template_file, 'r')
                                                     r = open(root_file, 'r')
                                                     break
-                                                except Exception, e:
+                                                except Exception as e:
                                                     tries += 1
                                                     logging.error('File Open failed again. Trying again... ERROR: %s' % e)
                                             raise 'Total failure! %s' % err
@@ -2358,10 +2367,10 @@ class SyslogUDPHandler(SocketServer.BaseRequestHandler):
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     try:
-        server = SocketServer.UDPServer((HOST, PORT), SyslogUDPHandler)
+        server = socketserver.UDPServer((HOST, PORT), SyslogUDPHandler)
         print('Internal Auto Publisher is now listening!')
         print('Press Ctrl + C to terminate!')
-        print('=' * 100)
+        print(('=' * 100))
         server.serve_forever(poll_interval=0.5)
     except (IOError, SystemExit):
         raise

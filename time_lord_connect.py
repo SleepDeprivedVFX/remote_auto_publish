@@ -4,8 +4,10 @@ the Internal Auto Publisher.
 The intent is that the IAP can send signals to this utility and update and create timesheet entries.
 """
 
+from __future__ import absolute_import
+from __future__ import print_function
 __author__ = 'Adam Benson - AdamBenson.vfx@gmail.com'
-__version__ = '0.4.14'
+__version__ = '0.5.1'
 
 from datetime import datetime
 from datetime import timedelta
@@ -75,7 +77,7 @@ class time_lord(object):
             wrong_date_datetime_end = None
             wrong_date_datetime_start = None
             if ts_from_today:
-                print 'Last timesheet ain\'t from today: %s' % ts_from_today
+                print('Last timesheet ain\'t from today: %s' % ts_from_today)
                 self.logger.info('The last timesheet ain\'t from today.  Prepping to clock it out...')
                 eod = self.config['regular_end']
                 end_of_day = parser.parse(eod).time()
@@ -98,13 +100,13 @@ class time_lord(object):
             last_task_id = str(self.latest_timesheet['entity']['id'])
             current_task_id = str(context['Task']['id'])
             if current_task_id != last_task_id:
-                print 'Retroactive clock-out of previous timesheet...'
+                print('Retroactive clock-out of previous timesheet...')
                 self.logger.info('Retroactive clock-out of previous timesheet...')
                 if wrong_date_datetime_end:
                     self.tl_time.clock_out_time_sheet(timesheet=self.latest_timesheet,
                                                       clock_out=wrong_date_datetime_end,
                                                       comment='Retroactive Clockout of Previous Timesheet')
-                    print 'Creating new retroactive timesheet block...'
+                    print('Creating new retroactive timesheet block...')
                     self.logger.info('Creating new retroactive timesheet block...')
                     ts_block = self.tl_time.create_new_timesheet(user=self.user, context=context,
                                                                  start_time=wrong_date_datetime_start,
@@ -112,37 +114,37 @@ class time_lord(object):
                 else:
                     self.tl_time.clock_out_time_sheet(timesheet=self.latest_timesheet, clock_out=pseudo_end,
                                                       comment='Clocking out last timesheet at %s' % pseudo_end)
-                    print 'Creating new retroactive timesheet block...'
+                    print('Creating new retroactive timesheet block...')
                     self.logger.info('Creating new retroactive timesheet block...')
                     ts_block = self.tl_time.create_new_timesheet(user=self.user, context=context, start_time=pseudo_end,
                                                                  entry='Drag-n-Drop', comment='Drag-n-Drop Retroactive')
                 self.tl_time.clock_out_time_sheet(timesheet=ts_block, clock_out=datetime.now(),
                                                   comment='Retroactive clock out at %s to close Drag-n-Drop block' %
                                                   datetime.now())
-                print 'Creating New Current timesheet...'
+                print('Creating New Current timesheet...')
                 self.logger.info('Creating new current timesheet...')
                 self.tl_time.create_new_timesheet(user=self.user, context=context, start_time=datetime.now(),
                                                   entry='Drag-n-Drop', comment='Drag-n-Drop New')
-                print 'New Timesheet created for %s' % self.user['name']
+                print('New Timesheet created for %s' % self.user['name'])
                 self.logger.info('New Timesheet created for %s' % self.user['name'])
             elif current_task_id == last_task_id:
                 self.logger.info('Same task detected.  Creating a timesheet block...')
                 if wrong_date_datetime_end:
-                    print 'Creating retroactive timsheet block...'
+                    print('Creating retroactive timsheet block...')
                     self.logger.info('Creating retroactive timsheet block...')
                     self.tl_time.clock_out_time_sheet(timesheet=self.latest_timesheet,
                                                       clock_out=wrong_date_datetime_end,
                                                       comment='Wrong Date - Clocking out for Retroactive Block')
                 else:
-                    print 'Creating retroactive timsheet block...'
+                    print('Creating retroactive timsheet block...')
                     self.logger.info('Creating retroactive timsheet block...')
                     self.tl_time.clock_out_time_sheet(timesheet=self.latest_timesheet, clock_out=datetime.now(),
                                                       comment='Clocking out for Retroactive Block')
-                print 'Creating new timesheet...'
+                print('Creating new timesheet...')
                 self.logger.info('Creating new timesheet...')
                 self.tl_time.create_new_timesheet(user=self.user, context=context, start_time=datetime.now(),
                                                   entry='Drag-n-Drop', comment='Drag-n-Drop New')
-                print 'New Timesheet Created for %s' % self.user['name']
+                print('New Timesheet Created for %s' % self.user['name'])
                 self.logger.info('New Timesheet Created for %s' % self.user['name'])
 
 

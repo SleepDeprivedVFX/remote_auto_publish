@@ -2,8 +2,10 @@
 The Shotgun Collect will grab data about projects, assets, shots and tasks.
 """
 
+from __future__ import absolute_import
+from __future__ import print_function
 __author__ = 'Adam Benson - AdamBenson.vfx@gmail.com'
-__version__ = '0.4.14'
+__version__ = '0.5.0'
 
 import logging
 
@@ -101,18 +103,18 @@ class sg_data(object):
                 project = self.sg.find_one('Project', filters, fields)
                 self.logger.debug('Project Details found: %s' % project)
                 return project
-            except (AttributeError, TypeError), e:
+            except (AttributeError, TypeError) as e:
                 self.logger.error('Could not get the project: %s' % e)
                 try:
                     self.logger.debug('Trying again...')
                     tryagain = self.sg.find('Project', filters, fields)
-                    print 'secondary: %s' % tryagain
+                    print('secondary: %s' % tryagain)
                     if tryagain:
                         project = tryagain[0]
                         self.logger.debug('Project Details Found: %s' % project)
                         return project
                     self.logger.debug('Still couldn\'t find shit! %s' % tryagain)
-                except (AttributeError, TypeError, KeyError, Exception), e:
+                except (AttributeError, TypeError, KeyError, Exception) as e:
                     self.logger.error('Well, Fuck.  %s' % e)
         self.logger.debug('No Project found!')
         return None
@@ -128,9 +130,9 @@ class sg_data(object):
             ]
             try:
                 link = self.sg.find_one(ent_type, filters, fields)
-            except AttributeError, e:
+            except AttributeError as e:
                 self.logger.error('Bad connection... Try again... %s' % e)
-                print 'Lame ass connection.  Trying again...'
+                print('Lame ass connection.  Trying again...')
                 link = self.get_entity_links(ent_type=ent_type, name=name, ent_id=ent_id, proj_id=proj_id)
             return link
         return None
@@ -166,7 +168,7 @@ class sg_data(object):
                     self.logger.debug(('.' * 35) + 'END get_configuration' + ('.' * 35))
                     return config_path
             return
-        except Exception, e:
+        except Exception as e:
             self.logger.error('Some shit when down! %s' % e)
             return False
 
@@ -229,10 +231,10 @@ class sg_data(object):
             ]
             try:
                 task = self.sg.find_one('Task', filters, fields)
-            except AttributeError, e:
+            except AttributeError as e:
                 self.logger.error('Get Entity from Tasks failed: %s' % e)
                 task = self.get_entity_from_task(task_id=task_id)
-            print task
+            print(task)
             return task
         return None
 

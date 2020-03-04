@@ -4,6 +4,8 @@ I am starting with a basic folder listener copied from the the web.  I am using 
 driver for everything else that will happen.
 """
 
+from __future__ import absolute_import
+from __future__ import print_function
 import os
 from glob import glob
 import re
@@ -24,6 +26,9 @@ import shotgun_api3
 import queue
 import threading
 from datetime import datetime
+
+__author__ = 'Adam Benson'
+__version__ = '1.2.0'
 
 # NOTE: There is a horrible stupidity with Mapped Paths that is failing to work in our system.
 #       I hate putting Hard Coded paths in here, but in this case I'm running into a situation where (at least for
@@ -254,7 +259,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
     if filename and os.path.exists(filename):
         logger.info('-' * 120)
         logger.info('NEW FILE PROCESSING...')
-        print 'New File Processing...'
+        print('New File Processing...')
 
         # Get the path details from the filename
         path = os.path.dirname(filename)
@@ -365,7 +370,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                     try:
                         shutil.move(copy_file, res_path_work_template)
                         message = 'The file is moved!  Prepping for publish!'
-                    except IOError, e:
+                    except IOError as e:
                         message = ''
                         # Waiting tries...
                         attempts = 1
@@ -388,7 +393,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                     new_file = res_path_work_template
 
                     # Now check to see if the file type needs to generate other file types
-                    if ext in generate_types.keys():
+                    if ext in list(generate_types.keys()):
                         logger.debug('Generator type detected!')
                         export_type = generate_types[ext]['type']
                         output_type = generate_types[ext]['output']
@@ -408,7 +413,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                                                         pub_area=render_publish_area,
                                                         task=task, f_type=output_type, proj_id=proj_id,
                                                         asset=find_asset, root=root_template_path)
-                            except IOError, e:
+                            except IOError as e:
                                 logger.error('Unable to process the %s for the following reasons: %s' % (ext, e))
                                 pass
 
@@ -421,7 +426,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                         logger.info('Attempting to publish...')
                         publish_to_shotgun(publish_file=new_file, publish_path=res_publish_path, asset_id=asset_id,
                                            proj_id=proj_id, task_id=task, next_version=next_version)
-                    except Exception, e:
+                    except Exception as e:
                         logger.error('Publish failed for the following! %s' % e)
                         pass
 
@@ -488,7 +493,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         try:
             file_to_publish = psd.PSDImage.open(filename)
             file_to_publish.compose().save(render_path)
-        except Exception, e:
+        except Exception as e:
             logger.error('Photoshop File could not generate an image! %s' % e)
             pass
 
@@ -524,7 +529,7 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
         sg.upload('Version', version_id, file_path, field_name='sg_uploaded_movie', display_name=file_name)
         logger.info('New Version Created!')
         return True
-    except Exception, e:
+    except Exception as e:
         logger.error('The new version could not be created: %s' % e)
         pass
     return False
@@ -584,7 +589,7 @@ def send_today(filename=None, path=None, proj_id=None, asset={}):
         try:
             shutil.move(filename, send_today_path)
             return True
-        except Exception, e:
+        except Exception as e:
             logger.error('Can not copy the file! %s' % e)
             return False
     else:
@@ -775,7 +780,7 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
                 naming_convention = nc[0]
                 padding = nc[1]
                 logger.info('PADDING: %s' % padding)
-                if 'version' in work_fields.keys():
+                if 'version' in list(work_fields.keys()):
                     # Convert numeric version to padded string
                     current_version = work_fields['version']
                     del work_fields['version']
@@ -849,7 +854,7 @@ def create_client_name(path=None, filename=None, proj_id=None, asset={}, version
         new_name = naming_convention.format(**work_fields)
         logger.info('NEW_NAME: %s' % new_name)
         # item.display_name = new_name
-    except Exception, e:
+    except Exception as e:
         logger.error('It looks like the Project Naming Convention is incorrectly set. See the Admins. %s' % e)
         return False
     return new_name
@@ -874,7 +879,7 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
             if not os.path.exists(check_path):
                 os.makedirs(check_path)
             shutil.copy2(publish_file, publish_path)
-        except Exception, e:
+        except Exception as e:
             logger.error('Copy failed for the following: %s' % e)
             pass
 
@@ -923,7 +928,7 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
         try:
             shutil.copy2(publish_file, version_up)
             logger.info('Version up completed!')
-        except Exception, e:
+        except Exception as e:
             logger.error('The version up failed!: %s ' % e)
             pass
 
@@ -1311,7 +1316,7 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                                     logger.info('Opening config files...')
                                     f = open(template_file, 'r')
                                     r = open(root_file, 'r')
-                                except Exception, err:
+                                except Exception as err:
                                     # If unable to open the configuration files, try another 10 times.
                                     tries = 1
                                     while tries < 10:
@@ -1322,7 +1327,7 @@ class remoteAutoPublisher(win32serviceutil.ServiceFramework):
                                             f = open(template_file, 'r')
                                             r = open(root_file, 'r')
                                             break
-                                        except Exception, e:
+                                        except Exception as e:
                                             tries += 1
                                             logging.error('File Open failed again. Trying again... ERROR: %s' % e)
                                     # raise 'Total failure! %s' % err

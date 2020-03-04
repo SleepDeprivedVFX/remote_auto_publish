@@ -10,8 +10,11 @@ or that appropriate pop ups can be issued reminding the user to update their tim
 This engine is going to handle the logic only.  Calls to users will be handled by other engines.
 """
 
+from __future__ import absolute_import
+from __future__ import print_function
+from six.moves import range
 __author__ = 'Adam Benson - AdamBenson.vfx@gmail.com'
-__version__ = '0.4.14'
+__version__ = '0.5.0'
 
 import datetime
 import logging
@@ -22,8 +25,8 @@ from dateutil import parser
 from dateutil import relativedelta
 import time
 import inspect
-import cPickle as pickle
-import configuration
+import six.moves.cPickle as pickle
+from . import configuration
 
 config = configuration.get_configuration()
 
@@ -199,7 +202,7 @@ class continuum(object):
                 self.logger.error('Something unexpected happened while getting the last timesheet: %s' % e)
                 latest_timesheet = None
             if latest_timesheet:
-                print('Latest: %s' % latest_timesheet)
+                print(('Latest: %s' % latest_timesheet))
                 return latest_timesheet
             return {'sg_task_end': None, 'entity': None, 'project': None, 'date': '', 'sg_task_start': None}
 
@@ -366,7 +369,7 @@ class continuum(object):
             try:
                 self.sg.create('Note', n_data)
             except Exception as e:
-                print('Create Note Failed: %s' % e)
+                print(('Create Note Failed: %s' % e))
                 self.logger.error('Could not create note: %s' % e)
 
             return update
@@ -420,7 +423,7 @@ class continuum(object):
                 self.logger.debug(timesheet)
                 current_data = self.get_time_capsule()
                 self.logger.debug(current_data)
-                if type(current_data) == dict and 'EventLogID' in current_data.keys():
+                if type(current_data) == dict and 'EventLogID' in list(current_data.keys()):
                     event_id = current_data['EventLogID']
                 else:
                     event_id = 0
@@ -454,7 +457,7 @@ class continuum(object):
                 try:
                     self.sg.create('Note', n_data)
                 except Exception as e:
-                    print('Create Note Failed: %s' % e)
+                    print(('Create Note Failed: %s' % e))
                     self.logger.error('Could not create note: %s' % e)
             return timesheet
 
@@ -471,7 +474,7 @@ class continuum(object):
             's': '00'
         }
         if timesheet:
-            if 'user' in timesheet.keys():
+            if 'user' in list(timesheet.keys()):
                 user = timesheet['user']
             else:
                 user = {'name': os.environ['USERNAME'], 'id': 0, 'sg_computer': os.environ['COMPUTERNAME']}
@@ -559,7 +562,8 @@ class continuum(object):
                 'user',
                 'duration',
                 'sg_task_start',
-                'sg_task_end'
+                'sg_task_end',
+                'sg_closed'
             ]
             try:
                 # This will get time sheets from "today" and "yesterday" because Shotgun considers anything after 6PM to
@@ -618,7 +622,8 @@ class continuum(object):
                 'user',
                 'duration',
                 'sg_task_start',
-                'sg_task_end'
+                'sg_task_end',
+                'sg_closed'
             ]
             try:
                 timesheets = self.sg.find('TimeLog', filters, fields)
@@ -668,7 +673,8 @@ class continuum(object):
                 'project',
                 'entity',
                 'entity.Task.entity',
-                'duration'
+                'duration',
+                'sg_closed'
             ]
             try:
                 get_lunch = self.sg.find('TimeLog', filters, fields)
@@ -733,8 +739,9 @@ class continuum(object):
             'sg_task_end',
             'project',
             'entity',
-                'entity.Task.entity',
-            'duration'
+            'entity.Task.entity',
+            'duration',
+            'sg_closed'
         ]
         conn_attempts = 0
         timesheets = None
@@ -767,7 +774,8 @@ class continuum(object):
                 'project',
                 'entity',
                 'entity.Task.entity',
-                'duration'
+                'duration',
+                'sg_closed'
             ]
             conn_attempts = 0
             timesheet = None
@@ -849,7 +857,8 @@ class continuum(object):
                 'sg_task_end',
                 'id',
                 'user',
-                'date'
+                'date',
+                'sg_closed'
             ]
             try:
                 empties = self.sg.find('TimeLog', filters, fields, order=[{'field_name': 'id', 'direction': 'desc'}])
@@ -920,7 +929,7 @@ class continuum(object):
                                             self.sg.create('Note', n_data)
                                             self.logger.debug('Note created!')
                                         except Exception as e:
-                                            print('Create Note Failed: %s' % e)
+                                            print(('Create Note Failed: %s' % e))
                                             self.logger.error('Could not create note: %s' % e)
                                     except Exception as e:
                                         # FIXME: This does nothing!
@@ -1025,7 +1034,7 @@ class continuum(object):
                     try:
                         self.sg.create('Note', n_data)
                     except Exception as e:
-                        print('Create Note Failed: %s' % e)
+                        print(('Create Note Failed: %s' % e))
                         self.logger.error('Could not create note: %s' % e)
 
             # Next check for durations greater than double time hours, or durations having negative values.
@@ -1056,7 +1065,7 @@ class continuum(object):
                 try:
                     self.sg.create('Note', n_data)
                 except Exception as e:
-                    print('Create Note Failed: %s' % e)
+                    print(('Create Note Failed: %s' % e))
                     self.logger.error('Could not create note: %s' % e)
 
             # Check against previous time sheets
@@ -1111,7 +1120,7 @@ class continuum(object):
                         try:
                             self.sg.create('Note', n_data)
                         except Exception as e:
-                            print('Create Note Failed: %s' % e)
+                            print(('Create Note Failed: %s' % e))
                             self.logger.error('Could not create note: %s' % e)
 
                     except AttributeError as e:
@@ -1256,7 +1265,7 @@ class continuum(object):
                                 index = timesheets.index(sheet)
                                 timesheets.pop(index)
             except Exception as e:
-                print('Shit the bed: %s' % e)
+                print(('Shit the bed: %s' % e))
                 self.logger.error('Cannot get all the timesheets! %s' % e)
                 timesheets = []
         return timesheets
@@ -1274,7 +1283,7 @@ class continuum(object):
                 update = self.sg.update('TimeLog', tid, data)
                 self.logger.debug('update start time output: %s' % update)
             except Exception as e:
-                print('Shit the bed: %s' % e)
+                print(('Shit the bed: %s' % e))
                 self.logger.error('Timesheet update failed: %s' % e)
             if update:
                 self.timesheet_consistency_cleanup(user=user)
