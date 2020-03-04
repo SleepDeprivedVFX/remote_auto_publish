@@ -4,6 +4,9 @@ I am starting with a basic folder listener copied from the the web.  I am using 
 driver for everything else that will happen.
 """
 
+__author__ = 'Adam Benson'
+__version__ = '1.2.0'
+
 from __future__ import absolute_import
 from __future__ import print_function
 import os

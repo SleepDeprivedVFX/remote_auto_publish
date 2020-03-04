@@ -14,7 +14,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 from six.moves import range
 __author__ = 'Adam Benson - AdamBenson.vfx@gmail.com'
-__version__ = '0.4.14'
+__version__ = '0.5.0'
 
 import datetime
 import logging
