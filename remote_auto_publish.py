@@ -4,9 +4,6 @@ I am starting with a basic folder listener copied from the the web.  I am using 
 driver for everything else that will happen.
 """
 
-__author__ = 'Adam Benson'
-__version__ = '1.2.0'
-
 from __future__ import absolute_import
 from __future__ import print_function
 import os
@@ -29,6 +26,9 @@ import shotgun_api3
 import queue
 import threading
 from datetime import datetime
+
+__author__ = 'Adam Benson'
+__version__ = '1.2.0'
 
 # NOTE: There is a horrible stupidity with Mapped Paths that is failing to work in our system.
 #       I hate putting Hard Coded paths in here, but in this case I'm running into a situation where (at least for
