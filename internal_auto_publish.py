@@ -719,7 +719,7 @@ def process_Photoshop_image(template=None, filename=None, task=None, pub_area=No
         logger.info('Processing Photoshop file...')
         try:
             file_to_publish = psd.PSDImage.open(filename)
-            file_to_PIL = file_to_publish.compose()
+            file_to_PIL = file_to_publish.composite()
             converted_file = file_to_PIL.convert(mode="RGB")
             converted_file.save(render_path)
         except Exception as e:

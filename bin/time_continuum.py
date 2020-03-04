@@ -562,7 +562,8 @@ class continuum(object):
                 'user',
                 'duration',
                 'sg_task_start',
-                'sg_task_end'
+                'sg_task_end',
+                'sg_closed'
             ]
             try:
                 # This will get time sheets from "today" and "yesterday" because Shotgun considers anything after 6PM to
@@ -621,7 +622,8 @@ class continuum(object):
                 'user',
                 'duration',
                 'sg_task_start',
-                'sg_task_end'
+                'sg_task_end',
+                'sg_closed'
             ]
             try:
                 timesheets = self.sg.find('TimeLog', filters, fields)
@@ -671,7 +673,8 @@ class continuum(object):
                 'project',
                 'entity',
                 'entity.Task.entity',
-                'duration'
+                'duration',
+                'sg_closed'
             ]
             try:
                 get_lunch = self.sg.find('TimeLog', filters, fields)
@@ -736,8 +739,9 @@ class continuum(object):
             'sg_task_end',
             'project',
             'entity',
-                'entity.Task.entity',
-            'duration'
+            'entity.Task.entity',
+            'duration',
+            'sg_closed'
         ]
         conn_attempts = 0
         timesheets = None
@@ -770,7 +774,8 @@ class continuum(object):
                 'project',
                 'entity',
                 'entity.Task.entity',
-                'duration'
+                'duration',
+                'sg_closed'
             ]
             conn_attempts = 0
             timesheet = None
@@ -852,7 +857,8 @@ class continuum(object):
                 'sg_task_end',
                 'id',
                 'user',
-                'date'
+                'date',
+                'sg_closed'
             ]
             try:
                 empties = self.sg.find('TimeLog', filters, fields, order=[{'field_name': 'id', 'direction': 'desc'}])
