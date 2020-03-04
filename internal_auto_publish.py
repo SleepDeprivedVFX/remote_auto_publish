@@ -26,8 +26,8 @@ import json
 
 import time_lord_connect as tlc
 
-# __author__ = 'Adam Benson'
-# __version__ = '1.0.1'
+__author__ = 'Adam Benson'
+__version__ = '1.1.1'
 
 sys_path = sys.path
 config_file = 'auto_publisher_config.cfg'
