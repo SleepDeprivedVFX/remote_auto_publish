@@ -134,6 +134,7 @@ publish_types = {
     '.bip': 'Keyshot Package',
     '.kip': 'Keyshot File',
     '.spp': 'Substance Painter',
+    '.hip': 'Houdini Scene',
 }
 '''
 # generate_types will create the values if the keys are certain values.  Thus, if ext == '.psd' then '.jpg' will be made
@@ -212,6 +213,12 @@ templates = {
         'work_template': 'substancepainter_asset_work',
         'publish_area': 'asset_publish_area_substancepainter',
         'publish_template': 'substancepainter_asset_publish'
+    },
+    'Houdini Scene': {
+        'work_area': 'asset_work_area_houdini',
+        'work_template': 'houdini_asset_work',
+        'publish_area': 'asset_publish_area_houdini',
+        'publish_template': 'houdini_asset_publish'
     },
     'Renders': {
         'work_area': None,
