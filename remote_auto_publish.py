@@ -155,6 +155,7 @@ generate_types = {
         'render': 'Renders'
     }
 }
+# Upload types will get a version created on shotgun
 upload_types = [
     '.jpg',
     '.jpeg',
@@ -165,6 +166,17 @@ upload_types = [
     '.mp4',
     '.tga'
 ]
+# Render Types will get copied to the renders folder.
+render_types = [
+    '.jpg',
+    '.jpeg',
+    '.tif',
+    '.tiff',
+    '.png',
+    '.exr',
+    '.tga'
+]
+
 templates = {
     'Photoshop Image': {
         'work_area': 'asset_work_area_photoshop',
