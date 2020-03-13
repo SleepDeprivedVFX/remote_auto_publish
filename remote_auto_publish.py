@@ -71,7 +71,7 @@ hDir = win32file.CreateFile(
 
 
 # Create Log file
-log_level = logging.DEBUG
+log_level = logging.INFO
 
 
 def _setFilePathOnLogger(logger, path):
@@ -123,6 +123,18 @@ task_name = 'design.remote'
 task_step = 23
 relative_config_path = '/config/core'
 task_name_format = '{Asset}_{task_name}_*{ext}'
+
+
+task_folders = {
+    'model': 10,
+    'lookdev': 12,
+    'design': 23,
+    'rig': 11,
+    'fx': 15,
+    'anim': 14,
+    'comp': 16
+}
+
 
 publish_types = {
     '.psd': 'Photoshop Image',
@@ -176,6 +188,14 @@ render_types = [
     '.exr',
     '.tga'
 ]
+# Object Types will move geometries and Unreal files to their place on the server
+object_types = {
+    '.obj': 'OBJ',
+    '.fbx': 'FBX',
+    '.umap': 'Unreal',
+    '.uasset': 'Unreal',
+    '.sbar': 'Substance Material'
+}
 
 templates = {
     'Photoshop Image': {
@@ -249,6 +269,30 @@ templates = {
         'work_template': None,
         'publish_area': None,
         'publish_template': None
+    },
+    'OBJ': {
+        'work_area': None,
+        'work_template': None,
+        'publish_area': 'asset_obj_area',
+        'publish_template': None
+    },
+    'FBX': {
+        'work_area': None,
+        'work_template': None,
+        'publish_area': 'asset_fbx_area',
+        'publish_template': None
+    },
+    'Unreal': {
+        'work_area': None,
+        'work_template': None,
+        'publish_area': 'asset_unreal_area',
+        'publish_template': None
+    },
+    'Substance Material': {
+        'work_area': None,
+        'work_template': None,
+        'publish_area': 'substancepainter_asset_material_publish_area',
+        'publish_template': None
     }
 }
 
@@ -279,6 +323,7 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
         logger.info('-' * 120)
         logger.info('NEW FILE PROCESSING...')
         print('New File Processing...')
+        logger.debug('filename: %s' % filename)
 
         # Get the path details from the filename
         path = os.path.dirname(filename)
@@ -304,13 +349,16 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
             asset_name = find_asset['name']
             asset_id = find_asset['id']
             asset_type = find_asset['type']
+            task_rootname = find_asset['task']
+            task_step = find_asset['step']
 
             # If an asset is found, continue processing.
             if asset_id:
                 logger.info('The Asset is found in the system! %s: %s' % (asset_id, asset_name))
                 logger.debug('Asset type: %s' % asset_type)
 
-                task = get_set_task(asset=find_asset, proj_id=proj_id)
+                task = get_set_task(asset=find_asset, proj_id=proj_id, task_info={'name': task_rootname,
+                                                                                  'step': task_step})
                 logger.debug('Task ID returned: %s' % task)
 
                 # Find the Shotgun configuration root path
@@ -469,6 +517,44 @@ def process_file(filename=None, template=None, roots=None, proj_id=None, proj_na
                         is_sent = send_today(filename=filename, path=send_today_path, proj_id=proj_id,
                                              asset=find_asset)
                         logger.debug('is_sent RETURNS: %s' % is_sent)
+                elif ext.lower() in object_types:
+                    logger.debug('This is an object level file...')
+                    publish_type = object_types[ext.lower()]
+                    template_type = templates[publish_type]
+
+                    publish_area = resolve_template_path(template_type['publish_area'], template)
+                    logger.debug('PUBLISH AREA: %s' % publish_area)
+
+                    project_root = roots['primary']['windows_path']
+                    root_template_path = os.path.join(project_root, proj_name)
+
+                    publish_area_path = os.path.join(root_template_path, publish_area)
+                    logger.info('Publish Area Path: %s' % publish_area_path)
+
+                    res_object_path = process_template_path(template=publish_area_path, asset=find_asset)
+                    logger.info('Resolved Object Path: %s' % res_object_path)
+
+                    try:
+                        shutil.move(filename, res_object_path)
+                        message = 'The File is moved!'
+                    except IOError as e:
+                        message = ''
+                        attempts = 1
+                        while attempts < 10:
+                            time.sleep(2 * attempts)
+                            try:
+                                shutil.move(filename, res_object_path)
+                                message = 'The file has moved after %i tries!' % attempts
+                                break
+                            except Exception as err:
+                                message = ''
+                                attempts += 1
+                                logger.warning('Move attempt failed.  Trying again...', err)
+                        logger.error('Moving the file failed!  %s' % e)
+                    if message:
+                        logger.info(message)
+                    else:
+                        logger.error('The file could not be moved!', filename)
 
         logger.info('Finished processing the file')
         logger.info('=' * 100)
@@ -952,7 +1038,7 @@ def publish_to_shotgun(publish_file=None, publish_path=None, asset_id=None, proj
             pass
 
 
-def get_set_task(asset=None, proj_id=None):
+def get_set_task(asset=None, proj_id=None, task_info=None):
     """
     This will look for an existing task in Shotgun and return the info. If no task if found, it creates one and returns
     the info
@@ -960,7 +1046,12 @@ def get_set_task(asset=None, proj_id=None):
     :param proj_id: (int) Project ID number
     :return: (int) task: Task ID number
     """
-    global task_step
+    if not task_info:
+        global task_step
+        global task_name
+    else:
+        task_name = '%s.remote' % task_info['name']
+        task_step = task_info['step']
     task = None
     if asset:
         asset_id = asset['id']
@@ -1082,6 +1173,13 @@ def get_asset_details_from_path(project=None, proj_id=None, path=None):
                     ass['id'] = asset['id']
                     ass['type'] = asset['sg_asset_type']
                     logger.info('%s found in %s' % (ass['name'], path))
+                    ass['task'] = None
+                    ass['step'] = None
+                    for task, step in task_folders.items():
+                        if task in path:
+                            ass['task'] = task
+                            ass['step'] = step
+                            break
                     return ass
     return
 
