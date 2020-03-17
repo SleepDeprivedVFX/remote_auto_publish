@@ -71,7 +71,7 @@ hDir = win32file.CreateFile(
 
 
 # Create Log file
-log_level = logging.INFO
+log_level = logging.DEBUG
 
 
 def _setFilePathOnLogger(logger, path):
@@ -132,7 +132,8 @@ task_folders = {
     'rig': 11,
     'fx': 15,
     'anim': 14,
-    'comp': 16
+    'comp': 16,
+    '3D_Print': 126
 }
 
 
@@ -1234,7 +1235,7 @@ def get_configuration(proj_id):
     return
 
 
-def get_active_shotgun_projects():
+def get_active_shotgun_projects(conn_attempts=0):
     """
     Creates a list of all active Shotgun Projects to search through
     :return:
@@ -1253,8 +1254,19 @@ def get_active_shotgun_projects():
         'id',
         'tank_name'
     ]
-    projects_list = sg.find('Project', filters, fields)
-    logger.debug('Active Projects Found: %s' % projects_list)
+    try:
+        projects_list = sg.find('Project', filters, fields)
+        logger.debug('Active Projects Found: %s' % projects_list)
+    except Exception as e:
+        logger.error('The Shit hit the fan')
+        if conn_attempts <= 5:
+            conn_attempts += 1
+            logger.warning('Connection attempt failed.  Trying again in 5 seconds')
+            time.sleep(5)
+            projects_list = get_active_shotgun_projects(conn_attempts)
+        else:
+            logger.error('Failed to make connection.  No projects returned')
+            projects_list = None
     return projects_list
 
 
