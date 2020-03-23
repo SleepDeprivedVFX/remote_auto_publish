@@ -177,7 +177,8 @@ upload_types = [
     '.png',
     '.mov',
     '.mp4',
-    '.tga'
+    '.tga',
+    '.m4v'
 ]
 # Render Types will get copied to the renders folder.
 render_types = [
@@ -188,6 +189,14 @@ render_types = [
     '.png',
     '.exr',
     '.tga'
+]
+# Files that won't break current thumbnail generation
+thumbnail_types = [
+    '.jpg',
+    '.jpeg',
+    '.tif',
+    '.tiff',
+    '.png'
 ]
 # Object Types will move geometries and Unreal files to their place on the server
 object_types = {
@@ -631,7 +640,10 @@ def upload_to_shotgun(filename=None, asset_id=None, task_id=None, proj_id=None):
         new_version = sg.create('Version', version_data)
         logger.debug('new_version RETURNS: %s' % new_version)
         version_id = new_version['id']
-        sg.upload_thumbnail('Version', version_id, file_path)
+        ext = os.path.splitext(filename)[1]
+        logger.debug('EXT: %s' % ext)
+        if ext.lower() in thumbnail_types:
+            sg.upload_thumbnail('Version', version_id, file_path)
         sg.upload('Version', version_id, file_path, field_name='sg_uploaded_movie', display_name=file_name)
         logger.info('New Version Created!')
         return True
